@@ -26,8 +26,8 @@ function changeLanguage() {
   const languageSelect = document.getElementById("languageSelect");
   const selectedLanguage = languageSelect.value;
   if (selectedLanguage === "en") {
-    window.location.href = "morse_translator/index.html";
+    window.location.href = "index.html";
   } else if (selectedLanguage === "fr") {
-    window.location.href = "morse_translator/fr/index.html";
+    window.location.href = "/fr/index.html";
   }
 }

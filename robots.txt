@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jrollo1612.github.io/morse_translator/sitemap.xml
+Sitemap: https://morsetrad.jrollo1612.abrdns.com/sitemap.xml

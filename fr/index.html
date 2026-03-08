@@ -10,13 +10,6 @@
         
     </head>
 <body>
-    <script>
-        if (window.location.pathname === "index.html" || window.location.pathname === "/index.html") {
-            document.getElementById("languageSelect").value = "en";
-        } else if (window.location.pathname === "fr/index.html" || window.location.pathname === "/fr/index.html") {
-            document.getElementById("languageSelect").value = "fr";
-        }
-    </script>
         <div class="header">
            
                 <select id="languageSelect" onchange="changeLanguage()">

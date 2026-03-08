@@ -1,55 +1,91 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Morse Translator for Windows, Linux and MacOS</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
-        <meta name="description" value="Download a morse translator. Available on Windows, MacOS et Linux.">
-        <meta name="keywords" value="morse, translator, text, auto translate">
-    </head>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Translator Download for Windows, Linux and macOS</title>
+    <meta name="description" content="Download Morse Translator for Windows, Linux and macOS. Translate text to Morse code and Morse to text with automatic translation support.">
+    <meta name="keywords" content="morse translator, morse code, text to morse, morse to text, download">
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+    <meta name="author" content="Joseph Rollo">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Morse Translator Download for Windows, Linux and macOS">
+    <meta property="og:description" content="Translate text to Morse code and Morse to text. Download Morse Translator versions for desktop.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Morse Translator">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Morse Translator Download">
+    <meta name="twitter:description" content="Download Morse Translator and convert text and Morse code quickly.">
+    <link rel="alternate" hreflang="en" href="/index.html">
+    <link rel="alternate" hreflang="fr" href="/fr/index.html">
+    <link rel="alternate" hreflang="x-default" href="/index.html">
+    <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Morse Translator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, Linux, macOS",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Rollo"
+      },
+      "description": "Desktop app to translate text to Morse code and Morse code to text."
+    }
+    </script>
+    <script src="script.js" defer></script>
+</head>
 <body>
-        <div class="header">
-           
-                <select id="languageSelect" onchange="changeLanguage()">
-                    <option value="en">English</option>
-                    <option value="fr">Français</option>
-                </select>
-           
-            <h1>Morse Translator</h1>
-        </div>
-        <div class="main">
-            <div id="description">
-                <p>Welcome to the Morse Translator!</p>
-                <p>This is a simple tool to translate text into Morse code and vice versa.</p>
-                <p>When you are on the app, write your text in the right panel, and it will automatically translate it to Morse code. If you want to type in morse, write "/" and a keyboard of 4 symbols will appear. Then, click on them to write in morse.</p>
-            </div>
-            <p>Download my Morse translator below</p>
+    <header class="header">
+        <nav aria-label="Language selector">
+            <label for="languageSelect" class="visually-hidden">Select language</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+        </nav>
+        <h1>Morse Translator</h1>
+    </header>
+
+    <main class="main">
+        <section id="description" aria-labelledby="about-title">
+            <h2 id="about-title">About the app</h2>
+            <p>Welcome to Morse Translator.</p>
+            <p>This tool translates text into Morse code and Morse code back to text.</p>
+            <p>In the app, write text in the right panel and it is automatically translated. To type Morse, write "/" to show a 4-symbol Morse keyboard.</p>
+        </section>
+
+        <section aria-labelledby="downloads-title">
+            <h2 id="downloads-title">Download Morse Translator</h2>
             <ul>
-            <li>
-                <p>Version 1.0 (Base version)</p>
-                <button id="downloadButton1" onclick="download1()">Morse Translator v.1.0</button>
-            </li>
-            <li>
-                <p>Version 1.1 (Translation revision)</p>
-                <button id="downloadButton2" onclick="download2()">Morse Translator v.1.1</button>
-            </li>
-            <li>
-                <p>Version 1.2 (Added auto translation)</p>
-                <button id="downloadButton3" onclick="download3()">Morse Translator v.1.2</button>
-            </li>
+                <li>
+                    <p>Version 1.0 (Base version)</p>
+                    <a class="download-button" href="Traducteur_Morse-v.1.0/Traducteur_Morse-v.1.0.exe" download>Morse Translator v1.0</a>
+                </li>
+                <li>
+                    <p>Version 1.1 (Translation revision)</p>
+                    <a class="download-button" href="Traducteur_Morse-v.1.1/Traducteur_Morse-v.1.1.exe" download>Morse Translator v1.1</a>
+                </li>
+                <li>
+                    <p>Version 1.2 (Added auto translation)</p>
+                    <a class="download-button" href="Traducteur_Morse-v.1.2/Traducteur_Morse-v.1.2.exe" download>Morse Translator v1.2</a>
+                </li>
             </ul>
-            <p>Find project information here: <a href="https://github.com/Jrollo1612/morse_translator/README.md">GitHub - README.md</a></p>
+        </section>
+
+        <p>Project information: <a href="https://github.com/Jrollo1612/morse_translator/blob/main/README.md" rel="noopener noreferrer">GitHub README</a></p>
+    </main>
+
+    <footer class="footer">
+        <p>Copyright © 2026 Joseph Rollo. All rights reserved.</p>
+        <div class="bloc">
+            <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer">My GitHub</a>
+            <h2>Contact</h2>
+            <ul>
+                <li>Email: <a href="mailto:joseph.rollo2011@gmail.com">joseph.rollo2011@gmail.com</a></li>
+            </ul>
         </div>
-        <div class="footer">
-            <p>Copyright © 2026 by Joseph Rollo. All rights reserved.</p>
-            <div class="bloc">
-                <a href="https://github.com/jrollo1612" target="_blank">My GitHub</a>
-                <p>Contact
-                    <ul>
-                        <li>Email: <a href="mailto:joseph.rollo2011@gmail.com">joseph.rollo2011@gmail.com</a></li>
-                    </ul>
-                </p>
-            </div>
-        </div>
+    </footer>
 </body>
+</html>

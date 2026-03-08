@@ -1,4 +1,4 @@
-function download1() {
+﻿function download1() {
   const link = document.createElement("a");
   link.href = "Traducteur_Morse-v.1.0/Traducteur_Morse-v.1.0.exe";
   link.download = "Traducteur_Morse-v.1.0.exe";
@@ -6,6 +6,7 @@ function download1() {
   link.click();
   document.body.removeChild(link);
 }
+
 function download2() {
   const link = document.createElement("a");
   link.href = "Traducteur_Morse-v.1.1/Traducteur_Morse-v.1.1.exe";
@@ -14,6 +15,7 @@ function download2() {
   link.click();
   document.body.removeChild(link);
 }
+
 function download3() {
   const link = document.createElement("a");
   link.href = "Traducteur_Morse-v.1.2/Traducteur_Morse-v.1.2.exe";
@@ -22,21 +24,30 @@ function download3() {
   link.click();
   document.body.removeChild(link);
 }
+
+function getBasePath() {
+  const path = window.location.pathname;
+  return path.includes("/fr/") ? ".." : ".";
+}
+
 function changeLanguage() {
   const languageSelect = document.getElementById("languageSelect");
   const selectedLanguage = languageSelect.value;
+  const base = getBasePath();
+
   if (selectedLanguage === "en") {
-    window.location.href = "../index.html";
+    window.location.href = `${base}/index.html`;
   } else if (selectedLanguage === "fr") {
-    window.location.href = "/fr/index.html";
+    window.location.href = `${base}/fr/index.html`;
   }
 }
-document.addEventListener("DOMContentLoaded", function() {
+
+document.addEventListener("DOMContentLoaded", function () {
   const languageSelect = document.getElementById("languageSelect");
-  const currentPath = window.location.pathname;
-  if (currentPath === "index.html" || currentPath === "/index.html") {
-    languageSelect.value = "en";
-  } else if (currentPath === "fr/index.html" || currentPath === "/fr/index.html") {
-    languageSelect.value = "fr";
+  if (!languageSelect) {
+    return;
   }
+
+  const currentPath = window.location.pathname.toLowerCase();
+  languageSelect.value = currentPath.includes("/fr/") ? "fr" : "en";
 });

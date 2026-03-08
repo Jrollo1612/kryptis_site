@@ -3,12 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>Morse Translator for Windows, Linux and MacOS</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
+        <link rel="stylesheet" href="../style.css">
+        <script src="../script.js"></script>
         <meta name="description" value="Download a morse translator. Available on Windows, MacOS et Linux.">
         <meta name="keywords" value="morse, translator, text, auto translate">
+        
     </head>
 <body>
+    <script>
+        if (window.location.pathname === "index.html" || window.location.pathname === "/index.html") {
+            document.getElementById("languageSelect").value = "en";
+        } else if (window.location.pathname === "fr/index.html" || window.location.pathname === "/fr/index.html") {
+            document.getElementById("languageSelect").value = "fr";
+        }
+    </script>
         <div class="header">
            
                 <select id="languageSelect" onchange="changeLanguage()">
@@ -16,33 +24,33 @@
                     <option value="fr">Français</option>
                 </select>
            
-            <h1>Morse Translator</h1>
+            <h1>Traducteur Morse</h1>
         </div>
         <div class="main">
             <div id="description">
-                <p>Welcome to the Morse Translator!</p>
-                <p>This is a simple tool to translate text into Morse code and vice versa.</p>
-                <p>When you are on the app, write your text in the right panel, and it will automatically translate it to Morse code. If you want to type in morse, write "/" and a keyboard of 4 symbols will appear. Then, click on them to write in morse.</p>
+                <p>Bienvenue sur le Traducteur Morse!</p>
+                <p>C'est un outil simple pour traduire le texte en code Morse et vice-versa.</p>
+                <p>Quand vous êtes sur l'application, écrivez votre texte dans le panneau de droite, et il sera automatiquement traduit en code Morse. Si vous voulez taper en Morse, écrivez "/" et un clavier de 4 symboles apparaîtra. Ensuite, cliquez sur eux pour écrire en Morse.</p>
             </div>
-            <p>Download my Morse translator below</p>
+            <p>Télécharger le Traducteur Morse ci-dessous</p>
             <ul>
             <li>
-                <p>Version 1.0 (Base version)</p>
+                <p>Version 1.0 (Version de base)</p>
                 <button id="downloadButton1" onclick="download1()">Morse Translator v.1.0</button>
             </li>
             <li>
-                <p>Version 1.1 (Translation revision)</p>
+                <p>Version 1.1 (Révision de la traduction)</p>
                 <button id="downloadButton2" onclick="download2()">Morse Translator v.1.1</button>
             </li>
             <li>
-                <p>Version 1.2 (Added auto translation)</p>
+                <p>Version 1.2 (Traduction automatique ajoutée)</p>
                 <button id="downloadButton3" onclick="download3()">Morse Translator v.1.2</button>
             </li>
             </ul>
-            <p>Find project information here: <a href="https://github.com/Jrollo1612/morse_translator/README.md">GitHub - README.md</a></p>
+            <p>Informations sur le projet : <a href="https://github.com/Jrollo1612/morse_translator/README.md">GitHub - README.md</a></p>
         </div>
         <div class="footer">
-            <p>Copyright © 2026 by Joseph Rollo. All rights reserved.</p>
+            <p>Copyright © 2026 par Joseph Rollo. Tous droits réservés.</p>
             <div class="bloc">
                 <a href="https://github.com/jrollo1612" target="_blank">My GitHub</a>
                 <p>Contact

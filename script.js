@@ -22,3 +22,12 @@ function download3() {
   link.click();
   document.body.removeChild(link);
 }
+function changeLanguage() {
+  const languageSelect = document.getElementById("languageSelect");
+  const selectedLanguage = languageSelect.value;
+  if (selectedLanguage === "en") {
+    window.location.href = "morse_translator/index.html";
+  } else if (selectedLanguage === "fr") {
+    window.location.href = "morse_translator/fr/index.html";
+  }
+}

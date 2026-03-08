@@ -25,21 +25,42 @@ function download3() {
   document.body.removeChild(link);
 }
 
-function getBasePath() {
-  const path = window.location.pathname;
-  return path.includes("/fr/") ? ".." : ".";
+const LOCALE_PATHS = {
+  en: "/index.html",
+  fr: "/fr/index.html",
+  es: "/es/index.html",
+  it: "/it/index.html",
+  de: "/de/index.html"
+};
+
+function getCurrentLocale() {
+  const path = window.location.pathname.toLowerCase();
+
+  if (path.includes("/fr/")) {
+    return "fr";
+  }
+  if (path.includes("/es/")) {
+    return "es";
+  }
+  if (path.includes("/it/")) {
+    return "it";
+  }
+  if (path.includes("/de/")) {
+    return "de";
+  }
+
+  return "en";
 }
 
 function changeLanguage() {
   const languageSelect = document.getElementById("languageSelect");
-  const selectedLanguage = languageSelect.value;
-  const base = getBasePath();
-
-  if (selectedLanguage === "en") {
-    window.location.href = `${base}/index.html`;
-  } else if (selectedLanguage === "fr") {
-    window.location.href = `${base}/fr/index.html`;
+  if (!languageSelect) {
+    return;
   }
+
+  const selectedLanguage = languageSelect.value;
+  const destination = LOCALE_PATHS[selectedLanguage] || LOCALE_PATHS.en;
+  window.location.href = destination;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -48,6 +69,5 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const currentPath = window.location.pathname.toLowerCase();
-  languageSelect.value = currentPath.includes("/fr/") ? "fr" : "en";
+  languageSelect.value = getCurrentLocale();
 });

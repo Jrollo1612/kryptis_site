@@ -31,3 +31,12 @@ function changeLanguage() {
     window.location.href = "/fr/index.html";
   }
 }
+document.addEventListener("DOMContentLoaded", function() {
+  const languageSelect = document.getElementById("languageSelect");
+  const currentPath = window.location.pathname;
+  if (currentPath === "index.html" || currentPath === "/index.html") {
+    languageSelect.value = "en";
+  } else if (currentPath === "fr/index.html" || currentPath === "/fr/index.html") {
+    languageSelect.value = "fr";
+  }
+});

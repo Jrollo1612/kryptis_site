@@ -60,3 +60,13 @@ p {
     font-size: 18px;
     font-style: bold;
 }
+select {
+    background-color: #00cc66;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 20px;
+}

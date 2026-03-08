@@ -26,7 +26,7 @@ function changeLanguage() {
   const languageSelect = document.getElementById("languageSelect");
   const selectedLanguage = languageSelect.value;
   if (selectedLanguage === "en") {
-    window.location.href = "/index.html";
+    window.location.href = "../index.html";
   } else if (selectedLanguage === "fr") {
     window.location.href = "/fr/index.html";
   }
@@ -36,9 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const currentPath = window.location.pathname;
   if (currentPath === "index.html" || currentPath === "/index.html") {
     languageSelect.value = "en";
-    document.getElementById("languageSelect").value = "en";
   } else if (currentPath === "fr/index.html" || currentPath === "/fr/index.html") {
     languageSelect.value = "fr";
-    document.getElementById("languageSelect").value = "fr";
   }
 });

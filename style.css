@@ -11,6 +11,22 @@
     padding: 10px;
 }
 
+.main-nav {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+}
+
+.main-nav a {
+    color: #111;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}
+
 h1 {
     font-size: 36px;
     font-family: "Courier New", Courier, monospace;
@@ -36,6 +52,13 @@ p {
     padding: 16px;
 }
 
+.home-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
 ul {
     padding-left: 24px;
 }
@@ -56,7 +79,10 @@ ul {
 
 .download-button:focus-visible,
 select:focus-visible,
-a:focus-visible {
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
     outline: 3px solid #00331a;
     outline-offset: 2px;
 }
@@ -115,6 +141,75 @@ select {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+.reviews-section {
+    margin-top: 24px;
+}
+
+.review-form {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 18px;
+    max-width: 640px;
+}
+
+.review-form label {
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    margin-top: 14px;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+    width: 100%;
+    max-width: 520px;
+    padding: 10px 12px;
+    border: 1px solid #999;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    margin-top: 6px;
+}
+
+.review-form textarea {
+    resize: vertical;
+}
+
+.review-actions {
+    margin-top: 12px;
+}
+
+.review-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 12px;
+}
+
+.review-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.review-meta {
+    font-size: 15px;
+    margin: 0 0 8px;
+    color: #333;
+}
+
+.review-message {
+    margin: 0;
+}
+
+.notice {
+    font-size: 16px;
+    color: #333;
+    margin-top: 8px;
 }
 
 @media (max-width: 768px) {

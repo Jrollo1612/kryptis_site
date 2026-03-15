@@ -1,5 +1,5 @@
 # morse\_translator
-
+### [Go to my website](https://morsetrad.free.nf)
 A morse translator made with Python and Tkinter.
 To see all versions go to [Versions](#versions)
 Informations about downloading are available in [Downloading infos](#download)

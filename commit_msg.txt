@@ -1,0 +1,20 @@
+● Show staged changes
+  $ git --no-pager diff --cached
+  └ 475 lines...
+
+● Check staged files
+  $ git --no-pager diff --cached --name-only
+  └ 9 lines...
+
+Based on the staged changes, here's a concise commit message:
+
+```
+Add 404 error page, .htaccess config, online translator, and Python test file
+```
+
+Or more specifically focused on the main features:
+
+```
+Implement online Morse translator with UI, 404 error handling, and server config
+```
+

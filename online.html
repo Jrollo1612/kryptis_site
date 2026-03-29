@@ -63,7 +63,161 @@
         </nav>
     </header>
 
-    <main class="main"></main>
+    <main class="main">
+        <section>
+            <h2 data-i18n="online.title">Online Morse Translator</h2>
+            <p data-i18n="online.description">Use our online Morse Translator to convert text to Morse code and Morse code to text directly in your browser. No installation required!</p>
+            <input type="text" id="inputText" placeholder="Enter text or Morse code" aria-label="Input text or Morse code">
+            <div id="morseBar" class="morse-bar">
+                <button id="dotBtn">🟣</button>
+                <button id="dashBtn">➖</button>
+                <button id="slashBtn">/</button>
+                <button id="backBtn">⌫</button>
+            </div>
+            <output id="outputText" aria-live="polite"></output>
+            <script>// ---------------- Elements ----------------
+
+const inputText = document.getElementById("inputText");
+const outputText = document.getElementById("outputText");
+const morseBar = document.getElementById("morseBar");
+
+// boutons
+const dotBtn = document.getElementById("dotBtn");
+const dashBtn = document.getElementById("dashBtn");
+const slashBtn = document.getElementById("slashBtn");
+const backBtn = document.getElementById("backBtn");
+
+
+// ---------------- Morse mapping ----------------
+
+const morse = {
+'A':'🟣➖','B':'➖🟣🟣🟣','C':'➖🟣➖🟣','D':'➖🟣🟣','E':'🟣',
+'F':'🟣🟣➖🟣','G':'➖➖🟣','H':'🟣🟣🟣🟣','I':'🟣🟣','J':'🟣➖➖➖',
+'K':'➖🟣➖','L':'🟣➖🟣🟣','M':'➖➖','N':'➖🟣','O':'➖➖➖',
+'P':'🟣➖➖🟣','Q':'➖➖🟣➖','R':'🟣➖🟣','S':'🟣🟣🟣','T':'➖',
+'U':'🟣🟣➖','V':'🟣🟣🟣➖','W':'🟣➖➖','X':'➖🟣🟣➖',
+'Y':'➖🟣➖➖','Z':'➖➖🟣🟣'
+};
+
+// inverse mapping
+const reverseMorse = Object.fromEntries(
+    Object.entries(morse).map(([k,v]) => [v,k])
+);
+
+
+// ---------------- Conversion ----------------
+
+function textToMorse(text){
+
+    text = text.toUpperCase();
+
+    const words = text.split(" ");
+
+    const result = words.map(word => {
+
+        const letters = [...word]
+            .filter(c => morse[c])
+            .map(c => morse[c]);
+
+        return letters.join("/");
+
+    });
+
+    return result.join("//");
+}
+
+
+function morseToText(code){
+
+    const words = code.split("//");
+
+    const result = words.map(word => {
+
+        const letters = word.split("/")
+            .map(symbol => reverseMorse[symbol] || "");
+
+        return letters.join("");
+
+    });
+
+    return result.join(" ");
+}
+
+
+// ---------------- Auto translate ----------------
+
+function autoTranslate(){
+
+    const src = inputText.value.trim();
+
+    if(!src){
+        outputText.textContent = "";
+        morseBar.style.display = "none";
+        return;
+    }
+
+    const morsePattern = /^[🟣➖\/ ]+$/;
+
+    if(morsePattern.test(src)){
+
+        outputText.textContent = morseToText(src);
+        morseBar.style.display = "block";
+
+    }else{
+
+        outputText.textContent = textToMorse(src);
+        morseBar.style.display = "none";
+
+    }
+
+}
+
+inputText.addEventListener("input", autoTranslate);
+
+
+// ---------------- Morse buttons ----------------
+
+function insertSymbol(symbol){
+
+    inputText.value += symbol;
+    autoTranslate();
+
+}
+
+if(dotBtn) dotBtn.onclick = () => insertSymbol("🟣");
+if(dashBtn) dashBtn.onclick = () => insertSymbol("➖");
+if(slashBtn) slashBtn.onclick = () => insertSymbol("/");
+
+if(backBtn) backBtn.onclick = () => {
+
+    inputText.value = inputText.value.slice(0,-1);
+    autoTranslate();
+
+};
+
+
+// ---------------- Keyboard shortcuts ----------------
+
+inputText.addEventListener("keydown", function(event){
+
+    const mapping = {
+        "c":"🟣",
+        "v":"➖",
+        "b":"/",
+        "n":" "
+    };
+
+    if(mapping[event.key]){
+
+        event.preventDefault();
+        insertSymbol(mapping[event.key]);
+
+    }
+
+});
+            </script>
+        </section>
+    </main>
 
     <footer class="footer">
         <p data-i18n="footer.copyright">Copyright © 2026 Joseph Rollo. All rights reserved.</p>

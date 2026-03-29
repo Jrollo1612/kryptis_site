@@ -225,3 +225,61 @@ select {
         font-size: 18px;
     }
 }
+/* ===== Morse Translator ===== */
+
+#inputText {
+    width: 100%;
+    max-width: 800px;
+    padding: 12px 14px;
+    font-size: 18px;
+    font-family: "Courier New", Courier, monospace;
+    border: 1px solid #999;
+    border-radius: 12px;
+    margin: 15px 10px;
+    box-sizing: border-box;
+}
+
+/* zone de traduction */
+
+#outputText {
+    display: block;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 14px;
+    padding: 14px;
+    margin: 10px;
+    font-size: 20px;
+    font-family: "Courier New", Courier, monospace;
+    min-height: 50px;
+    word-break: break-word;
+}
+
+/* barre des boutons morse */
+
+.morse-bar {
+    display: flex;
+    gap: 10px;
+    margin: 10px;
+    flex-wrap: wrap;
+}
+
+/* boutons morse */
+
+.morse-bar button {
+    font-size: 20px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid #0b6f3c;
+    background-color: #00cc66;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.morse-bar button:hover {
+    background-color: #00b359;
+    transform: scale(1.05);
+}
+
+.morse-bar button:active {
+    transform: scale(0.95);
+}

@@ -1,0 +1,12 @@
+● Check staged changes (shell)
+  │ git --no-pager diff --cached --name-only && git --no-pager diff --cached --stat
+  └ 4 lines...
+
+Based on the staged changes, here's the commit message:
+
+```
+Remove obsolete commit message file
+```
+
+This removes the `commit_msg.txt` file which is no longer needed.
+

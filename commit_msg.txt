@@ -1,18 +1,16 @@
-● Check staged changes (shell)
-  │ git --no-pager diff --cached --name-status
+● Check git status for staged changes (shell)
+  │ git --no-pager status --short
   └ 2 lines...
 
-Let me see what's in the staged changes:
+Let me check the staged diff to see what changed:
 
 ● View staged changes to commit_msg.txt (shell)
   │ git --no-pager diff --cached commit_msg.txt
-  └ 29 lines...
+  └ 33 lines...
 
-Based on the staged changes, here's the commit message:
+Based on the staged changes to `commit_msg.txt`, here's a one-line commit message:
 
 ```
 Update commit message documentation
 ```
-
-This message describes the modification to `commit_msg.txt`, which appears to contain updates to the commit message format or documentation.
 

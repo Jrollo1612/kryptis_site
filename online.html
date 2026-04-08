@@ -152,7 +152,7 @@ function autoTranslate(){
 
     if(!src){
         outputText.textContent = "";
-        morseBar.style.display = "none";
+        // morseBar.style.display = "none";
         return;
     }
 
@@ -161,12 +161,12 @@ function autoTranslate(){
     if(morsePattern.test(src)){
 
         outputText.textContent = morseToText(src);
-        morseBar.style.display = "block";
+        // morseBar.style.display = "block";
 
     }else{
 
         outputText.textContent = textToMorse(src);
-        morseBar.style.display = "none";
+        // morseBar.style.display = "none";
 
     }
 

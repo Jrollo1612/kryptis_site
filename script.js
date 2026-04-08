@@ -68,7 +68,15 @@ const I18N = {
     "footer.reviews": "Reviews",
     "footer.home": "Home",
     "footer.contact": "Contact",
-    "footer.emailLabel": "Email:"
+    "footer.emailLabel": "Email:",
+    "online.title": "Online Morse Translator",
+    "online.description": "Enter text in the right panel to automatically translate it to Morse code. To type Morse, enter \"/\" to show a 4-symbol Morse keyboard.",
+    "online.inputLabel": "Enter text",
+    "online.outputLabel": "Morse Output",
+    "online.copyButton": "Copy Morse",
+    "online.copySuccess": "Morse copied to clipboard!",
+    "online.copyError": "Error copying Morse code."
+
   },
   fr: {
     "page.title": "Télécharger Traducteur Morse pour Windows, Linux et macOS",
@@ -137,7 +145,15 @@ const I18N = {
     "footer.reviews": "Avis",
     "footer.home": "Accueil",
     "footer.contact": "Contact",
-    "footer.emailLabel": "Email :"
+    "footer.emailLabel": "Email :",
+      "online.title": "Traducteur Morse en ligne",
+    "online.description": "Entrez du texte dans le champ de droite pour le traduire automatiquement en Morse. Pour taper en Morse, écrivez \"/\" pour afficher un clavier Morse à 4 symboles.",
+    "online.inputLabel": "Entrez du texte",
+    "online.outputLabel": "Sortie Morse",
+    "online.copyButton": "Copier le Morse",
+    "online.copySuccess": "Morse copié dans le presse-papier !",
+    "online.copyError": "Erreur lors de la copie du code Morse."
+
   },
   es: {
     "page.title": "Descargar Morse Translator para Windows, Linux y macOS",
@@ -206,7 +222,15 @@ const I18N = {
     "footer.reviews": "Reseñas",
     "footer.home": "Inicio",
     "footer.contact": "Contacto",
-    "footer.emailLabel": "Email:"
+    "footer.emailLabel": "Email:",
+      "online.title": "Traductor Morse en línea",
+    "online.description": "Ingrese texto en el campo de la derecha para traducirlo automáticamente a Morse. Para escribir en Morse, escriba \"/\" para mostrar un teclado Morse de 4 símbolos.",
+    "online.inputLabel": "Ingrese texto",
+    "online.outputLabel": "Salida Morse",
+    "online.copyButton": "Copiar Morse",
+    "online.copySuccess": "Morse copiado al portapapeles.",
+    "online.copyError": "Error al copiar el código Morse."
+
   },
   it: {
     "page.title": "Scarica Morse Translator per Windows, Linux e macOS",
@@ -275,7 +299,15 @@ const I18N = {
     "footer.reviews": "Recensioni",
     "footer.home": "Home",
     "footer.contact": "Contatto",
-    "footer.emailLabel": "Email:"
+    "footer.emailLabel": "Email:",
+    "online.title": "Traduttore Morse Online",
+    "online.description": "Inserisci il testo nel campo di destra per tradurlo automaticamente in codice Morse. Per digitare in Morse, digita \"/\" per mostrare una tastiera Morse con 4 simboli.",
+    "online.inputLabel": "Inserisci il testo",
+    "online.outputLabel": "Output Morse",
+    "online.copyButton": "Copia Morse",
+    "online.copySuccess": "Morse copiato negli appunti!",
+    "online.copyError": "Errore durante la copia del codice Morse."
+
   },
   de: {
     "page.title": "Morse Translator für Windows, Linux und macOS herunterladen",
@@ -344,7 +376,14 @@ const I18N = {
     "footer.reviews": "Bewertungen",
     "footer.home": "Startseite",
     "footer.contact": "Kontakt",
-    "footer.emailLabel": "E-Mail:"
+    "footer.emailLabel": "E-Mail:",
+    "online.title": "Online Morse Übersetzer",
+    "online.description": "Geben Sie Text in das rechte Feld ein, um ihn automatisch ins Morse zu übersetzen. Um Morse zu schreiben, geben Sie \"/\" ein, um eine Morse-Tastatur mit 4 Symbolen anzuzeigen.",
+    "online.inputLabel": "Text eingeben",
+    "online.outputLabel": "Morsecode Ausgabe",
+    "online.copyButton": "Morsecode kopieren",
+    "online.copySuccess": "Morsecode in die Zwischenablage kopiert!",
+    "online.copyError": "Fehler beim Kopieren des Morse-Codes."
   }
 };
 
@@ -504,6 +543,7 @@ function loadReviews() {
 
 function saveReviews(reviews) {
   localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(reviews));
+  saveReviewsToCookie(reviews); // 🔥 ajout ici
 }
 
 function renderReviews(reviews, language) {
@@ -545,6 +585,17 @@ function renderReviews(reviews, language) {
     card.appendChild(message);
     list.appendChild(card);
   });
+}
+function saveReviewsToCookie(reviews) {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 30); // 30 jours
+
+  document.cookie =
+    "reviews=" +
+    encodeURIComponent(JSON.stringify(reviews)) +
+    "; expires=" +
+    expires.toUTCString() +
+    "; path=/";
 }
 
 function initReviewsPage(language) {

@@ -1,0 +1,18 @@
+● Check staged changes status and diff statistics (shell)
+  │ git --no-pager status && echo "---" && git --no-pager diff --staged --stat
+  └ 11 lines...
+
+Let me check the actual diff to understand the changes better:
+
+● View detailed staged changes (shell)
+  │ git --no-pager diff --staged
+  └ 84 lines...
+
+Based on the staged changes, here's a concise one-line commit message:
+
+```
+Update HTML metadata, add workspace config, and fix sitemap
+```
+
+This captures the main changes: keyword improvements in index.html, removal of unused Twitter meta tags, cleanup of navigation menu, addition of the workspace configuration file, and sitemap fixes.
+

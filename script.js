@@ -26,7 +26,7 @@ const I18N = {
     "home.ctaDownload": "Go to downloads",
     "home.ctaReviews": "See reviews",
     "downloads.title": "Download Morse Translator",
-    "downloads.latest": "Version 1.3 (Latest)",
+    "downloads.latest": "Version 2.0 (Latest)",
     "downloads.line1": "The latest version of Morse Translator is now available for Windows, Linux, and macOS*.",
     "downloads.comingSoon": "Coming soon!",
     "downloads.osLabel": "Operating system",
@@ -103,7 +103,7 @@ const I18N = {
     "home.ctaDownload": "Accéder aux téléchargements",
     "home.ctaReviews": "Voir les avis",
     "downloads.title": "Télécharger Traducteur Morse",
-    "downloads.latest": "Version 1.3 (Dernière)",
+    "downloads.latest": "Version 2.0 (Dernière)",
     "downloads.line1": "La dernière version de Traducteur Morse est maintenant disponible pour Windows, Linux et macOS*.",
     "downloads.comingSoon": "Bientôt disponible !",
     "downloads.osLabel": "Système d'exploitation",
@@ -180,7 +180,7 @@ const I18N = {
     "home.ctaDownload": "Ir a descargas",
     "home.ctaReviews": "Ver reseñas",
     "downloads.title": "Descargar Morse Translator",
-    "downloads.latest": "Versión 1.3 (Última)",
+    "downloads.latest": "Versión 2.0 (Última)",
     "downloads.line1": "La última versión de Morse Translator ahora está disponible para Windows, Linux y macOS*.",
     "downloads.comingSoon": "¡Próximamente!",
     "downloads.osLabel": "Sistema operativo",
@@ -257,7 +257,7 @@ const I18N = {
     "home.ctaDownload": "Vai ai download",
     "home.ctaReviews": "Vedi recensioni",
     "downloads.title": "Scarica Morse Translator",
-    "downloads.latest": "Versione 1.3 (Ultima)",
+    "downloads.latest": "Versione 2.0 (Ultima)",
     "downloads.line1": "L'ultima versione di Morse Translator è ora disponibile per Windows, Linux e macOS*.",
     "downloads.comingSoon": "In arrivo!",
     "downloads.osLabel": "Sistema operativo",
@@ -334,7 +334,7 @@ const I18N = {
     "home.ctaDownload": "Zu den Downloads",
     "home.ctaReviews": "Bewertungen ansehen",
     "downloads.title": "Morse Translator herunterladen",
-    "downloads.latest": "Version 1.3 (Neueste)",
+    "downloads.latest": "Version 2.0 (Neueste)",
     "downloads.line1": "Die neueste Version von Morse Translator ist jetzt für Windows, Linux und macOS* verfügbar.",
     "downloads.comingSoon": "Kommt bald!",
     "downloads.osLabel": "Betriebssystem",
@@ -389,14 +389,15 @@ const I18N = {
 
 const DOWNLOAD_PATHS = {
   windows: {
-    setup: "Traducteur_Morse-v.1.3-win/Traducteur_Morse-v.1.3-win-setup.exe",
-    p: "Traducteur_Morse-v.1.3-win/Traducteur_Morse-v.1.3-win-p.exe"
+    setup: "latest/win/Traducteur_Morse.msi",
+    p: "latest/win/traducteur_morse_2.exe"
   },
   linux: {
-    app: "Traducteur_Morse-v.1.3-linux/Traducteur_Morse-v.1.3-linux.AppImage"
+    app: "latest/lin/traducteur_morse_2"
   },
   macos: {
-    app: "Traducteur_Morse-v.1.3-macos/traducteur_morse_2"
+    app: "latest/mac/traducteur_morse_2.zip",
+    dmg: "latest/mac/Traducteur_Morse.dmg"
   }
 };
 
@@ -520,14 +521,16 @@ function updateDownloadLink() {
     href = DOWNLOAD_PATHS.linux.app;
     typeSelect.disabled = true;
   } else if (selectedOS === "macos") {
-    href = DOWNLOAD_PATHS.macos.app;
-    typeSelect.disabled = true;
+    href = DOWNLOAD_PATHS.macos[selectedType] || DOWNLOAD_PATHS.macos.p;
+    typeSelect.disabled = false;
   }
 
   downloadLink.href = href;
   downloadLink.setAttribute("download", "");
+  if (document.location.href.endsWith("/403/")) {
+    document.location.href = "index.html?lang=" + document.documentElement.lang;
 }
-
+}
 function loadReviews() {
   try {
     const raw = localStorage.getItem(REVIEW_STORAGE_KEY);
@@ -543,7 +546,6 @@ function loadReviews() {
 
 function saveReviews(reviews) {
   localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(reviews));
-  saveReviewsToCookie(reviews); // 🔥 ajout ici
 }
 
 function renderReviews(reviews, language) {
@@ -586,17 +588,7 @@ function renderReviews(reviews, language) {
     list.appendChild(card);
   });
 }
-function saveReviewsToCookie(reviews) {
-  const expires = new Date();
-  expires.setDate(expires.getDate() + 30); // 30 jours
 
-  document.cookie =
-    "reviews=" +
-    encodeURIComponent(JSON.stringify(reviews)) +
-    "; expires=" +
-    expires.toUTCString() +
-    "; path=/";
-}
 
 function initReviewsPage(language) {
   const form = document.getElementById("reviewForm");

@@ -39,6 +39,7 @@
     }
     </script>
     <script src="script.js" defer></script>
+    <link rel="favicon" href="icon.png" type="image/png">
 </head>
 <body>
     <header class="header">
@@ -72,7 +73,6 @@
                 <button id="dotBtn">🟣</button>
                 <button id="dashBtn">➖</button>
                 <button id="slashBtn">/</button>
-                <button id="backBtn">⌫</button>
             </div>
             <output id="outputText" aria-live="polite"></output>
             <script>// ---------------- Elements ----------------
@@ -85,7 +85,6 @@ const morseBar = document.getElementById("morseBar");
 const dotBtn = document.getElementById("dotBtn");
 const dashBtn = document.getElementById("dashBtn");
 const slashBtn = document.getElementById("slashBtn");
-const backBtn = document.getElementById("backBtn");
 
 
 // ---------------- Morse mapping ----------------
@@ -113,14 +112,14 @@ const morse = {
 
   // Lettres accentuées / internationales
   'Ä':'🟣➖🟣➖','ä':'🟣➖🟣➖', 'Æ':'🟣➖🟣➖','æ':'🟣➖🟣➖',
-  'À':'🟣➖➖🟣','à':'🟣➖➖🟣', 'Å':'🟣➖➖🟣','å':'🟣➖➖🟣',
-  'Ĉ':'➖🟣🟣🟣🟣','ĉ':'➖🟣🟣🟣🟣', 'Ç':'➖🟣🟣🟣🟣','ç':'➖🟣🟣🟣🟣',
-  'CH':'----', 'Ð':'🟣🟣➖➖➖','ð':'🟣🟣➖➖➖',
+  'À':'🟣➖➖🟣➖','à':'🟣➖➖🟣➖', 'Å':'🟣➖➖🟣➖','å':'🟣➖➖🟣➖',
+  'Ĉ':'➖🟣➖🟣🟣','ĉ':'➖🟣➖🟣🟣', 'Ç':'➖🟣➖🟣🟣','ç':'➖🟣➖🟣🟣',
+  'CH':'➖➖➖➖', 'Ð':'🟣🟣➖➖🟣','ð':'🟣🟣➖➖🟣',
   'È':'🟣➖🟣🟣➖','è':'🟣➖🟣🟣➖', 'É':'🟣🟣➖🟣🟣','é':'🟣🟣➖🟣🟣',
-  'Ĝ':'➖➖🟣➖➖','ĝ':'➖➖🟣➖➖', 'Ĥ':'➖🟣🟣➖➖','ĥ':'➖🟣🟣➖➖',
-  'Ĵ':'🟣➖➖➖➖','ĵ':'🟣➖➖➖➖', 'Ñ':'➖➖➖➖➖','ñ':'➖➖➖➖➖',
+  'Ĝ':'➖➖🟣➖🟣','ĝ':'➖➖🟣➖🟣', 'Ĥ':'➖🟣➖➖🟣','ĥ':'➖🟣➖➖🟣',
+  'Ĵ':'🟣➖➖➖🟣','ĵ':'🟣➖➖➖🟣', 'Ñ':'➖➖🟣➖➖','ñ':'➖➖🟣➖➖',
   'Ö':'➖➖➖🟣','ö':'➖➖➖🟣', 'Ø':'➖➖➖🟣','ø':'➖➖➖🟣',
-  'Ŝ':'🟣🟣🟣🟣➖','ŝ':'🟣🟣🟣🟣➖', 'Þ':'🟣➖➖🟣','þ':'🟣➖➖🟣',
+  'Ŝ':'🟣🟣🟣➖🟣','ŝ':'🟣🟣🟣➖🟣', 'Þ':'🟣➖➖🟣🟣','þ':'🟣➖➖🟣🟣',
   'Ü':'🟣🟣➖➖','ü':'🟣🟣➖➖', 'Ŭ':'🟣🟣➖➖','ŭ':'🟣🟣➖➖',
 };
 
@@ -181,7 +180,7 @@ function autoTranslate(){
         return;
     }
 
-    const morsePattern = /^[🟣➖\/ ]+$/;
+    const morsePattern = /^[🟣➖\/]+$/;
 
     if(morsePattern.test(src)){
 
@@ -213,33 +212,6 @@ if(dotBtn) dotBtn.onclick = () => insertSymbol("🟣");
 if(dashBtn) dashBtn.onclick = () => insertSymbol("➖");
 if(slashBtn) slashBtn.onclick = () => insertSymbol("/");
 
-if(backBtn) backBtn.onclick = () => {
-
-    inputText.value = inputText.value.slice(0,-1);
-    autoTranslate();
-
-};
-
-
-// ---------------- Keyboard shortcuts ----------------
-
-inputText.addEventListener("keydown", function(event){
-
-    const mapping = {
-        "c":"🟣",
-        "v":"➖",
-        "b":"/",
-        "n":" "
-    };
-
-    if(mapping[event.key]){
-
-        event.preventDefault();
-        insertSymbol(mapping[event.key]);
-
-    }
-
-});
             </script>
         </section>
     </main>

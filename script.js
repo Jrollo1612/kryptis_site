@@ -47,7 +47,6 @@ const I18N = {
     "reviews.twitterDescription": "Read and leave reviews about Morse Translator.",
     "reviews.title": "Reviews",
     "reviews.subtitle": "Share your experience",
-    "reviews.notice": "Reviews are stored in your browser only. They are not published online.",
     "reviews.formTitle": "Leave a review",
     "reviews.nameLabel": "Name",
     "reviews.ratingLabel": "Rating",
@@ -102,6 +101,7 @@ const I18N = {
     "about.description": "Traducteur Morse est une application de bureau simple qui permet de traduire du texte en code Morse et inversement.",
     "home.ctaDownload": "Accéder aux téléchargements",
     "home.ctaReviews": "Voir les avis",
+    "home.explain": "Traducteur Morse est une application de bureau simple qui permet de traduire du texte en code Morse et inversement.",
     "downloads.title": "Télécharger Traducteur Morse",
     "downloads.latest": "Version 2.0 (Dernière)",
     "downloads.line1": "La dernière version de Traducteur Morse est maintenant disponible pour Windows, Linux et macOS*.",
@@ -124,7 +124,6 @@ const I18N = {
     "reviews.twitterDescription": "Lisez et laissez des avis sur Traducteur Morse.",
     "reviews.title": "Avis",
     "reviews.subtitle": "Partagez votre expérience",
-    "reviews.notice": "Les avis sont stockés uniquement dans votre navigateur. Ils ne sont pas publiés en ligne.",
     "reviews.formTitle": "Laisser un avis",
     "reviews.nameLabel": "Nom",
     "reviews.ratingLabel": "Note",
@@ -201,7 +200,6 @@ const I18N = {
     "reviews.twitterDescription": "Lee y deja reseñas sobre Morse Translator.",
     "reviews.title": "Reseñas",
     "reviews.subtitle": "Comparte tu experiencia",
-    "reviews.notice": "Las reseñas se guardan solo en tu navegador. No se publican en línea.",
     "reviews.formTitle": "Deja una reseña",
     "reviews.nameLabel": "Nombre",
     "reviews.ratingLabel": "Puntuación",
@@ -278,7 +276,6 @@ const I18N = {
     "reviews.twitterDescription": "Leggi e lascia recensioni su Morse Translator.",
     "reviews.title": "Recensioni",
     "reviews.subtitle": "Condividi la tua esperienza",
-    "reviews.notice": "Le recensioni sono salvate solo nel tuo browser. Non vengono pubblicate online.",
     "reviews.formTitle": "Lascia una recensione",
     "reviews.nameLabel": "Nome",
     "reviews.ratingLabel": "Valutazione",
@@ -355,7 +352,6 @@ const I18N = {
     "reviews.twitterDescription": "Lies und schreibe Bewertungen zu Morse Translator.",
     "reviews.title": "Bewertungen",
     "reviews.subtitle": "Teile deine Erfahrung",
-    "reviews.notice": "Bewertungen werden nur in deinem Browser gespeichert. Sie werden nicht online veroeffentlicht.",
     "reviews.formTitle": "Bewertung schreiben",
     "reviews.nameLabel": "Name",
     "reviews.ratingLabel": "Bewertung",
@@ -531,21 +527,153 @@ function updateDownloadLink() {
     document.location.href = "index.html?lang=" + document.documentElement.lang;
 }
 }
-function loadReviews() {
+
+async function loadReviews() {
+  let local = [];
+  let server = [];
+
+  // 📦 local
   try {
     const raw = localStorage.getItem(REVIEW_STORAGE_KEY);
-    if (!raw) {
-      return [];
+    local = raw ? JSON.parse(raw) : [];
+  } catch {
+    local = [];
+  }
+
+  // 🌐 serveur
+  try {
+    const res = await fetch('reviews.json?cache=' + Date.now());
+    server = await res.json();
+  } catch {
+    server = [];
+  }
+
+  // 🔀 fusion (évite doublons simples)
+  const all = [...server];
+
+  local.forEach(l => {
+    if (!all.find(s =>
+      s.name === l.name &&
+      s.message === l.message &&
+      s.date === l.date
+    )) {
+      all.push(l);
     }
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    return [];
+  });
+
+  // 💾 sauvegarde locale sync
+  localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(all));
+
+  return all;
+}
+
+
+async function saveReviewToServer(review) {
+  try {
+    await fetch('reviews.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(review)
+    });
+  } catch (e) {
+    console.warn("Erreur envoi serveur", e);
   }
 }
 
-function saveReviews(reviews) {
+
+async function syncLocalToServer(localReviews, serverReviews) {
+  for (const l of localReviews) {
+    const exists = serverReviews.find(s =>
+      s.name === l.name &&
+      s.message === l.message &&
+      s.date === l.date
+    );
+
+    if (!exists) {
+      await saveReviewToServer(l);
+    }
+  }
+}
+
+
+function saveReviewsLocal(reviews) {
   localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(reviews));
+}
+
+
+async function initReviewsPage(language) {
+  const form = document.getElementById("reviewForm");
+  const status = document.getElementById("reviewStatus");
+  const list = document.getElementById("reviewList");
+
+  if (!form || !status || !list) return;
+
+  // 🔄 Charger tout
+  const serverReviews = await (async () => {
+    try {
+      const res = await fetch('reviews.json?cache=' + Date.now());
+      return await res.json();
+    } catch {
+      return [];
+    }
+  })();
+
+  let localReviews = [];
+  try {
+    localReviews = JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || [];
+  } catch {
+    localReviews = [];
+  }
+
+  // 🔁 sync local → serveur
+  await syncLocalToServer(localReviews, serverReviews);
+
+  // 🔀 fusion finale
+  const reviews = await loadReviews();
+
+  renderReviews(reviews, language);
+
+  if (form.dataset.initialized === "true") return;
+  form.dataset.initialized = "true";
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById("reviewName");
+    const rating = document.getElementById("reviewRating");
+    const message = document.getElementById("reviewMessage");
+
+    const nameValue = name?.value.trim();
+    const ratingValue = rating?.value;
+    const messageValue = message?.value.trim();
+
+    const langNow = normalizeLanguage(document.documentElement.lang);
+    const strings = I18N[langNow] || I18N.en;
+
+    if (!nameValue || !ratingValue || !messageValue) {
+      status.textContent = strings["reviews.statusError"];
+      return;
+    }
+
+    const newReview = {
+      name: nameValue,
+      rating: Number(ratingValue),
+      message: messageValue,
+      date: new Date().toISOString()
+    };
+
+    // 💾 local immédiat
+    const updated = [newReview, ...await loadReviews()].slice(0, 20);
+    saveReviewsLocal(updated);
+
+    // 🌐 envoi serveur
+    await saveReviewToServer(newReview);
+
+    status.textContent = strings["reviews.statusSuccess"];
+    form.reset();
+
+    renderReviews(updated, langNow);
+  });
 }
 
 function renderReviews(reviews, language) {
@@ -590,56 +718,6 @@ function renderReviews(reviews, language) {
 }
 
 
-function initReviewsPage(language) {
-  const form = document.getElementById("reviewForm");
-  const status = document.getElementById("reviewStatus");
-  const list = document.getElementById("reviewList");
-  if (!form || !status || !list) {
-    return;
-  }
-
-  const reviews = loadReviews();
-  renderReviews(reviews, language);
-
-  if (form.dataset.initialized === "true") {
-    return;
-  }
-
-  form.dataset.initialized = "true";
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const name = document.getElementById("reviewName");
-    const rating = document.getElementById("reviewRating");
-    const message = document.getElementById("reviewMessage");
-
-    const nameValue = name ? name.value.trim() : "";
-    const ratingValue = rating ? rating.value : "";
-    const messageValue = message ? message.value.trim() : "";
-
-    const languageNow = normalizeLanguage(document.documentElement.lang);
-    const strings = I18N[languageNow] || I18N.en;
-
-    if (!nameValue || !ratingValue || !messageValue) {
-      status.textContent = strings["reviews.statusError"];
-      return;
-    }
-
-    const updated = [
-      {
-        name: nameValue,
-        rating: Number(ratingValue),
-        message: messageValue,
-        date: new Date().toISOString()
-      },
-      ...loadReviews()
-    ].slice(0, 20);
-
-    saveReviews(updated);
-    status.textContent = strings["reviews.statusSuccess"];
-    form.reset();
-    renderReviews(updated, languageNow);
-  });
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   const initialLanguage = normalizeLanguage(

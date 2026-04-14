@@ -8,12 +8,31 @@
     <meta name="keywords" data-i18n="online.metaKeywords" data-i18n-attr="content" content="online morse translator, morse code, text to morse, morse to text, browser translator">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
-    <meta property="og:type" content="website">
-    <meta property="og:title" data-i18n="online.ogTitle" data-i18n-attr="content" content="Online Morse Translator">
-    <meta property="og:description" data-i18n="online.ogDescription" data-i18n-attr="content" content="Translate text to Morse code and Morse code to text directly online, without installing anything.">
-    <meta property="og:locale" data-i18n="og.locale" data-i18n-attr="content" content="en_US">
-    <meta property="og:site_name" data-i18n="og.siteName" data-i18n-attr="content" content="Morse Translator">
     <link rel="canonical" id="canonicalLink" href="/online.html">
+    <script type="application/ld+json" id="app">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Morse Translator",
+      "headline": "Online Morse Translator",
+      "description": "Use the online Morse Translator to convert text and Morse code instantly in your browser.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, Linux, macOS",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Rollo"
+      },
+        "description": "Online tool to translate text to Morse code and Morse code to text.",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4",
+                "ratingCount": "1",
+                "bestRating": "4",
+                "worstRating": "4"
+        },
+        "logo": "icon.png"
+    }
+    </script>
     <link rel="alternate" hreflang="en" href="/online.html">
     <link rel="alternate" hreflang="fr" href="/online.html?lang=fr">
     <link rel="alternate" hreflang="es" href="/online.html?lang=es">
@@ -21,27 +40,6 @@
     <link rel="alternate" hreflang="de" href="/online.html?lang=de">
     <link rel="alternate" hreflang="x-default" href="/online.html">
     <link rel="stylesheet" href="style.css">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Morse Translator",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Windows, Linux, macOS",
-      "author": {
-        "@type": "Person",
-        "name": "Joseph Rollo"
-      },
-      "description": "Desktop app to translate text to Morse code and Morse code to text.",
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4",
-            "ratingCount": "1",
-            "bestRating": "4",
-            "worstRating": "4"
-      }
-    }
-    </script>
         <script>
         fetch("reviews.json")
         .then(res => res.json())
@@ -251,7 +249,8 @@ if(slashBtn) slashBtn.onclick = () => insertSymbol("/");
         <p data-i18n="footer.copyright">Copyright © 2026 Joseph Rollo. All rights reserved.</p>
         <div class="bloc">
             <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">My GitHub</a>
-            <a href="/home.html" data-i18n="footer.home">Home</a>
+            <a href="/index.html" data-i18n="footer.home">Home</a>
+            <a href="/thanks.html" data-i18n="footer.thanks">Thanks</a>
             <h2 data-i18n="footer.contact">Contact</h2>
             <ul>
                 <li><span data-i18n="footer.emailLabel">Email:</span> <a href="mailto:joseph.rollo2011@gmail.com">jojotheboss184@outlook.fr</a></li>

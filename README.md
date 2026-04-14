@@ -1,31 +1,45 @@
-# morse\_translator
-### [Go to my website](https://morsetrad.free.nf)
-A morse translator made with Python and Tkinter.
-To see all versions go to [Versions](#versions)
-Informations about downloading are available in [Downloading infos](#download)
+# Morse Translator
 
-# Versions
+## [Go to my website](https://morsetrad.free.nf)
 
-* [Version 1.0](#version-10)
-* [Version 1.1](#version-11)
-* [Version 1.2](#version-12)
+A Morse Translator project with:
 
-## Version 1.0
+- a Python/Tkinter desktop application,
+- a web interface with local pages for the translator, downloads and reviews.
 
-<a href="/traducteur_morse_2/">Version 1.0</a><br>
-Initial version of the translator.
+## Repo overview
 
-## Version 1.1
+This repository contains the website for the project and the downloadable versions of the Morse Translator app.
 
-<a href="/Traducteur_Morse-v.1.1/">Version 1.1</a><br>
-Second version of the translator. I fix a problem that appear when we put a space on the morse code that we write on the interface. Now, the space is represented as "//".
+### Website pages
 
-## Version 1.2
+- [Home](index.html)
+- [Online translator](online.html)
+- [Download](download.html)
+- [Reviews](reviews.html)
 
-[Version 1.2](/TraducteurMorsev12)<br>
-Third version of the translator. Now, I made an installer. I add an auto-translate function. I change the morse characters by emoji, and I add a bar to type faster.
+### Main site
 
-# Download
+Visit the main published site: <https://morsetrad.free.nf>
 
-Download the executable .exe with the folder \_internals because it contains Tkinter dependencies on the versions under 1.2. I will made an installer to made easier the downloading in following versions. You can also download it on the webpage <a href="index.html">index.html</a>, but it's I think better and easier to use the first methode. I want to publish the website later, because I don't want to pay domain now.
+## Versions
 
+- [Version 1.0](/old%20version/Traducteur_Morse-v.1.0/Traducteur_Morse-v.1.0p.zip)
+  - Initial version of the translator.
+
+- [Version 1.1](/old%20version/Traducteur_Morse-v.1.1/Traducteur_Morse-v.1.1p.zip)
+  - Fixed space handling in Morse mode; spaces are now represented as `//`.
+
+- [Version 1.2](/old%20version/Traducteur_Morse-v.1.2/traducteur_morse_2.exe)
+  - Added installer support, auto-translate functionality, emoji Morse characters, and a typing bar.
+
+## Download
+
+Download the executable `.exe` together with the `_internals` folder for the older versions, because it contains the required Tkinter dependencies.
+
+For the website version, open `index.html` in your browser and use the local pages.
+
+## Notes
+
+- The website is part of this repository and can be viewed locally from the HTML files.
+- The project is currently published on the free hosting site above.

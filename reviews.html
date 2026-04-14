@@ -8,11 +8,6 @@
     <meta name="keywords" data-i18n="reviews.metaKeywords" data-i18n-attr="content" content="morse translator reviews, morse translator feedback, morse translator user experience, morse translator ratings, morse translator testimonials">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
-    <meta property="og:type" content="website">
-    <meta property="og:title" data-i18n="reviews.ogTitle" data-i18n-attr="content" content="Morse Translator Reviews">
-    <meta property="og:description" data-i18n="reviews.ogDescription" data-i18n-attr="content" content="Share your experience with Morse Translator.">
-    <meta property="og:locale" data-i18n="og.locale" data-i18n-attr="content" content="en_US">
-    <meta property="og:site_name" data-i18n="og.siteName" data-i18n-attr="content" content="Morse Translator">
     <link rel="canonical" id="canonicalLink" href="/reviews.html">
     <link rel="alternate" hreflang="en" href="/reviews.html">
     <link rel="alternate" hreflang="fr" href="/reviews.html?lang=fr">
@@ -20,21 +15,23 @@
     <link rel="alternate" hreflang="it" href="/reviews.html?lang=it">
     <link rel="alternate" hreflang="de" href="/reviews.html?lang=de">
     <link rel="alternate" hreflang="x-default" href="/reviews.html">
-    <link rel="stylesheet" href="style.css">
-    <script type="application/ltd+json">
+    <script type="application/ld+json" id="app">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Morse Translator",
+      "headline": "Morse Translator Reviews",
+      "description": "Read and leave reviews about Morse Translator.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Windows, Linux, macOS",
       "author": {
         "@type": "Person",
         "name": "Joseph Rollo"
       },
-      "description": "Desktop app to translate text to Morse code and Morse code to text."
+      "logo": "icon.png"
     }
     </script>
+    <link rel="stylesheet" href="style.css">
         <script>
         fetch("reviews.json")
         .then(res => res.json())
@@ -133,7 +130,8 @@
         <p data-i18n="footer.copyright">Copyright © 2026 Joseph Rollo. All rights reserved.</p>
         <div class="bloc">
             <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">My GitHub</a>
-            <a href="/home.html" data-i18n="footer.home">Home</a>
+            <a href="/index.html" data-i18n="footer.home">Home</a>
+            <a href="/thanks.html" data-i18n="footer.thanks">Thanks</a>
             <h2 data-i18n="footer.contact">Contact</h2>
             <ul>
                 <li><span data-i18n="footer.emailLabel">Email:</span> <a href="mailto:joseph.rollo2011@gmail.com">jojotheboss184@outlook.fr</a></li>

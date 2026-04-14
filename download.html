@@ -8,11 +8,30 @@
     <meta name="keywords" data-i18n="download.metaKeywords" data-i18n-attr="content" content="morse translator download, morse desktop app, windows linux macos">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
-    <meta property="og:type" content="website">
-    <meta property="og:title" data-i18n="download.ogTitle" data-i18n-attr="content" content="Download Morse Translator">
-    <meta property="og:description" data-i18n="download.ogDescription" data-i18n-attr="content" content="Get Morse Translator for Windows, Linux, and macOS and translate text to Morse code offline.">
-    <meta property="og:locale" data-i18n="og.locale" data-i18n-attr="content" content="en_US">
-    <meta property="og:site_name" data-i18n="og.siteName" data-i18n-attr="content" content="Morse Translator"><link rel="canonical" id="canonicalLink" href="/download.html">
+    <link rel="canonical" id="canonicalLink" href="/download.html">
+    <script type="application/ld+json" id="app">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Morse Translator",
+      "headline": "Download Morse Translator",
+      "description": "Download Morse Translator desktop versions for Windows, Linux, and macOS.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, Linux, macOS",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Rollo"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4",
+        "ratingCount": "1",
+        "bestRating": "4",
+        "worstRating": "4"
+      },
+        "logo": "icon.png"
+    }
+    </script>
     <link rel="alternate" hreflang="en" href="/download.html">
     <link rel="alternate" hreflang="fr" href="/download.html?lang=fr">
     <link rel="alternate" hreflang="es" href="/download.html?lang=es">
@@ -20,29 +39,7 @@
     <link rel="alternate" hreflang="de" href="/download.html?lang=de">
     <link rel="alternate" hreflang="x-default" href="/download.html">
     <link rel="stylesheet" href="style.css">
-    <script type="application/ld+json" id="app">
-    {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Morse Translator",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Windows, Linux, macOS",
-  "author": {
-    "@type": "Person",
-    "name": "Joseph Rollo"
-  },
-  "description": "Desktop app to translate text to Morse code and Morse code to text.",
-
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4",
-    "ratingCount": "1",
-    "bestRating": "4",
-    "worstRating": "4"
-  }
-}
-    </script>
-    <script>
+        <script>
         fetch("reviews.json")
         .then(res => res.json())
         .then(reviews => {
@@ -137,6 +134,7 @@
         <div class="bloc">
             <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">My GitHub</a>
             <a href="/reviews.html" data-i18n="footer.reviews">Reviews</a>
+            <a href="/thanks.html" data-i18n="footer.thanks">Thanks</a>
             <h2 data-i18n="footer.contact">Contact</h2>
             <ul>
                 <li><span data-i18n="footer.emailLabel">Email:</span> <a href="mailto:joseph.rollo2011@gmail.com">jojotheboss184@outlook.fr</a></li>

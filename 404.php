@@ -68,6 +68,42 @@ a:hover {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+#game {
+  position: relative;
+  width: 600px;
+  height: 200px;
+  margin: 40px auto;
+  background: #111;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+#player {
+  position: absolute;
+  bottom: 0;
+  left: 50px;
+  width: 40px;
+  height: 40px;
+  background: #00ffcc;
+  border-radius: 5px;
+}
+
+.obstacle {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  height: 40px;
+  background: #ff4d4d;
+}
+
+#score {
+  margin-top: 10px;
+  font-size: 20px;
+}
+a {
+  color: #00ffcc;
+  text-decoration: none;
+}
 </style>
 
 </head>
@@ -78,7 +114,4 @@ a:hover {
     <p>Oups... cette page n'existe pas 😅</p>
     <div class="url"><?php echo htmlspecialchars($url); ?></div>
     <a href="/">Retour à l'accueil</a>
-</div>
-
 </body>
-</html>

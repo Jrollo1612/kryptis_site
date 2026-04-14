@@ -1,13 +1,13 @@
 ﻿body {
-    background-color: #f2f2f2;
+    background-color: #0f172a;
     margin: 0;
-    color: #111;
+    color: #e5e7eb;
 }
 
 .header {
     text-align: center;
-    background-color: #00cc66;
-    border-bottom: 2px solid #000;
+    background-color: #111827;
+    border-bottom: 2px solid #0092F9;
     padding: 10px;
 }
 
@@ -21,22 +21,29 @@
 }
 
 .main-nav a {
-    color: #111;
+    color: #e5e7eb;
     text-decoration: none;
     font-family: Arial, sans-serif;
     font-size: 18px;
+    transition: color 0.2s;
+}
+
+.main-nav a:hover {
+    color: #FEB920;
 }
 
 h1 {
     font-size: 36px;
     font-family: "Courier New", Courier, monospace;
     margin: 20px 0;
+    color: #ffffff;
 }
 
 h2 {
     font-size: 26px;
     font-family: Arial, sans-serif;
     margin: 20px 10px 10px;
+    color: #FEB920;
 }
 
 p {
@@ -65,8 +72,8 @@ ul {
 
 .download-button {
     display: inline-block;
-    background-color: #00cc66;
-    color: #111;
+    background-color: #0092F9;
+    color: #fff;
     text-decoration: none;
     border: none;
     padding: 10px 20px;
@@ -75,6 +82,13 @@ ul {
     cursor: pointer;
     margin-top: 10px;
     border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.download-button:hover {
+    background-color: #0077cc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.3);
 }
 
 .download-button:focus-visible,
@@ -83,14 +97,14 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 button:focus-visible {
-    outline: 3px solid #00331a;
+    outline: 3px solid #FEB920;
     outline-offset: 2px;
 }
 
 .footer {
     text-align: center;
-    background-color: rgb(66, 66, 66);
-    border-top: 1px solid #000;
+    background-color: #020617;
+    border-top: 1px solid #0092F9;
     display: flex;
     justify-content: space-between;
     padding: 20px;
@@ -103,11 +117,15 @@ button:focus-visible {
 .footer p,
 .footer li,
 .footer h2 {
-    color: #fff;
+    color: #e5e7eb;
     font-family: Arial, sans-serif;
     font-size: 16px;
     text-decoration: none;
     list-style: none;
+}
+
+.footer a:hover {
+    color: #FEB920;
 }
 
 .bloc {
@@ -121,8 +139,9 @@ button:focus-visible {
 }
 
 select {
-    background-color: #00cc66;
-    border: 1px solid #0b6f3c;
+    background-color: #111827;
+    color: #fff;
+    border: 2px solid #0092F9;
     padding: 10px 20px;
     font-size: 18px;
     font-family: Arial, sans-serif;
@@ -148,8 +167,8 @@ select {
 }
 
 .review-form {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #1f2937;
+    border: 1px solid #374151;
     border-radius: 16px;
     padding: 18px;
     max-width: 640px;
@@ -168,7 +187,9 @@ select {
     width: 100%;
     max-width: 520px;
     padding: 10px 12px;
-    border: 1px solid #999;
+    background-color: #111827;
+    color: #fff;
+    border: 1px solid #374151;
     border-radius: 10px;
     font-size: 16px;
     font-family: Arial, sans-serif;
@@ -190,8 +211,8 @@ select {
 }
 
 .review-card {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #1f2937;
+    border: 1px solid #374151;
     border-radius: 16px;
     padding: 16px;
 }
@@ -199,7 +220,7 @@ select {
 .review-meta {
     font-size: 15px;
     margin: 0 0 8px;
-    color: #333;
+    color: #9ca3af;
 }
 
 .review-message {
@@ -208,7 +229,7 @@ select {
 
 .notice {
     font-size: 16px;
-    color: #333;
+    color: #9ca3af;
     margin-top: 8px;
 }
 
@@ -225,6 +246,7 @@ select {
         font-size: 18px;
     }
 }
+
 /* ===== Morse Translator ===== */
 
 #inputText {
@@ -233,18 +255,18 @@ select {
     padding: 12px 14px;
     font-size: 18px;
     font-family: "Courier New", Courier, monospace;
-    border: 1px solid #999;
+    border: 1px solid #374151;
     border-radius: 12px;
     margin: 15px 10px;
     box-sizing: border-box;
+    background-color: #111827;
+    color: #fff;
 }
-
-/* zone de traduction */
 
 #outputText {
     display: block;
-    background: #ffffff;
-    border: 1px solid #ccc;
+    background: #1f2937;
+    border: 1px solid #374151;
     border-radius: 14px;
     padding: 14px;
     margin: 10px;
@@ -252,9 +274,8 @@ select {
     font-family: "Courier New", Courier, monospace;
     min-height: 50px;
     word-break: break-word;
+    color: #fff;
 }
-
-/* barre des boutons morse */
 
 .morse-bar {
     display: flex;
@@ -263,23 +284,258 @@ select {
     flex-wrap: wrap;
 }
 
-/* boutons morse */
-
 .morse-bar button {
     font-size: 20px;
     padding: 8px 16px;
     border-radius: 12px;
-    border: 1px solid #0b6f3c;
-    background-color: #00cc66;
+    border: none;
+    background-color: #0092F9;
+    color: #fff;
     cursor: pointer;
-    transition: transform 0.1s ease, background-color 0.2s ease;
+    transition: all 0.15s ease;
 }
 
 .morse-bar button:hover {
-    background-color: #00b359;
+    background-color: #FEB920;
+    color: #000;
     transform: scale(1.05);
 }
 
 .morse-bar button:active {
     transform: scale(0.95);
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#popup {
+  background: #1f2937;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+}
+
+.review-card,
+.review-form,
+#popup {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+#history a {
+    color: #fff;
+    text-decoration: none;
+}
+/* ===== TABLE STYLE (Morse Translator theme) ===== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 10px;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+    margin-bottom: 40px;
+}
+
+/* cellules */
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #374151;
+}
+
+/* en-têtes (titres des avantages) */
+th {
+    width: 35%;
+    color: #FEB920;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #111827;
+}
+
+/* contenu */
+td {
+    color: #e5e7eb;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* effet hover sur ligne */
+tr:hover td,
+tr:hover th {
+    background-color: rgba(0, 146, 249, 0.08);
+}
+
+/* dernière ligne sans bordure */
+tr:last-child th,
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* responsive mobile */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    th {
+        width: 40%;
+        font-size: 16px;
+    }
+
+    th, td {
+        padding: 12px;
+    }
+}
+.layout {
+    display: flex;
+    gap: 20px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* colonne principale */
+.content {
+    flex: 3;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 720px;
+}
+
+/* colonne latérale */
+.sidebar {
+    flex: 1;
+}
+
+/* style du bloc */
+.box {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+section {
+    padding: 18px;
+    background-color: rgba(17, 24, 39, 0.4);
+    border: 1px solid #1f2937;
+    border-radius: 14px;
+}
+p {
+    line-height: 1.7;
+    letter-spacing: 0.2px;
+    margin: 0;
+}
+h2 {
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+table {
+    margin-top: 16px;
+    margin-bottom: 10px;
+}
+.sidebar {
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+}
+@media (max-width: 768px) {
+    .content {
+        max-width: 100%;
+        gap: 25px;
+    }
+
+    section {
+        padding: 14px;
+    }
+}
+#explain {
+    opacity: 0.9;
+    font-size: 18px;
+}
+th {
+    font-size: 19px;
+}
+
+td {
+    color: #cbd5e1;
+}
+#whyIt h3 {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 18px;
+}
+.review-hero {
+    text-align: center;
+    padding: 30px 16px;
+    margin-bottom: 20px;
+}
+
+.reviews-section h2 {
+    font-size: 32px;
+    color: #FEB920;
+}
+
+.reviews-section p {
+    font-size: 18px;
+    color: #cbd5e1;
+}
+.review-form {
+    background: linear-gradient(145deg, #111827, #1f2937);
+    border: 1px solid #374151;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    max-width: 600px;
+    margin: 0 auto;
+}
+#reviews-form-title {
+    text-align: center;
+}
+.review-card {
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    padding: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+.review-meta {
+    color: #FEB920;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .review-form {
+        padding: 16px;
+    }
+
+    .reviews-section h2 {
+        font-size: 26px;
+    }
 }

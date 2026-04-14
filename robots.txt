@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://morsetrad.jrollo1612.abrdns.com/sitemap.xml
+Sitemap: https://morsetrad.free.nf/sitemap.xml

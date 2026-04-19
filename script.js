@@ -1,4 +1,10 @@
-﻿const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
+﻿function handleIP(data) {
+  window.UserIP = data;
+}
+
+<script src="https://ipinfo.io/json?callback=handleIP"></script>
+
+const SUPPORTED_LANGUAGES = [ "en", "fr", "es", "it", "de" ];
 if (!sessionStorage.getItem("sessionStarted")) {
   localStorage.removeItem("cguAccepted"); // reset UNE SEULE FOIS
   sessionStorage.setItem("sessionStarted", "true");
@@ -967,12 +973,35 @@ function renderReviews(reviews, language) {
   });
 }
 
+function getUserLocale() {
+  const urlLang = getLanguageFromUrl();
+  if (urlLang) {
+    return urlLang;
+  }
+  const storedLang = getStoredLanguage();
+  if (storedLang) {
+    return storedLang;
+  }
+  if (navigator.language) {
+    return normalizeLanguage(navigator.language);
+  }
+  const UserIP = window.UserIP || null;
+  if (UserIP && UserIP.country_code) {
+    const countryLangMap = {
+      US: "en",
+      GB: "en",
+      FR: "fr",
+      IT: "it",
+      DE: "de"
+    };
+    return countryLangMap[UserIP.country_code] || "en";
+  }
+  return "en";
+}
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const initialLanguage = normalizeLanguage(
-    getLanguageFromUrl() || getStoredLanguage() || navigator.language
-  );
+  const initialLanguage = getUserLocale();
 
   setLanguage(initialLanguage, { updateUrl: true });
 
@@ -1025,4 +1054,4 @@ document.addEventListener("DOMContentLoaded", () => {
       window.history.back();
     });
   };
-});
+} );

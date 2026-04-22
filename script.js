@@ -972,6 +972,15 @@ function renderReviews(reviews, language) {
     list.appendChild(card);
   });
 }
+var nameValue = "Test User";
+var ratingValue = "5";
+var messageValue = "This is a test review.";
+const newReview = {
+      id: crypto.randomUUID(),
+      name: nameValue,
+      rating: Number(ratingValue),
+
+
 
 function getUserLocale() {
   const urlLang = getLanguageFromUrl();

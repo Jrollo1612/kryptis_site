@@ -1,4 +1,9 @@
-﻿body {
+﻿:root {
+    --sidebar-width: 200px;
+    --header-height: 72px; /* adjust if your header height changes */
+}
+
+body {
     background-color: #0f172a;
     margin: 0;
     color: #e5e7eb;
@@ -18,6 +23,12 @@
     list-style: none;
     padding: 0;
     margin: 10px 0 0;
+}
+@media (max-width: 600px) {
+    .main-nav {
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 
 .main-nav a {
@@ -445,9 +456,9 @@ table {
 
 .sidebar {
     position: fixed;
-    top: 20px;
-    width: 200px;
-    y: 100px;
+    top: var(--header-height);
+    left: 16px;
+    width: var(--sidebar-width);
 }
 
 .content {
@@ -455,6 +466,8 @@ table {
     width: 360px;
     display: flex;
     flex-direction: column;
+    /* avoid being hidden behind fixed sidebar on wide screens */
+    margin-left: calc(var(--sidebar-width) + 32px);
 }
 
 #explain {
@@ -538,24 +551,60 @@ td {
 #logo {
     width: 40px;
     height: 40px;
+    
 }
-#nom {
+@font-face {
     font-family: "Codega";
     src: url("Codega.woff2") format("woff2")
 }
-
+#nom {
+    font-family: "Codega", monospace;
+    font-size: 20px;
+    margin-left: 10px;
+    color: #fff;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 10px;
+}
 @media (max-width: 768px) {
     .layout {
         flex-direction: column;
     }
 
+    /* Make the sidebar sticky below the header on small screens
+       - position: sticky lets the sidebar scroll with the page until
+         it reaches the top, then it sticks (so it won't overlap the header)
+       - reduce padding/size to show more content on mobile */
     .sidebar {
-        position: static;
+        position: sticky;
+        top: var(--header-height);
+        left: 0;
         width: 100%;
+        z-index: 1200;
+        padding: 8px 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+        background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(17,24,39,0.85));
     }
 
+    /* On mobile the main content naturally sits below the header, no extra margin needed */
     .content {
         width: 100%;
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    /* compact sidebar actions on mobile to give more space to content */
+    .sidebar .box {
+        padding: 8px;
+    }
+
+    .link-button {
+        padding: 8px 12px;
+        font-size: 16px;
+        max-width: 100%;
     }
 
     .sidebar .box {

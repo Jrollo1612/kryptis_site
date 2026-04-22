@@ -535,6 +535,14 @@ td {
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0,0,0,0.3);
 }
+#logo {
+    width: 40px;
+    height: 40px;
+}
+#nom {
+    font-family: "Codega";
+    src: url("Codega.woff2") format("woff2")
+}
 
 @media (max-width: 768px) {
     .layout {

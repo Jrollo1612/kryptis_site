@@ -12,4 +12,17 @@ RewriteEngine On
 RewriteCond %{HTTP_USER_AGENT} (Googlebot|bingbot) [NC]
 RewriteRule .* - [L]
 
+// Définir une limite de temps avant mise à jour du cache
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    ExpiresByType text/html "access plus 1 hour"
+    ExpiresByType text/css "access plus 1 hour"
+    ExpiresByType application/javascript "access plus 1 hour"
+    ExpiresByType image/svg+xml "access plus 1 hour"
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</IfModule>
+
 ErrorDocument 500 https://errors.infinityfree.net/errors/500/

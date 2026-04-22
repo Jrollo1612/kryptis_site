@@ -447,6 +447,7 @@ table {
     position: fixed;
     top: 20px;
     width: 200px;
+    y: 100px;
 }
 
 .content {

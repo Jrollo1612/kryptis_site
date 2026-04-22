@@ -1,0 +1,25 @@
+DirectoryIndex index.php index.html index.htm index2.html
+
+
+# Définir des pages d'erreur personnalisés
+ErrorDocument 403 /403.php
+
+ErrorDocument 404 /404.php
+
+RewriteEngine On
+
+# Autoriser Bingbot et Googlebot sans restrictions
+RewriteCond %{HTTP_USER_AGENT} (Googlebot|bingbot) [NC]
+RewriteRule .* - [L]
+
+# Vider le cache
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+  ExpiresByType image/svg+xml "access plus 1 hour"
+</IfModule>
+ErrorDocument 500 https://errors.infinityfree.net/errors/500/

@@ -101,7 +101,14 @@
         <section>
             <h2 data-i18n="online.title">Oneline Translator - Kryptis</h2>
             <p data-i18n="online.description">Use our online Morse Translator to convert text to Morse code and Morse code to text directly in your browser. No installation required!</p>
-            <button>Morse</button><button></button><button></button><button></button><button></button><button></button><button></button>
+            <select id="code">
+                <option value="Morse" data-i18n="online.morseOption">Morse Code</option>
+                <option value="Vigenere" data-i18n="online.vigenereOption">Vigenère Cipher</option>
+                <option value="Avocat" data-i18n="online.avocatOption">Avocat (A=K) Cipher</option>
+                <option value="Sizaine" data-i18n="online.sizaineOption">Sizaine (6=N) Cipher</option>
+                <option value="Cassis" data-i18n="online.cassisOption">Cassis (K=6) Cipher</option>
+                <option value="Cassette" data-i18n="online.cassetteOption">Cassette (K=7) Cipher</option>
+            </select>
             <input type="text" id="inputText" data-i18n="online.inputPlaceholder" data-i18n-attr="placeholder,aria-label" placeholder="Enter text or Morse code" aria-label="Input text or Morse code">
             <div id="morseBar" class="morse-bar">
                 <button id="dotBtn">🟣</button>
@@ -109,144 +116,7 @@
                 <button id="slashBtn">/</button>
             </div>
             <output id="outputText" aria-live="polite"></output>
-            <script>// ---------------- Elements ----------------
-
-const inputText = document.getElementById("inputText");
-const outputText = document.getElementById("outputText");
-const morseBar = document.getElementById("morseBar");
-
-// boutons
-const dotBtn = document.getElementById("dotBtn");
-const dashBtn = document.getElementById("dashBtn");
-const slashBtn = document.getElementById("slashBtn");
-
-
-// ---------------- Morse mapping ----------------
-
-const morse = {
-  // Lettres A-Z
-  'A':'🟣➖', 'B':'➖🟣🟣🟣', 'C':'➖🟣➖🟣', 'D':'➖🟣🟣', 'E':'🟣',
-  'F':'🟣🟣➖🟣', 'G':'➖➖🟣', 'H':'🟣🟣🟣🟣', 'I':'🟣🟣', 'J':'🟣➖➖➖',
-  'K':'➖🟣➖', 'L':'🟣➖🟣🟣', 'M':'➖➖', 'N':'➖🟣', 'O':'➖➖➖',
-  'P':'🟣➖➖🟣', 'Q':'➖➖🟣➖', 'R':'🟣➖🟣', 'S':'🟣🟣🟣', 'T':'➖',
-  'U':'🟣🟣➖', 'V':'🟣🟣🟣➖', 'W':'🟣➖➖', 'X':'➖🟣🟣➖', 'Y':'➖🟣➖➖',
-  'Z':'➖➖🟣🟣',
-
-  // Chiffres 0-9
-  '0':'➖➖➖➖➖', '1':'🟣➖➖➖➖', '2':'🟣🟣➖➖➖', '3':'🟣🟣🟣➖➖',
-  '4':'🟣🟣🟣🟣➖', '5':'🟣🟣🟣🟣🟣', '6':'➖🟣🟣🟣🟣', '7':'➖➖🟣🟣🟣',
-  '8':'➖➖➖🟣🟣', '9':'➖➖➖➖🟣',
-
-  // Ponctuation
-  '.':'🟣➖🟣➖🟣➖', ',':'➖➖🟣🟣➖➖', '?':'🟣🟣➖➖🟣🟣', '\'':'🟣➖➖➖➖🟣',
-  '!':'➖🟣➖🟣➖➖', '/':'➖🟣🟣➖🟣', '(':'➖🟣➖➖🟣', ')':'➖🟣➖➖🟣➖',
-  '&':'🟣➖🟣🟣🟣', ':':'➖➖➖🟣🟣🟣', ';':'➖🟣➖🟣➖', '=':'➖🟣🟣🟣➖',
-  '+':'🟣➖🟣➖🟣', '-':'➖🟣🟣🟣🟣➖', '_':'🟣🟣➖➖🟣➖', '"':'🟣➖🟣🟣➖🟣',
-  '$':'🟣🟣🟣➖🟣🟣➖', '@':'🟣➖➖🟣➖🟣',
-
-  // Lettres accentuées / internationales
-  'Ä':'🟣➖🟣➖','ä':'🟣➖🟣➖', 'Æ':'🟣➖🟣➖','æ':'🟣➖🟣➖',
-  'À':'🟣➖➖🟣➖','à':'🟣➖➖🟣➖', 'Å':'🟣➖➖🟣➖','å':'🟣➖➖🟣➖',
-  'Ĉ':'➖🟣➖🟣🟣','ĉ':'➖🟣➖🟣🟣', 'Ç':'➖🟣➖🟣🟣','ç':'➖🟣➖🟣🟣',
-  'CH':'➖➖➖➖', 'Ð':'🟣🟣➖➖🟣','ð':'🟣🟣➖➖🟣',
-  'È':'🟣➖🟣🟣➖','è':'🟣➖🟣🟣➖', 'É':'🟣🟣➖🟣🟣','é':'🟣🟣➖🟣🟣',
-  'Ĝ':'➖➖🟣➖🟣','ĝ':'➖➖🟣➖🟣', 'Ĥ':'➖🟣➖➖🟣','ĥ':'➖🟣➖➖🟣',
-  'Ĵ':'🟣➖➖➖🟣','ĵ':'🟣➖➖➖🟣', 'Ñ':'➖➖🟣➖➖','ñ':'➖➖🟣➖➖',
-  'Ö':'➖➖➖🟣','ö':'➖➖➖🟣', 'Ø':'➖➖➖🟣','ø':'➖➖➖🟣',
-  'Ŝ':'🟣🟣🟣➖🟣','ŝ':'🟣🟣🟣➖🟣', 'Þ':'🟣➖➖🟣🟣','þ':'🟣➖➖🟣🟣',
-  'Ü':'🟣🟣➖➖','ü':'🟣🟣➖➖', 'Ŭ':'🟣🟣➖➖','ŭ':'🟣🟣➖➖',
-};
-
-// inverse mapping
-const reverseMorse = Object.fromEntries(
-    Object.entries(morse).map(([k,v]) => [v,k])
-);
-
-
-// ---------------- Conversion ----------------
-
-function textToMorse(text){
-
-    text = text.toUpperCase();
-
-    const words = text.split(" ");
-
-    const result = words.map(word => {
-
-        const letters = [...word]
-            .filter(c => morse[c])
-            .map(c => morse[c]);
-
-        return letters.join("/");
-
-    });
-
-    return result.join("//");
-}
-
-
-function morseToText(code){
-
-    const words = code.split("//");
-
-    const result = words.map(word => {
-
-        const letters = word.split("/")
-            .map(symbol => reverseMorse[symbol] || "");
-
-        return letters.join("");
-
-    });
-
-    return result.join(" ");
-}
-
-
-// ---------------- Auto translate ----------------
-
-function autoTranslate(){
-
-    const src = inputText.value.trim();
-
-    if(!src){
-        outputText.textContent = "";
-        // morseBar.style.display = "none";
-        return;
-    }
-
-    const morsePattern = /^[🟣➖\/]+$/;
-
-    if(morsePattern.test(src)){
-
-        outputText.textContent = morseToText(src);
-        // morseBar.style.display = "block";
-
-    }else{
-
-        outputText.textContent = textToMorse(src);
-        // morseBar.style.display = "none";
-
-    }
-
-}
-
-inputText.addEventListener("input", autoTranslate);
-
-
-// ---------------- Morse buttons ----------------
-
-function insertSymbol(symbol){
-
-    inputText.value += symbol;
-    autoTranslate();
-
-}
-
-if(dotBtn) dotBtn.onclick = () => insertSymbol("🟣");
-if(dashBtn) dashBtn.onclick = () => insertSymbol("➖");
-if(slashBtn) slashBtn.onclick = () => insertSymbol("/");
-
-            </script>
+            
         </section>
     </main>
 

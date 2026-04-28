@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="online.pageTitle">Online Kryptis - Code Translator</title>
+    <meta name="description" data-i18n="online.metaDescription" data-i18n-attr="content" content="Use the online Kryptis - Code Translator to convert Morse, vigenere and other codes instantly in your browser.">
+    <meta name="keywords" data-i18n="online.metaKeywords" data-i18n-attr="content" content="online kryptis translator, morse code, text to morse, morse to text, browser translator">
+    <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+    <meta name="author" content="Joseph Rollo">
+    <link rel="canonical" id="canonicalLink" href="/online.html">
+    <script type="application/ld+json" id="app">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Kryptis - Code Translator",
+      "headline": "Online Kryptis - Morse Translator",
+      "description": "Use the online Kryptis - Code Translator to convert Morse, vigenere and other codes instantly in your browser.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, Linux, macOS",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Rollo"
+      },
+        "description": "Online tool to translate text to Morse code and Morse code to text.",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4",
+                "ratingCount": "1",
+                "bestRating": "4",
+                "worstRating": "4"
+        },
+        "logo": "https://morsetrad.free.nf/kryptis_logo.svg"
+    }
+    </script>
+    <link rel="alternate" hreflang="en" href="/online.html">
+    <link rel="alternate" hreflang="fr" href="/online.html?lang=fr">
+    <link rel="alternate" hreflang="es" href="/online.html?lang=es">
+    <link rel="alternate" hreflang="it" href="/online.html?lang=it">
+    <link rel="alternate" hreflang="de" href="/online.html?lang=de">
+    <link rel="alternate" hreflang="x-default" href="/online.html">
+    <link rel="stylesheet" href="style.css">
+        <script>
+        fetch("reviews.json")
+        .then(res => res.json())
+        .then(reviews => {
+
+            // 1. calcul moyenne
+            const avg =
+            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+            // 2. récupérer JSON-LD
+            const script = document.getElementById("app");
+            const data = JSON.parse(script.textContent);
+
+            // 3. injecter aggregateRating
+            data.aggregateRating = {
+            "@type": "AggregateRating",
+            "ratingValue": avg.toFixed(1),
+            "ratingCount": reviews.length,
+            "bestRating": "5",
+            "worstRating": "1"
+            };
+
+            // 4. réécrire le JSON-LD
+            script.textContent = JSON.stringify(data, null, 2);
+
+        });
+    </script>
+    <script src="script.js?version=2.0" defer></script>
+    <link rel="icon" href="kryptis_logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header class="header">
+        <nav aria-label="Language selector" data-i18n="nav.label" data-i18n-attr="aria-label">
+            <label for="languageSelect" class="visually-hidden" data-i18n="nav.selectLabel">Select language</label>
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="it">Italiano</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </nav>
+        <div class="logo">
+            <img src="kryptis_logo.svg" alt="Kryptis Logo" id="logo">
+            <p data-i18n="header.logoText" id="nom">Kryptis</p>
+        </div>
+        <h1 data-i18n="header.title">Kodex - Online Morse Translator</h1>
+        <nav aria-label="Main navigation" data-i18n="mainNav.label" data-i18n-attr="aria-label">
+            <ul class="main-nav">
+                <li><a href="/index.html" data-i18n="mainNav.home">Home</a></li>
+                <li><a href="/online.html" data-i18n="mainNav.online">Online Translator</a></li>
+                <li><a href="/download.html" data-i18n="mainNav.download">Download</a></li>
+                <li><a href="/reviews.html" data-i18n="mainNav.reviews">Reviews</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section>
+            <h2 data-i18n="online.title">Oneline Translator - Kryptis</h2>
+            <p data-i18n="online.description">Use our online Morse Translator to convert text to Morse code and Morse code to text directly in your browser. No installation required!</p>
+            <button>Morse</button><button></button><button></button><button></button><button></button><button></button><button></button>
+            <input type="text" id="inputText" data-i18n="online.inputPlaceholder" data-i18n-attr="placeholder,aria-label" placeholder="Enter text or Morse code" aria-label="Input text or Morse code">
+            <div id="morseBar" class="morse-bar">
+                <button id="dotBtn">🟣</button>
+                <button id="dashBtn">➖</button>
+                <button id="slashBtn">/</button>
+            </div>
+            <output id="outputText" aria-live="polite"></output>
+            <script>// ---------------- Elements ----------------
+
+const inputText = document.getElementById("inputText");
+const outputText = document.getElementById("outputText");
+const morseBar = document.getElementById("morseBar");
+
+// boutons
+const dotBtn = document.getElementById("dotBtn");
+const dashBtn = document.getElementById("dashBtn");
+const slashBtn = document.getElementById("slashBtn");
+
+
+// ---------------- Morse mapping ----------------
+
+const morse = {
+  // Lettres A-Z
+  'A':'🟣➖', 'B':'➖🟣🟣🟣', 'C':'➖🟣➖🟣', 'D':'➖🟣🟣', 'E':'🟣',
+  'F':'🟣🟣➖🟣', 'G':'➖➖🟣', 'H':'🟣🟣🟣🟣', 'I':'🟣🟣', 'J':'🟣➖➖➖',
+  'K':'➖🟣➖', 'L':'🟣➖🟣🟣', 'M':'➖➖', 'N':'➖🟣', 'O':'➖➖➖',
+  'P':'🟣➖➖🟣', 'Q':'➖➖🟣➖', 'R':'🟣➖🟣', 'S':'🟣🟣🟣', 'T':'➖',
+  'U':'🟣🟣➖', 'V':'🟣🟣🟣➖', 'W':'🟣➖➖', 'X':'➖🟣🟣➖', 'Y':'➖🟣➖➖',
+  'Z':'➖➖🟣🟣',
+
+  // Chiffres 0-9
+  '0':'➖➖➖➖➖', '1':'🟣➖➖➖➖', '2':'🟣🟣➖➖➖', '3':'🟣🟣🟣➖➖',
+  '4':'🟣🟣🟣🟣➖', '5':'🟣🟣🟣🟣🟣', '6':'➖🟣🟣🟣🟣', '7':'➖➖🟣🟣🟣',
+  '8':'➖➖➖🟣🟣', '9':'➖➖➖➖🟣',
+
+  // Ponctuation
+  '.':'🟣➖🟣➖🟣➖', ',':'➖➖🟣🟣➖➖', '?':'🟣🟣➖➖🟣🟣', '\'':'🟣➖➖➖➖🟣',
+  '!':'➖🟣➖🟣➖➖', '/':'➖🟣🟣➖🟣', '(':'➖🟣➖➖🟣', ')':'➖🟣➖➖🟣➖',
+  '&':'🟣➖🟣🟣🟣', ':':'➖➖➖🟣🟣🟣', ';':'➖🟣➖🟣➖', '=':'➖🟣🟣🟣➖',
+  '+':'🟣➖🟣➖🟣', '-':'➖🟣🟣🟣🟣➖', '_':'🟣🟣➖➖🟣➖', '"':'🟣➖🟣🟣➖🟣',
+  '$':'🟣🟣🟣➖🟣🟣➖', '@':'🟣➖➖🟣➖🟣',
+
+  // Lettres accentuées / internationales
+  'Ä':'🟣➖🟣➖','ä':'🟣➖🟣➖', 'Æ':'🟣➖🟣➖','æ':'🟣➖🟣➖',
+  'À':'🟣➖➖🟣➖','à':'🟣➖➖🟣➖', 'Å':'🟣➖➖🟣➖','å':'🟣➖➖🟣➖',
+  'Ĉ':'➖🟣➖🟣🟣','ĉ':'➖🟣➖🟣🟣', 'Ç':'➖🟣➖🟣🟣','ç':'➖🟣➖🟣🟣',
+  'CH':'➖➖➖➖', 'Ð':'🟣🟣➖➖🟣','ð':'🟣🟣➖➖🟣',
+  'È':'🟣➖🟣🟣➖','è':'🟣➖🟣🟣➖', 'É':'🟣🟣➖🟣🟣','é':'🟣🟣➖🟣🟣',
+  'Ĝ':'➖➖🟣➖🟣','ĝ':'➖➖🟣➖🟣', 'Ĥ':'➖🟣➖➖🟣','ĥ':'➖🟣➖➖🟣',
+  'Ĵ':'🟣➖➖➖🟣','ĵ':'🟣➖➖➖🟣', 'Ñ':'➖➖🟣➖➖','ñ':'➖➖🟣➖➖',
+  'Ö':'➖➖➖🟣','ö':'➖➖➖🟣', 'Ø':'➖➖➖🟣','ø':'➖➖➖🟣',
+  'Ŝ':'🟣🟣🟣➖🟣','ŝ':'🟣🟣🟣➖🟣', 'Þ':'🟣➖➖🟣🟣','þ':'🟣➖➖🟣🟣',
+  'Ü':'🟣🟣➖➖','ü':'🟣🟣➖➖', 'Ŭ':'🟣🟣➖➖','ŭ':'🟣🟣➖➖',
+};
+
+// inverse mapping
+const reverseMorse = Object.fromEntries(
+    Object.entries(morse).map(([k,v]) => [v,k])
+);
+
+
+// ---------------- Conversion ----------------
+
+function textToMorse(text){
+
+    text = text.toUpperCase();
+
+    const words = text.split(" ");
+
+    const result = words.map(word => {
+
+        const letters = [...word]
+            .filter(c => morse[c])
+            .map(c => morse[c]);
+
+        return letters.join("/");
+
+    });
+
+    return result.join("//");
+}
+
+
+function morseToText(code){
+
+    const words = code.split("//");
+
+    const result = words.map(word => {
+
+        const letters = word.split("/")
+            .map(symbol => reverseMorse[symbol] || "");
+
+        return letters.join("");
+
+    });
+
+    return result.join(" ");
+}
+
+
+// ---------------- Auto translate ----------------
+
+function autoTranslate(){
+
+    const src = inputText.value.trim();
+
+    if(!src){
+        outputText.textContent = "";
+        // morseBar.style.display = "none";
+        return;
+    }
+
+    const morsePattern = /^[🟣➖\/]+$/;
+
+    if(morsePattern.test(src)){
+
+        outputText.textContent = morseToText(src);
+        // morseBar.style.display = "block";
+
+    }else{
+
+        outputText.textContent = textToMorse(src);
+        // morseBar.style.display = "none";
+
+    }
+
+}
+
+inputText.addEventListener("input", autoTranslate);
+
+
+// ---------------- Morse buttons ----------------
+
+function insertSymbol(symbol){
+
+    inputText.value += symbol;
+    autoTranslate();
+
+}
+
+if(dotBtn) dotBtn.onclick = () => insertSymbol("🟣");
+if(dashBtn) dashBtn.onclick = () => insertSymbol("➖");
+if(slashBtn) slashBtn.onclick = () => insertSymbol("/");
+
+            </script>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p data-i18n="footer.copyright">Copyright © 2026 Joseph Rollo. All rights reserved.</p>
+        <div class="bloc">
+            <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">My GitHub</a>
+            <a href="/index.html" data-i18n="footer.home">Home</a>
+            <a href="/thanks.html" data-i18n="footer.thanks">Thanks</a>
+            <h2 data-i18n="footer.contact">Contact</h2>
+            <ul>
+                <li><span data-i18n="footer.emailLabel">Email:</span> <a href="mailto:joseph.rollo2011@gmail.com">jojotheboss184@outlook.fr</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

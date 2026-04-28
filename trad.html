@@ -110,13 +110,86 @@
                 <option value="Cassette" data-i18n="online.cassetteOption">Cassette (K=7) Cipher</option>
             </select>
             <input type="text" id="inputText" data-i18n="online.inputPlaceholder" data-i18n-attr="placeholder,aria-label" placeholder="Enter text or Morse code" aria-label="Input text or Morse code">
-            <div id="morseBar" class="morse-bar">
+            <!--<div id="morseBar" class="morse-bar">
                 <button id="dotBtn">🟣</button>
                 <button id="dashBtn">➖</button>
                 <button id="slashBtn">/</button>
-            </div>
+            </div>-->
             <output id="outputText" aria-live="polite"></output>
-            
+            <script>
+                input = document.getElementById("inputText");
+                codeSelect = document.getElementById("code");
+                output = document.getElementById("outputText");
+
+                function translate() {
+                    const code = codeSelect.value;
+                    const text = input.value;
+                    let result = "";
+
+                    if (code === "Morse") {
+                        if (text.trim().startsWith(".") || text.trim().startsWith("-")) {
+                            // Morse to text
+                            result = morseToText(text);
+                        } else {
+                            // Text to Morse
+                            result = textToMorse(text);
+                        }
+                    } else if (code === "Vigenere") {
+                        if (text.includes(" ")) {
+                            // Vigenère to text
+                            result = vigenereToText(text);
+                        } else {
+                            // Text to Vigenère
+                            result = textToVigenere(text);
+                        }
+                    } else if (code === "Avocat") {
+                        if (text.includes(" ")) {
+                            // Avocat to text
+                            result = avocatToText(text);
+                        } else {
+                            // Text to Avocat
+                            result = textToAvocat(text);
+                        }
+                    } else if (code === "Sizaine") {
+                        if (text.includes(" ")) {
+                            // Sizaine to text
+                            result = sizaineToText(text);
+                        } else {
+                            // Text to Sizaine
+                            result = textToSizaine(text);
+                        }
+                    } else if (code === "Cassis") {
+                        if (text.includes(" ")) {
+                            // Cassis to text
+                            result = cassisToText(text);
+                        } else {
+                            // Text to Cassis
+                            result = textToCassis(text);
+                        }
+                    } else if (code === "Cassette") {
+                        if (text.includes(" ")) {
+                            // Cassette to text
+                            result = cassetteToText(text);
+                        } else {
+                            // Text to Cassette
+                            result = textToCassette(text);
+                        }
+                    }
+
+                    output.textContent = result;
+                }
+                input.addEventListener("input", translate);
+                codeSelect.addEventListener("change", translate);
+
+                function morseToText(morse) {
+                    return morse.split(" ").map(code => MORSE_CODE[code] || "").join("");
+                }
+                function textToMorse(text) {
+                    var t = text.split("");
+                    return Object.keys(MORSE_CODE).find(key => MORSE_CODE[key] === t.join("")).join(" ");
+                }
+                
+            </script>
         </section>
     </main>
 

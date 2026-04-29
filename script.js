@@ -12,16 +12,9 @@ function handleIP(data) {
 const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
 
 
-
-const SITE_VERSION = "2.0";
-const savedVersion = localStorage.getItem("siteVersion");
 const REVIEW_STORAGE_KEY = "morseTranslatorReviews";
 const SENT_REVIEWS_KEY = "sentReviewsIds";
 
-if (savedVersion !== SITE_VERSION) {
-  localStorage.removeItem(REVIEW_STORAGE_KEY);
-  localStorage.setItem("siteVersion", SITE_VERSION);
-}
 
 const I18N = {
   en: {
@@ -735,7 +728,6 @@ async function loadReviews() {
   } catch {
     server = [];
   }
-
   // Fusion : on part du serveur, on ajoute les locaux non présents
   const all = [...server];
   local.forEach((l) => {
@@ -809,14 +801,7 @@ async function initReviewsPage(language) {
 
   if (!form || !status || !list) return;
 
-  let localReviews = [];
-  try {
-    localReviews = JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || [];
-  } catch {
-    localReviews = [];
-  }
-
-  await syncLocalToServer(localReviews);
+  await syncLocalToServer(JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || []);
   const reviews = await loadReviews();
   renderReviews(reviews, language);
 
@@ -860,7 +845,7 @@ async function initReviewsPage(language) {
   });
 }
 
-function renderReviews(reviews, language) {
+async function renderReviews(reviews, language) {
   const list = document.getElementById("reviewList");
   const empty = document.getElementById("reviewEmpty");
   if (!list || !empty) return;
@@ -881,40 +866,32 @@ function renderReviews(reviews, language) {
   });
 
   // ── Vérification admin (lecture seule, bouton suppression si actif) ──
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  //const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-  reviews.forEach((review) => {
+  for (const review of reviews) {
     const card = document.createElement("article");
     card.className = "review-card";
 
     const meta = document.createElement("p");
     meta.className = "review-meta";
-    const dateText = review.date ? dateFormatter.format(new Date(review.date)) : "";
+
+    const dateText = review.date
+      ? dateFormatter.format(new Date(review.date))
+      : "";
+
     meta.textContent = `${strings["reviews.byline"]} ${review.name} ${strings["reviews.on"]} ${dateText} · ${strings["reviews.ratingText"]}: ${review.rating}/5`;
 
     const message = document.createElement("p");
     message.className = "review-message";
+
     const lang = normalizeLanguage(document.documentElement.lang || "en");
 
-    message.textContent = translateText(review.message, lang);
+    message.textContent = review.message;
 
     card.appendChild(meta);
     card.appendChild(message);
-
-    // Bouton suppression admin (placé correctement dans la boucle)
-    if (isAdmin) {
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "❌ Supprimer";
-      deleteBtn.style.cssText = "margin-top:8px;padding:4px 10px;background:#c0392b;color:#fff;border:none;border-radius:8px;cursor:pointer;";
-      deleteBtn.onclick = async () => {
-        await deleteReviews([review.id]);
-        card.remove();
-      };
-      card.appendChild(deleteBtn);
-    }
-
     list.appendChild(card);
-  });
+  }
 }
 
 function getUserLocale() {
@@ -935,30 +912,6 @@ function getUserLocale() {
   return "en";
 }
 
-// ── LibreTranslate helper ──
-const LIBRE_API = "https://fr.libretranslate.com/translate";
-
-async function translateText(text, targetLang = "en") {
-  try {
-    const res = await fetch(LIBRE_API, {
-      method: "POST",
-      body: JSON.stringify({
-        q: text,
-        source: "auto",
-        target: targetLang,
-        format: "text"
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
-
-    const data = await res.json();
-    return data.translatedText || text;
-
-  } catch (e) {
-    console.warn("Erreur traduction LibreTranslate", e);
-    return text;
-  }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   const initialLanguage = getUserLocale();

@@ -26,3 +26,11 @@ RewriteRule .* - [L]
 </IfModule>
 
 ErrorDocument 500 https://errors.infinityfree.net/errors/500/
+
+# Redirection online.html → trad.html (en conservant ?lang=xx)
+#RewriteCond %{QUERY_STRING} ^(.*)$
+#RewriteRule ^online\.html$ /trad.html?%1 [R=301,L]
+
+# Redirection home.html → index.html (en conservant ?lang=xx)
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^home\.html$ /index.html?%1 [R=301,L]

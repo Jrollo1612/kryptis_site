@@ -1,23 +1,31 @@
-﻿function handleIP(data) {
+﻿// ── Chargement de l'IP via ipinfo (dynamique, sans balise HTML dans le JS) ──
+(function () {
+  const script = document.createElement("script");
+  script.src = "https://ipinfo.io/json?callback=handleIP";
+  document.head.appendChild(script);
+})();
+
+function handleIP(data) {
   window.UserIP = data;
 }
 
-<script src="https://ipinfo.io/json?callback=handleIP"></script>
+const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
 
-const SUPPORTED_LANGUAGES = [ "en", "fr", "es", "it", "de" ];
 if (!sessionStorage.getItem("sessionStarted")) {
-  localStorage.removeItem("cguAccepted"); // reset UNE SEULE FOIS
+  localStorage.removeItem("cguAccepted");
   sessionStorage.setItem("sessionStarted", "true");
 }
+
 const SITE_VERSION = "2.0";
 const savedVersion = localStorage.getItem("siteVersion");
 const REVIEW_STORAGE_KEY = "morseTranslatorReviews";
 const SENT_REVIEWS_KEY = "sentReviewsIds";
 
 if (savedVersion !== SITE_VERSION) {
-  localStorage.removeItem(REVIEW_STORAGE_KEY); // reset reviews if site version changed
+  localStorage.removeItem(REVIEW_STORAGE_KEY);
   localStorage.setItem("siteVersion", SITE_VERSION);
 }
+
 const I18N = {
   en: {
     "page.title": "Morse Translator Download for Windows, Linux and macOS",
@@ -120,9 +128,11 @@ const I18N = {
     "footer.home": "Home",
     "footer.contact": "Contact",
     "footer.emailLabel": "Email:",
+    "footer.thanks": "Thanks",
     "online.title": "Online Morse Translator",
     "online.description": "Enter text in the right panel to automatically translate it to Morse code. To type Morse, enter \"/\" to show a 4-symbol Morse keyboard.",
     "online.inputLabel": "Enter text",
+    "online.inputPlaceholder": "Enter text or Morse code",
     "online.outputLabel": "Morse Output",
     "online.copyButton": "Copy Morse",
     "online.copySuccess": "Morse copied to clipboard!",
@@ -131,7 +141,6 @@ const I18N = {
     "cgu.title": "Terms of use",
     "cgu.accept": "Accept",
     "cgu.decline": "Decline"
-
   },
   fr: {
     "page.title": "Télécharger Traducteur Morse pour Windows, Linux et macOS",
@@ -232,7 +241,8 @@ const I18N = {
     "footer.home": "Accueil",
     "footer.contact": "Contact",
     "footer.emailLabel": "Email :",
-      "online.title": "Traducteur Morse en ligne",
+    "footer.thanks": "Remerciements",
+    "online.title": "Traducteur Morse en ligne",
     "online.description": "Entrez du texte dans le champ de droite pour le traduire automatiquement en Morse. Pour taper en Morse, écrivez \"/\" pour afficher un clavier Morse à 4 symboles.",
     "online.inputPlaceholder": "Entrez du texte ou du code Morse",
     "online.inputLabel": "Entrez du texte",
@@ -244,7 +254,6 @@ const I18N = {
     "cgu.title": "Conditions d'utilisation",
     "cgu.accept": "Accepter",
     "cgu.decline": "Refuser"
-
   },
   es: {
     "page.title": "Descargar Morse Translator para Windows, Linux y macOS",
@@ -281,24 +290,24 @@ const I18N = {
     "about.title": "Sobre la aplicación",
     "about.welcome": "Bienvenido a Morse Translator.",
     "about.line1": "Esta herramienta traduce texto a código Morse y código Morse a texto.",
-    "about.line2": "En la aplicación, escribe texto en el panel derecho y se traducirá automáticamente. Para escribir en Morse, escribe \"/\" para mostrar un teclado Morse de 4 símbolos.",
+    "about.line2": "En la aplicación, escribe texto en el panel derecho y se traducirá automáticamente.",
     "about.description": "Morse Translator es una aplicación de escritorio sencilla que permite traducir texto a código Morse y viceversa.",
     "home.ctaDownload": "Ir a descargas e instala el software sin conexión.",
     "home.ctaOnline": "Usa el traductor en línea directamente en el sitio web.",
     "home.ctaReviews": "Ver reseñas!",
     "home.whyTitle": "¿Por qué usar mi Traductor Morse?",
-    "home.why1": "Morse Translator es un proyecto gratuito y de código abierto, lo que significa que puedes usarlo sin ningún costo e incluso contribuir a su desarrollo si lo deseas.",
+    "home.why1": "Morse Translator es un proyecto gratuito y de código abierto, lo que significa que puedes usarlo sin ningún costo.",
     "home.advantages": "4 ventajas clave:",
     "home.advantage1Title": "¡Sin publicidad!",
-    "home.advantage1Desc": "El traductor Morse es un proyecto gratuito, lo que significa que puedes usarlo sin ningún costo.",
+    "home.advantage1Desc": "El traductor Morse es un proyecto gratuito.",
     "home.advantage2Title": "Traducción rápida y precisa",
-    "home.advantage2Desc": "La aplicación ofrece traducciones rápidas y precisas entre texto y código Morse, asegurando que tus mensajes se codifiquen o decodifiquen correctamente.",
+    "home.advantage2Desc": "La aplicación ofrece traducciones rápidas y precisas entre texto y código Morse.",
     "home.advantage3Title": "Compatibilidad con puntuación",
-    "home.advantage3Desc": "Morse Translator admite signos de puntuación, lo que lo hace más versátil para varios tipos de mensajes.",
+    "home.advantage3Desc": "Morse Translator admite signos de puntuación.",
     "home.advantage4Title": "Software sin conexión con interfaz visual",
-    "home.advantage4Desc": "La aplicación se puede usar sin conexión y cuenta con una interfaz visual que mejora la experiencia del usuario.",
+    "home.advantage4Desc": "La aplicación se puede usar sin conexión y cuenta con una interfaz visual.",
     "home.historyTitle": "¿Qué es el código Morse?",
-    "home.explain1": "El <strong>código Morse</strong> es un método de transmisión de información textual como una serie de tonos, cortos y largos.<br>Fue inventado por Samuel Morse en la década de 1830 para transmitir mensajes a través de líneas telegráficas.<br>El mensaje Morse más famoso fue el famoso <strong>S.O.S</strong> enviado por el Titanic. Este mensaje era <strong>.../---/...</strong>.<br>Luego, el código Morse se volvió ampliamente utilizado en la comunicación por radio y las señales de socorro marítimas.<br>Actualmente, el código Morse todavía se utiliza en las actividades de los <strong><em><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></em></strong>. Hice este traductor principalmente porque era un proyecto necesario para obtener la insignia informática de los scouts.<br>En este traductor, reemplacé los caracteres comunes por emoji para una mejor legibilidad.",
+    "home.explain1": "El <strong>código Morse</strong> es un método de transmisión de información textual como una serie de tonos, cortos y largos.",
     "downloads.title": "Descargar Morse Translator",
     "downloads.latest": "Versión 2.0 (Última)",
     "downloads.line1": "La última versión de Morse Translator ahora está disponible para Windows, Linux y macOS*.",
@@ -313,7 +322,7 @@ const I18N = {
     "downloads.type.portable": "Portátil",
     "downloads.button": "Descargar",
     "downloads.ctaButton": "Descargar ahora",
-    "downloads.note": "* La versión de macOS no ha sido probada, por lo que puede no funcionar como se espera. Si tienes algún problema, por favor avísame por correo en la sección de contacto.",
+    "downloads.note": "* La versión de macOS no ha sido probada.",
     "reviews.link": "Leer y dejar una reseña",
     "reviews.pageTitle": "Reseñas de Morse Translator",
     "reviews.metaDescription": "Lee y deja reseñas sobre Morse Translator.",
@@ -345,19 +354,19 @@ const I18N = {
     "footer.home": "Inicio",
     "footer.contact": "Contacto",
     "footer.emailLabel": "Email:",
-      "online.title": "Traductor Morse en línea",
-    "online.description": "Ingrese texto en el campo de la derecha para traducirlo automáticamente a Morse. Para escribir en Morse, escriba \"/\" para mostrar un teclado Morse de 4 símbolos.",
+    "footer.thanks": "Gracias",
+    "online.title": "Traductor Morse en línea",
+    "online.description": "Ingrese texto para traducirlo automáticamente a Morse.",
     "online.inputPlaceholder": "Introduce texto o código Morse",
     "online.inputLabel": "Ingrese texto",
     "online.outputLabel": "Salida Morse",
     "online.copyButton": "Copiar Morse",
     "online.copySuccess": "Morse copiado al portapapeles.",
     "online.copyError": "Error al copiar el código Morse.",
-    "cgu.description": "Al usar este sitio web, aceptas los siguientes términos y condiciones: El Traductor Morse se proporciona tal cual sin ninguna garantía. El desarrollador no es responsable de ningún daño o pérdida de datos que resulte del uso de este sitio web. Los usuarios son responsables de asegurarse de que su uso del Traductor Morse cumpla con todas las leyes y regulaciones aplicables. Al usar este sitio web, también aceptas nuestra Política de Privacidad, que explica cómo recopilamos y usamos tus datos. Si no estás de acuerdo con estos términos, por favor no uses este sitio web. Cualquier reproducción o redistribución de este sitio web o su contenido está prohibida sin el permiso previo por escrito del desarrollador.",
+    "cgu.description": "Al usar este sitio web, aceptas los siguientes términos y condiciones.",
     "cgu.title": "Condiciones de uso",
     "cgu.accept": "Aceptar",
     "cgu.decline": "Rechazar"
-
   },
   it: {
     "page.title": "Scarica Morse Translator per Windows, Linux e macOS",
@@ -365,19 +374,19 @@ const I18N = {
     "home.metaDescription": "Scopri Morse Translator: strumenti online e offline per tradurre testo in codice Morse e codice Morse in testo.",
     "home.metaKeywords": "traduttore morse, codice morse, traduttore online, app desktop, download",
     "home.ogTitle": "Morse Translator",
-    "home.ogDescription": "Scopri Morse Translator, uno strumento gratuito per tradurre testo e codice Morse con versioni online e desktop.",
+    "home.ogDescription": "Scopri Morse Translator, uno strumento gratuito per tradurre testo e codice Morse.",
     "online.pageTitle": "Traduttore Morse online",
     "online.metaDescription": "Usa il traduttore Morse online per convertire istantaneamente testo e codice Morse nel browser.",
     "online.metaKeywords": "traduttore morse online, codice morse, testo in morse, morse in testo, browser",
     "online.ogTitle": "Traduttore Morse online",
-    "online.ogDescription": "Traduci testo in codice Morse e codice Morse in testo direttamente online, senza installare nulla.",
+    "online.ogDescription": "Traduci testo in codice Morse e codice Morse in testo direttamente online.",
     "download.pageTitle": "Scarica Morse Translator",
     "download.metaDescription": "Scarica le versioni desktop di Morse Translator per Windows, Linux e macOS.",
     "download.metaKeywords": "download traduttore morse, app morse desktop, windows linux macos",
     "download.ogTitle": "Scarica Morse Translator",
-    "download.ogDescription": "Scarica Morse Translator per Windows, Linux e macOS e traduci testo in Morse offline.",
-    "meta.description": "Scarica Morse Translator per Windows, Linux e macOS. Traduci testo in codice Morse e Morse in testo automaticamente.",
-    "og.description": "Traduci testo in Morse e Morse in testo. Scarica le versioni desktop di Morse Translator.",
+    "download.ogDescription": "Scarica Morse Translator per Windows, Linux e macOS.",
+    "meta.description": "Scarica Morse Translator per Windows, Linux e macOS.",
+    "og.description": "Traduci testo in Morse e Morse in testo.",
     "og.locale": "it_IT",
     "og.siteName": "Morse Translator",
     "all.copyError": "La copia non è consentita.",
@@ -394,24 +403,24 @@ const I18N = {
     "about.title": "Informazioni sull'app",
     "about.welcome": "Benvenuto in Morse Translator.",
     "about.line1": "Questo strumento traduce testo in codice Morse e codice Morse in testo.",
-    "about.line2": "Nell'app, scrivi il testo nel pannello di destra e verrà tradotto automaticamente. Per scrivere in Morse, digita \"/\" per mostrare una tastiera Morse con 4 simboli.",
-    "about.description": "Morse Translator e' una semplice applicazione desktop che consente di tradurre testo in codice Morse e viceversa.",
+    "about.line2": "Nell'app, scrivi il testo nel pannello di destra e verrà tradotto automaticamente.",
+    "about.description": "Morse Translator e' una semplice applicazione desktop.",
     "home.ctaDownload": "Vai ai download e installa il software offline!",
     "home.ctaOnline": "Usa il traduttore online direttamente sul sito!",
     "home.ctaReviews": "Vedi le recensioni!",
     "home.whyTitle": "Perché usare il mio Morse Translator?",
-    "home.why1": "Morse Translator è un progetto gratuito e open source, il che significa che puoi usarlo senza alcun costo e persino contribuire al suo sviluppo se vuoi.",
+    "home.why1": "Morse Translator è un progetto gratuito e open source.",
     "home.advantages": "4 vantaggi principali:",
     "home.advantage1Title": "Niente pubblicità!",
-    "home.advantage1Desc": "Il traduttore Morse è un progetto gratuito, il che significa che puoi usarlo senza alcun costo.",
+    "home.advantage1Desc": "Il traduttore Morse è un progetto gratuito.",
     "home.advantage2Title": "Traduzione veloce e accurata",
-    "home.advantage2Desc": "L'app fornisce traduzioni rapide e accurate tra testo e codice Morse, garantendo che i tuoi messaggi siano codificati o decodificati correttamente.",
+    "home.advantage2Desc": "L'app fornisce traduzioni rapide e accurate tra testo e codice Morse.",
     "home.advantage3Title": "Compatibilità con la punteggiatura",
-    "home.advantage3Desc": "Morse Translator supporta i segni di punteggiatura, rendendolo più versatile per vari tipi di messaggi.",
+    "home.advantage3Desc": "Morse Translator supporta i segni di punteggiatura.",
     "home.advantage4Title": "Software offline con interfaccia visiva",
-    "home.advantage4Desc": "L'app può essere utilizzata offline e dispone di un'interfaccia visiva che migliora l'esperienza utente.",
+    "home.advantage4Desc": "L'app può essere utilizzata offline.",
     "home.historyTitle": "Cos'è il codice Morse?",
-    "home.explain1": "Il <strong>codice Morse</strong> è un metodo di trasmissione di informazioni testuali come una serie di toni, corti e lunghi.<br>È stato inventato da Samuel Morse negli anni 1830 per trasmettere messaggi attraverso linee telegrafiche.<br>Il messaggio Morse più famoso è il famoso <strong>S.O.S</strong> inviato dal Titanic. Questo messaggio era <strong>.../---/...</strong>.<br>Successivamente, il codice Morse divenne ampiamente utilizzato nelle comunicazioni radio e nei segnali di soccorso marittimi.<br>Attualmente, il codice Morse è ancora utilizzato nelle attività degli <strong><em><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></em></strong>. Ho realizzato questo traduttore principalmente perché era un progetto necessario per ottenere il badge informatico degli scout.<br>In questo traduttore, ho sostituito i caratteri comuni con emoji per una migliore leggibilità.",
+    "home.explain1": "Il <strong>codice Morse</strong> è un metodo di trasmissione di informazioni testuali.",
     "downloads.title": "Scarica Morse Translator",
     "downloads.latest": "Versione 2.0 (Ultima)",
     "downloads.line1": "L'ultima versione di Morse Translator è ora disponibile per Windows, Linux e macOS*.",
@@ -426,7 +435,7 @@ const I18N = {
     "downloads.type.portable": "Portatile",
     "downloads.button": "Scarica",
     "downloads.ctaButton": "Scarica ora",
-    "downloads.note": "* La versione macOS non è stata testata, quindi potrebbe non funzionare come previsto. Se riscontri problemi, fammelo sapere via email nella sezione contatto.",
+    "downloads.note": "* La versione macOS non è stata testata.",
     "reviews.link": "Leggi e lascia una recensione",
     "reviews.pageTitle": "Recensioni di Morse Translator",
     "reviews.metaDescription": "Leggi e lascia recensioni su Morse Translator.",
@@ -458,19 +467,19 @@ const I18N = {
     "footer.home": "Home",
     "footer.contact": "Contatto",
     "footer.emailLabel": "Email:",
+    "footer.thanks": "Ringraziamenti",
     "online.title": "Traduttore Morse Online",
-    "online.description": "Inserisci il testo nel campo di destra per tradurlo automaticamente in codice Morse. Per digitare in Morse, digita \"/\" per mostrare una tastiera Morse con 4 simboli.",
+    "online.description": "Inserisci il testo per tradurlo automaticamente in codice Morse.",
     "online.inputPlaceholder": "Inserisci testo o codice Morse",
     "online.inputLabel": "Inserisci il testo",
     "online.outputLabel": "Output Morse",
     "online.copyButton": "Copia Morse",
     "online.copySuccess": "Morse copiato negli appunti!",
     "online.copyError": "Errore durante la copia del codice Morse.",
-    "cgu.description": "Utilizzando questo sito web, accetti i seguenti termini e condizioni: Il Traduttore Morse è fornito così com'è senza alcuna garanzia. Lo sviluppatore non è responsabile per eventuali danni o perdite di dati derivanti dall'uso di questo sito web. Gli utenti sono responsabili di assicurarsi che il loro uso del Traduttore Morse sia conforme a tutte le leggi e regolamenti applicabili. Utilizzando questo sito web, accetti anche la nostra Informativa sulla privacy, che spiega come raccogliamo e utilizziamo i tuoi dati. Se non accetti questi termini, ti preghiamo di non utilizzare questo sito web. Qualsiasi riproduzione o ridistribuzione di questo sito web o del suo contenuto è proibita senza previa autorizzazione scritta dello sviluppatore.",
+    "cgu.description": "Utilizzando questo sito web, accetti i seguenti termini e condizioni.",
     "cgu.title": "Condizioni d'uso",
     "cgu.accept": "Accetto",
     "cgu.decline": "Rifiuto"
-
   },
   de: {
     "page.title": "Morse Translator für Windows, Linux und macOS herunterladen",
@@ -478,19 +487,19 @@ const I18N = {
     "home.metaDescription": "Entdecke Morse Translator: Online- und Offline-Tools zum Übersetzen von Text in Morsecode und Morsecode in Text.",
     "home.metaKeywords": "morse übersetzer, morsecode, online übersetzer, desktop app, download",
     "home.ogTitle": "Morse Translator",
-    "home.ogDescription": "Entdecke Morse Translator, ein kostenloses Tool zum Übersetzen von Text und Morsecode mit Online- und Desktop-Versionen.",
+    "home.ogDescription": "Entdecke Morse Translator, ein kostenloses Tool zum Übersetzen von Text und Morsecode.",
     "online.pageTitle": "Online Morse Übersetzer",
     "online.metaDescription": "Verwende den Online Morse Übersetzer, um Text und Morsecode sofort in deinem Browser zu konvertieren.",
     "online.metaKeywords": "online morse übersetzer, morsecode, text zu morse, morse zu text, browser übersetzer",
     "online.ogTitle": "Online Morse Übersetzer",
-    "online.ogDescription": "Übersetze Text in Morsecode und Morsecode in Text direkt online, ohne etwas zu installieren.",
+    "online.ogDescription": "Übersetze Text in Morsecode und Morsecode in Text direkt online.",
     "download.pageTitle": "Morse Translator herunterladen",
     "download.metaDescription": "Lade die Desktop-Versionen von Morse Translator für Windows, Linux und macOS herunter.",
     "download.metaKeywords": "morse übersetzer herunterladen, morse desktop app, windows linux macos",
     "download.ogTitle": "Morse Translator herunterladen",
-    "download.ogDescription": "Hol dir Morse Translator für Windows, Linux und macOS und übersetze Text offline in Morsecode.",
-    "meta.description": "Lade Morse Translator für Windows, Linux und macOS herunter. Übersetze Text in Morsecode und Morsecode in Text mit automatischer Übersetzung.",
-    "og.description": "Übersetze Text in Morse und Morse in Text. Lade die Desktop-Versionen von Morse Translator herunter.",
+    "download.ogDescription": "Hol dir Morse Translator für Windows, Linux und macOS.",
+    "meta.description": "Lade Morse Translator für Windows, Linux und macOS herunter.",
+    "og.description": "Übersetze Text in Morse und Morse in Text.",
     "og.locale": "de_DE",
     "og.siteName": "Morse Übersetzer",
     "all.copyError": "Kopieren ist nicht erlaubt.",
@@ -507,24 +516,24 @@ const I18N = {
     "about.title": "Über die App",
     "about.welcome": "Willkommen bei Morse Translator.",
     "about.line1": "Dieses Tool übersetzt Text in Morsecode und Morsecode zurück in Text.",
-    "about.line2": "Schreibe in der App deinen Text in das rechte Feld, dann wird er automatisch übersetzt. Um Morse zu tippen, gib \"/\" ein, um eine Morse-Tastatur mit 4 Symbolen anzuzeigen.",
-    "about.description": "Morse Translator ist eine einfache Desktop-Anwendung, mit der du Text in Morsecode und zurueck uebersetzen kannst.",
+    "about.line2": "Schreibe in der App deinen Text in das rechte Feld, dann wird er automatisch übersetzt.",
+    "about.description": "Morse Translator ist eine einfache Desktop-Anwendung.",
     "home.ctaDownload": "Gehe zu Downloads und installiere die Offline-Software!",
     "home.ctaOnline": "Verwende den Online-Übersetzer direkt auf der Website!",
     "home.ctaReviews": "Sieh dir Bewertungen an!",
     "home.whyTitle": "Warum meinen Morse Translator verwenden?",
-    "home.why1": "Morse Translator ist ein kostenloses Open-Source-Projekt, was bedeutet, dass du es ohne Kosten nutzen und sogar zu seiner Entwicklung beitragen kannst, wenn du möchtest.",
+    "home.why1": "Morse Translator ist ein kostenloses Open-Source-Projekt.",
     "home.advantages": "4 Hauptvorteile:",
     "home.advantage1Title": "Keine Werbung!",
-    "home.advantage1Desc": "Der Morse Translator ist ein kostenloses Projekt, was bedeutet, dass du es ohne Kosten nutzen kannst.",
+    "home.advantage1Desc": "Der Morse Translator ist ein kostenloses Projekt.",
     "home.advantage2Title": "Schnelle und genaue Übersetzung",
-    "home.advantage2Desc": "Die App bietet schnelle und genaue Übersetzungen zwischen Text und Morsecode und stellt sicher, dass deine Nachrichten korrekt codiert oder decodiert werden.",
+    "home.advantage2Desc": "Die App bietet schnelle und genaue Übersetzungen zwischen Text und Morsecode.",
     "home.advantage3Title": "Kompatibilität mit Satzzeichen",
-    "home.advantage3Desc": "Morse Translator unterstützt Satzzeichen und ist dadurch vielseitiger für verschiedene Nachrichtentypen.",
+    "home.advantage3Desc": "Morse Translator unterstützt Satzzeichen.",
     "home.advantage4Title": "Offline-Software mit visueller Oberfläche",
-    "home.advantage4Desc": "Die App kann offline verwendet werden und verfügt über eine visuelle Oberfläche, die das Benutzererlebnis verbessert.",
-    "home.historyTitle": "Was ist der Morsecodes?",
-    "home.explain1": "Der <strong>Morsecode</strong> ist eine Methode zur Übertragung von Textinformationen als eine Reihe von kurzen und langen Signalen.<br>Er wurde in den 1830er Jahren von Samuel Morse erfunden, um Nachrichten über Telegrafenleitungen zu übertragen.<br>Die berühmteste Morse-Nachricht war das berühmte <strong>S.O.S</strong>, das von der Titanic gesendet wurde. Diese Nachricht war <strong>.../---/...</strong>.<br>Danach wurde der Morsecode weit verbreitet in der Funkkommunikation und bei Seenotsignalen verwendet.<br>Derzeit wird der Morsecode immer noch in den Aktivitäten der <strong><em><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></em></strong> verwendet. Ich habe diesen Übersetzer hauptsächlich erstellt, weil es ein notwendiges Projekt war, um das Informatik-Abzeichen der Pfadfinder zu erhalten.<br>In diesem Übersetzer habe ich häufige Zeichen durch Emojis ersetzt, um die Lesbarkeit zu verbessern.",
+    "home.advantage4Desc": "Die App kann offline verwendet werden.",
+    "home.historyTitle": "Was ist der Morsecode?",
+    "home.explain1": "Der <strong>Morsecode</strong> ist eine Methode zur Übertragung von Textinformationen als eine Reihe von kurzen und langen Signalen.",
     "downloads.title": "Morse Translator herunterladen",
     "downloads.latest": "Version 2.0 (Neueste)",
     "downloads.line1": "Die neueste Version von Morse Translator ist jetzt für Windows, Linux und macOS* verfügbar.",
@@ -539,7 +548,7 @@ const I18N = {
     "downloads.type.portable": "Portabel",
     "downloads.button": "Herunterladen",
     "downloads.ctaButton": "Jetzt herunterladen",
-    "downloads.note": "* Die macOS-Version wurde nicht getestet und funktioniert daher möglicherweise nicht wie erwartet. Wenn du Probleme bemerkst, melde dich bitte per E-Mail im Kontaktbereich.",
+    "downloads.note": "* Die macOS-Version wurde nicht getestet.",
     "reviews.link": "Bewertung lesen und schreiben",
     "reviews.pageTitle": "Morse Translator Bewertungen",
     "reviews.metaDescription": "Lies und schreibe Bewertungen zu Morse Translator.",
@@ -571,15 +580,16 @@ const I18N = {
     "footer.home": "Startseite",
     "footer.contact": "Kontakt",
     "footer.emailLabel": "E-Mail:",
+    "footer.thanks": "Danksagungen",
     "online.title": "Online Morse Übersetzer",
-    "online.description": "Geben Sie Text in das rechte Feld ein, um ihn automatisch ins Morse zu übersetzen. Um Morse zu schreiben, geben Sie \"/\" ein, um eine Morse-Tastatur mit 4 Symbolen anzuzeigen.",
+    "online.description": "Geben Sie Text ein, um ihn automatisch ins Morse zu übersetzen.",
     "online.inputPlaceholder": "Gib Text oder Morsecode ein",
     "online.inputLabel": "Text eingeben",
     "online.outputLabel": "Morsecode Ausgabe",
     "online.copyButton": "Morsecode kopieren",
     "online.copySuccess": "Morsecode in die Zwischenablage kopiert!",
     "online.copyError": "Fehler beim Kopieren des Morse-Codes.",
-    "cgu.description": "Durch die Nutzung dieser Website akzeptieren Sie die folgenden Geschäftsbedingungen: Der Morse Translator wird ohne jegliche Garantien bereitgestellt. Der Entwickler ist nicht verantwortlich für Schäden oder Datenverluste, die durch die Nutzung dieser Website entstehen. Benutzer sind dafür verantwortlich, sicherzustellen, dass ihre Nutzung des Morse Translators allen geltenden Gesetzen und Vorschriften entspricht. Durch die Nutzung dieser Website stimmen Sie auch unserer Datenschutzrichtlinie zu, die erklärt, wie wir Ihre Daten sammeln und verwenden. Wenn Sie diesen Bedingungen nicht zustimmen, nutzen Sie diese Website bitte nicht. Jegliche Vervielfältigung oder Weiterverbreitung dieser Website oder ihres Inhalts ist ohne vorherige schriftliche Genehmigung des Entwicklers untersagt.",
+    "cgu.description": "Durch die Nutzung dieser Website akzeptieren Sie die Geschäftsbedingungen.",
     "cgu.title": "Nutzungsbedingungen",
     "cgu.accept": "Akzeptieren",
     "cgu.decline": "Ablehnen"
@@ -600,12 +610,8 @@ const DOWNLOAD_PATHS = {
   }
 };
 
-
-
 function normalizeLanguage(lang) {
-  if (!lang) {
-    return "en";
-  }
+  if (!lang) return "en";
   const normalized = lang.toLowerCase().split("-")[0];
   return SUPPORTED_LANGUAGES.includes(normalized) ? normalized : "en";
 }
@@ -613,17 +619,13 @@ function normalizeLanguage(lang) {
 function getLanguageFromUrl() {
   const urlParams = new URLSearchParams(window.location.search);
   const urlLang = urlParams.get("lang");
-  if (!urlLang) {
-    return null;
-  }
+  if (!urlLang) return null;
   return normalizeLanguage(urlLang);
 }
 
 function getStoredLanguage() {
   const stored = localStorage.getItem("preferredLanguage");
-  if (!stored) {
-    return null;
-  }
+  if (!stored) return null;
   return normalizeLanguage(stored);
 }
 
@@ -632,17 +634,13 @@ function applyTranslations(language) {
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     const key = element.dataset.i18n;
     const value = strings[key];
-    if (!value) {
-      return;
-    }
+    if (!value) return;
 
     const attr = element.dataset.i18nAttr;
     if (attr) {
       attr.split(",").forEach((attrName) => {
         const trimmed = attrName.trim();
-        if (trimmed) {
-          element.setAttribute(trimmed, value);
-        }
+        if (trimmed) element.setAttribute(trimmed, value);
       });
       return;
     }
@@ -656,21 +654,17 @@ function updateSeoForLanguage(language) {
   const canonicalLink = document.getElementById("canonicalLink");
 
   if (robotsMeta) {
-    if (language === "en") {
-      robotsMeta.setAttribute(
-        "content",
-        "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
-      );
-    } else {
-      robotsMeta.setAttribute("content", "noindex,follow");
-    }
+    robotsMeta.setAttribute(
+      "content",
+      language === "en"
+        ? "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
+        : "noindex,follow"
+    );
   }
 
   if (canonicalLink) {
-    let path = window.location.pathname || "/home.html";
-    if (path === "/") {
-      path = "/home.html";
-    }
+    let path = window.location.pathname || "/index.html";
+    if (path === "/") path = "/index.html";
     canonicalLink.setAttribute("href", path);
   }
 }
@@ -685,9 +679,7 @@ function setLanguage(language, options = {}) {
   updateSeoForLanguage(normalized);
 
   const languageSelect = document.getElementById("languageSelect");
-  if (languageSelect) {
-    languageSelect.value = normalized;
-  }
+  if (languageSelect) languageSelect.value = normalized;
 
   if (updateUrl) {
     const url = new URL(window.location.href);
@@ -705,9 +697,7 @@ function updateDownloadLink() {
   const typeSelect = document.getElementById("type");
   const downloadLink = document.getElementById("downloadLink");
 
-  if (!osSelect || !typeSelect || !downloadLink) {
-    return;
-  }
+  if (!osSelect || !typeSelect || !downloadLink) return;
 
   const selectedOS = osSelect.value;
   const selectedType = typeSelect.value;
@@ -720,22 +710,18 @@ function updateDownloadLink() {
     href = DOWNLOAD_PATHS.linux.app;
     typeSelect.disabled = true;
   } else if (selectedOS === "macos") {
-    href = DOWNLOAD_PATHS.macos[selectedType] || DOWNLOAD_PATHS.macos.p;
+    href = DOWNLOAD_PATHS.macos[selectedType] || DOWNLOAD_PATHS.macos.app;
     typeSelect.disabled = false;
   }
 
   downloadLink.href = href;
   downloadLink.setAttribute("download", "");
-  if (document.location.href.endsWith("/403/")) {
-    document.location.href = "index.html?lang=" + document.documentElement.lang;
-}
 }
 
 async function loadReviews() {
   let local = [];
   let server = [];
 
-  // 📦 local
   try {
     const raw = localStorage.getItem(REVIEW_STORAGE_KEY);
     local = raw ? JSON.parse(raw) : [];
@@ -743,39 +729,30 @@ async function loadReviews() {
     local = [];
   }
 
-  // 🌐 serveur
   try {
-    const res = await fetch('reviews.json?cache=' + Date.now());
+    const res = await fetch("reviews.json?cache=" + Date.now());
     server = await res.json();
   } catch {
     server = [];
   }
 
-  // 🔀 fusion (évite doublons simples)
+  // Fusion : on part du serveur, on ajoute les locaux non présents
   const all = [...server];
-
-  local.forEach(l => {
-    if (!all.find(s =>
-      s.name === l.name &&
-      s.message === l.message &&
-      s.date === l.date
-    )) {
+  local.forEach((l) => {
+    if (!all.find((s) => s.id === l.id)) {
       all.push(l);
     }
   });
 
-  // 💾 sauvegarde locale sync
   localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(all));
-
   return all;
 }
 
-
 async function saveReviewToServer(review) {
   try {
-    await fetch('reviews.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    await fetch("reviews.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(review)
     });
   } catch (e) {
@@ -783,10 +760,8 @@ async function saveReviewToServer(review) {
   }
 }
 
-
 async function syncLocalToServer(localReviews) {
   let sentIds = [];
-
   try {
     sentIds = JSON.parse(localStorage.getItem(SENT_REVIEWS_KEY)) || [];
   } catch {
@@ -794,19 +769,13 @@ async function syncLocalToServer(localReviews) {
   }
 
   for (const review of localReviews) {
-    // ✅ si déjà envoyé → skip
     if (sentIds.includes(review.id)) continue;
-
-    // 🌐 envoi
     await saveReviewToServer(review);
-
-    // 💾 marquer comme envoyé
     sentIds.push(review.id);
   }
 
   localStorage.setItem(SENT_REVIEWS_KEY, JSON.stringify(sentIds));
 }
-
 
 function saveReviewsLocal(reviews) {
   localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(reviews));
@@ -816,44 +785,21 @@ async function deleteReviews(ids) {
   try {
     const res = await fetch("delete_review.php", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        key: "2011", // 🔐 même clé que PHP
-        ids: ids
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: "2011", ids })
     });
 
     const result = await res.json();
-
     if (result.success) {
-      console.log("Avis supprimés");
-
-      // 💾 aussi supprimer localement
-      let local = JSON.parse(localStorage.getItem("morseTranslatorReviews")) || [];
-      local = local.filter(r => !ids.includes(r.id));
-      localStorage.setItem("morseTranslatorReviews", JSON.stringify(local));
-
+      let local = JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || [];
+      local = local.filter((r) => !ids.includes(r.id));
+      localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(local));
     } else {
       console.error(result.error);
     }
-
   } catch (e) {
     console.error("Erreur suppression", e);
   }
-}
-
-const isAdmin = localStorage.getItem("isAdmin") === "true";
-
-if (isAdmin) {
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "❌";
-  deleteBtn.onclick = () => {
-    deleteReviews([review.id]);
-    card.remove();
-  };
-  card.appendChild(deleteBtn);
 }
 
 async function initReviewsPage(language) {
@@ -863,16 +809,6 @@ async function initReviewsPage(language) {
 
   if (!form || !status || !list) return;
 
-  // 🔄 Charger tout
-  const serverReviews = await (async () => {
-    try {
-      const res = await fetch('reviews.json?cache=' + Date.now());
-      return await res.json();
-    } catch {
-      return [];
-    }
-  })();
-
   let localReviews = [];
   try {
     localReviews = JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || [];
@@ -880,12 +816,8 @@ async function initReviewsPage(language) {
     localReviews = [];
   }
 
-  // 🔁 sync local → serveur
   await syncLocalToServer(localReviews);
-
-  // 🔀 fusion finale
   const reviews = await loadReviews();
-
   renderReviews(reviews, language);
 
   if (form.dataset.initialized === "true") return;
@@ -918,16 +850,12 @@ async function initReviewsPage(language) {
       date: new Date().toISOString()
     };
 
-    // 💾 local immédiat
-    const updated = [newReview, ...await loadReviews()].slice(0, 20);
+    const updated = [newReview, ...(await loadReviews())].slice(0, 20);
     saveReviewsLocal(updated);
-
-    // 🌐 envoi serveur
     await saveReviewToServer(newReview);
 
     status.textContent = strings["reviews.statusSuccess"];
     form.reset();
-
     renderReviews(updated, langNow);
   });
 }
@@ -935,9 +863,7 @@ async function initReviewsPage(language) {
 function renderReviews(reviews, language) {
   const list = document.getElementById("reviewList");
   const empty = document.getElementById("reviewEmpty");
-  if (!list || !empty) {
-    return;
-  }
+  if (!list || !empty) return;
 
   list.innerHTML = "";
 
@@ -954,6 +880,9 @@ function renderReviews(reviews, language) {
     day: "numeric"
   });
 
+  // ── Vérification admin (lecture seule, bouton suppression si actif) ──
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+
   reviews.forEach((review) => {
     const card = document.createElement("article");
     card.className = "review-card";
@@ -969,41 +898,43 @@ function renderReviews(reviews, language) {
 
     card.appendChild(meta);
     card.appendChild(message);
+
+    // Bouton suppression admin (placé correctement dans la boucle)
+    if (isAdmin) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "❌ Supprimer";
+      deleteBtn.style.cssText = "margin-top:8px;padding:4px 10px;background:#c0392b;color:#fff;border:none;border-radius:8px;cursor:pointer;";
+      deleteBtn.onclick = async () => {
+        await deleteReviews([review.id]);
+        card.remove();
+      };
+      card.appendChild(deleteBtn);
+    }
+
     list.appendChild(card);
   });
 }
 
-
 function getUserLocale() {
   const urlLang = getLanguageFromUrl();
-  if (urlLang) {
-    return urlLang;
-  }
+  if (urlLang) return urlLang;
+
   const storedLang = getStoredLanguage();
-  if (storedLang) {
-    return storedLang;
-  }
-  if (navigator.language) {
-    return normalizeLanguage(navigator.language);
-  }
+  if (storedLang) return storedLang;
+
+  if (navigator.language) return normalizeLanguage(navigator.language);
+
   const UserIP = window.UserIP || null;
   if (UserIP && UserIP.country_code) {
-    const countryLangMap = {
-      US: "en",
-      GB: "en",
-      FR: "fr",
-      IT: "it",
-      DE: "de"
-    };
+    const countryLangMap = { US: "en", GB: "en", FR: "fr", IT: "it", DE: "de" };
     return countryLangMap[UserIP.country_code] || "en";
   }
+
   return "en";
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const initialLanguage = getUserLocale();
-
   setLanguage(initialLanguage, { updateUrl: true });
 
   const languageSelect = document.getElementById("languageSelect");
@@ -1016,43 +947,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const osSelect = document.getElementById("os");
   const typeSelect = document.getElementById("type");
-
-  if (osSelect) {
-    osSelect.addEventListener("change", updateDownloadLink);
-  }
-
-  if (typeSelect) {
-    typeSelect.addEventListener("change", updateDownloadLink);
-  }
+  if (osSelect) osSelect.addEventListener("change", updateDownloadLink);
+  if (typeSelect) typeSelect.addEventListener("change", updateDownloadLink);
 
   updateDownloadLink();
   initReviewsPage(initialLanguage);
 });
-document.addEventListener("contextmenu", function(e) {
+
+// ── Désactiver le clic droit ──
+document.addEventListener("contextmenu", function (e) {
   e.preventDefault();
   alert(I18N[document.documentElement.lang || "en"]["all.copyError"]);
 });
 
-// Show a banner to show the CGU
-const CGU = "By using this website, you agree to the following terms and conditions: The Morse Translator is provided as is without any warranties. The developer is not responsible for any damage or loss of data resulting from the use of this website. Users are responsible for ensuring that their use of the Morse Translator complies with all applicable laws and regulations. By using this website, you also agree to our Privacy Policy, which explains how we collect and use your data. If you do not agree to these terms, please do not use this website. Any reproduction or redistribution of this website or its content is prohibited without prior written permission from the developer.";
+// ── Bannière CGU ──
+const CGU = "By using this website, you agree to the following terms and conditions: The Morse Translator is provided as is without any warranties. The developer is not responsible for any damage or loss of data resulting from the use of this website.";
+
 document.addEventListener("DOMContentLoaded", () => {
   if (!localStorage.getItem("cguAccepted")) {
+    const lang = normalizeLanguage(document.documentElement.lang || "en");
+    const strings = I18N[lang] || I18N.en;
+
     document.body.insertAdjacentHTML("afterbegin", `
-      <div id="overlay" class="cgu-banner">
-  <div id="popup" class="cgu-banner">
-    <h2 data-i18n="cgu.title">Conditions d'utilisation</h2>
-    <p data-i18n="cgu.description">${CGU}</p>
-    <button data-i18n="cgu.accept" id="acceptCgu">Accepter</button>
-    <button data-i18n="cgu.decline" id="declineCgu">Refuser</button>
-  </div>
-</div>
-      `);
+      <div id="overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;backdrop-filter:blur(6px);background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;">
+        <div id="popup" style="background:#1f2937;color:#fff;padding:24px;border-radius:12px;max-width:420px;text-align:center;">
+          <h2>${strings["cgu.title"]}</h2>
+          <p style="font-size:14px;color:#9ca3af;">${strings["cgu.description"]}</p>
+          <button id="acceptCgu" style="margin:8px;padding:10px 24px;background:#0092F9;color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:16px;">${strings["cgu.accept"]}</button>
+          <button id="declineCgu" style="margin:8px;padding:10px 24px;background:#374151;color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:16px;">${strings["cgu.decline"]}</button>
+        </div>
+      </div>
+    `);
+
     document.getElementById("acceptCgu").addEventListener("click", () => {
       localStorage.setItem("cguAccepted", "true");
-      document.querySelector(".cgu-banner").remove();
+      document.getElementById("overlay").remove();
     });
+
     document.getElementById("declineCgu").addEventListener("click", () => {
       window.history.back();
     });
-  };
-} );
+  }
+});

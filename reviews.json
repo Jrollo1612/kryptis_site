@@ -1,8 +1,9 @@
 [
     {
-        "review.byline": "Joseph Rollo",
-        "review.on": "2024-06-15",
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Joseph Rollo",
+        "date": "2024-06-15T00:00:00.000Z",
         "rating": 5,
-        "comment": "Kryptis is an amazing tool for translating text to Morse code and vice versa. The online translator is super convenient for quick conversions, and the desktop app is perfect for offline use. Highly recommended!"
+        "message": "Kryptis is an amazing tool for translating text to Morse code and vice versa. The online translator is super convenient for quick conversions, and the desktop app is perfect for offline use. Highly recommended!"
     }
 ]

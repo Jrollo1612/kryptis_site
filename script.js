@@ -11,9 +11,6 @@ function handleIP(data) {
 
 const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
 
-if (!sessionStorage.getItem("sessionStarted")) {
-  localStorage.removeItem("cguAccepted");
-  sessionStorage.setItem("sessionStarted", "true");
 }
 
 const SITE_VERSION = "2.0";
@@ -894,7 +891,9 @@ function renderReviews(reviews, language) {
 
     const message = document.createElement("p");
     message.className = "review-message";
-    message.textContent = review.message;
+    const lang = normalizeLanguage(document.documentElement.lang || "en");
+
+    message.textContent = await translateText(review.message, lang);
 
     card.appendChild(meta);
     card.appendChild(message);
@@ -931,6 +930,31 @@ function getUserLocale() {
   }
 
   return "en";
+}
+
+// ── LibreTranslate helper ──
+const LIBRE_API = "https://fr.libretranslate.com/translate";
+
+async function translateText(text, targetLang = "en") {
+  try {
+    const res = await fetch(LIBRE_API, {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,
+        source: "auto",
+        target: targetLang,
+        format: "text"
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    const data = await res.json();
+    return data.translatedText || text;
+
+  } catch (e) {
+    console.warn("Erreur traduction LibreTranslate", e);
+    return text;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

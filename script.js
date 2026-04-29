@@ -896,7 +896,7 @@ function renderReviews(reviews, language) {
     message.className = "review-message";
     const lang = normalizeLanguage(document.documentElement.lang || "en");
 
-    message.textContent = await translateText(review.message, lang);
+    message.textContent = translateText(review.message, lang);
 
     card.appendChild(meta);
     card.appendChild(message);

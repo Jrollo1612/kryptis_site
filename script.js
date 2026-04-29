@@ -1,5 +1,5 @@
 ﻿// ── Chargement de l'IP via ipinfo (dynamique, sans balise HTML dans le JS) ──
-function () {
+(function () {
   const script = document.createElement("script");
   script.src = "https://ipinfo.io/json?callback=handleIP";
   document.head.appendChild(script);
@@ -11,7 +11,7 @@ function handleIP(data) {
 
 const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
 
-}
+
 
 const SITE_VERSION = "2.0";
 const savedVersion = localStorage.getItem("siteVersion");

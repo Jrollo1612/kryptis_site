@@ -1,5 +1,4 @@
 <?php
-http_response_code(403);
 $url = $_SERVER['REQUEST_URI'];
 ?>
 <!DOCTYPE html>

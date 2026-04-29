@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -94,7 +94,34 @@
             <h2 id="reviews-subtitle" data-i18n="reviews.subtitle">Share your experience</h2>
             <p data-i18n="reviews.p">Help others by sharing your opinion about Morse Translator ⭐</p>
         </section>
+        <section class="reviews-section" aria-labelledby="reviews-rating">
+            <h2 id="reviews-rating" data-i18n="reviews.ratingTitle">Overall Rating</h2>
+            <div class="stars" style="--rating: 5;">
+                ★★★★★
+            </div>
+            <p id="ratingValue" class="rating-value"></p>
+            <script>
+                const st = document.querySelector(".stars");
 
+                fetch("reviews.json")
+                .then(res => res.json())
+                .then(reviews => {
+
+                    if (!reviews.length) return;
+
+                    const avg =
+                    reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+                    st.style.setProperty("--rating", avg);
+                    const ratingValue = document.getElementById("ratingValue");
+
+                    ratingValue.innerHTML = `
+                    <span class="rating-score">${avg.toFixed(1)} / 5</span>
+                    <span class="rating-count">(${reviews.length} reviews)</span>
+                    `;
+                });
+            </script>
+        </section>
         <section class="reviews-section" aria-labelledby="reviews-form-title">
             <h2 id="reviews-form-title" data-i18n="reviews.formTitle">Leave a review</h2>
             <form id="reviewForm" class="review-form">

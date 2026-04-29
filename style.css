@@ -551,7 +551,6 @@ td {
 #logo {
     width: 40px;
     height: 40px;
-    
 }
 @font-face {
     font-family: "Codega";
@@ -612,4 +611,45 @@ td {
         flex-direction: column;
         gap: 10px;
     }
+}
+section[aria-labelledby="reviews-rating"] {
+    display: flex;
+    align-items: center;
+    /* ⭐ clé de l’alignement */
+    gap: 10px;
+}
+
+.stars {
+    position: relative;
+    display: inline-block;
+    font-size: 50px;
+    color: #ddd;
+    line-height: 1;
+}
+
+.stars::before {
+    content: "★★★★★";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--rating) / 5 * 100%);
+    overflow: hidden;
+    color: gold;
+}
+
+.rating-value {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.rating-score {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fbbf24;
+}
+
+.rating-count {
+    font-size: 14px;
+    color: #cbd5e1;
 }

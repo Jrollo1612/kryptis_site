@@ -1,9 +1,30 @@
 [
     {
         "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        "name": "Joseph Rollo",
-        "date": "2024-06-15T00:00:00.000Z",
+        "name": "joseph_rollo",
+        "date": "2026-03-15T00:00:00.000Z",
         "rating": 5,
-        "message": "Kryptis is an amazing tool for translating text to Morse code and vice versa. The online translator is super convenient for quick conversions, and the desktop app is perfect for offline use. Highly recommended!"
+        "message": "Really useful tool. I mainly use it to quickly translate stuff to morse and it works great."
+    },
+    {
+        "id": "c7a1c103-9da0-47b9-9efb-b97e4b706001",
+        "name": "Soren Dupont",
+        "date": "2026-04-02T15:07:01.000Z",
+        "rating": 4,
+        "message": "Works well overall. The interface is simple, but I wish there were more options for customizing the output."
+    },
+    {
+        "id": "d9e8f7a6-5b4c-3210-9abc-def123456789",
+        "name": "MariePro",
+        "date": "2026-04-26T10:30:45.000Z",
+        "rating": 5,
+        "message": "Good for learning morse code. Nothing fancy but does the job would be cool to see a mobile version."
+    },
+    {
+        "id": "e1f2a3b4-c5d6-7890-1234-56789abcdef0",
+        "name": "lucien_97",
+        "date": "2026-04-29T08:45:30.000Z",
+        "rating": 3,
+        "message": "C pas mal mais j'ai eu quelques problèmes de compatibilité avec mon navigateur. Sinon, ça fait le taf pour les traductions basiques. Un gros plus est que les accents, ponctuation et cie sont bien gérés, c'est pas le cas de tous les traducteurs de morse."
     }
 ]

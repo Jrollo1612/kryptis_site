@@ -117,118 +117,135 @@
             </div>-->
             <output id="outputText" aria-live="polite"></output>
             <script>
-                input = document.getElementById("inputText");
-                codeSelect = document.getElementById("code");
-                output = document.getElementById("outputText");
+                input = document.getElementById("inputText")
+                codeSelect = document.getElementById("code")
+                output = document.getElementById("outputText")
 
                 function translate() {
-                    const code = codeSelect.value;
-                    const text = input.value;
-                    let result = "";
+                    const code = codeSelect.value
+                    const text = input.value
+                    let result = ""
 
                     if (code === "Morse") {
                         if (text.trim().startsWith(".") || text.trim().startsWith("-")) {
                             // Morse to text
-                            result = morseToText(text);
+                            result = morseToText(text)
                         } else {
                             // Text to Morse
-                            result = textToMorse(text);
+                            result = textToMorse(text)
                         }
                     } else if (code === "Vigenere") {
                         if (text.includes(" ")) {
                             // Vigenère to text
-                            result = vigenereToText(text);
+                            result = vigenereToText(text)
                         } else {
                             // Text to Vigenère
-                            result = textToVigenere(text);
+                            result = textToVigenere(text)
                         }
                     } else if (code === "Avocat") {
                         if (text.includes(" ")) {
                             // Avocat to text
-                            result = avocatToText(text);
+                            result = avocatToText(text)
                         } else {
                             // Text to Avocat
-                            result = textToAvocat(text);
+                            result = textToAvocat(text)
                         }
                     } else if (code === "Sizaine") {
                         if (text.includes(" ")) {
                             // Sizaine to text
-                            result = sizaineToText(text);
+                            result = sizaineToText(text)
                         } else {
                             // Text to Sizaine
-                            result = textToSizaine(text);
+                            result = textToSizaine(text)
                         }
                     } else if (code === "Cassis") {
                         if (text.includes(" ")) {
                             // Cassis to text
-                            result = cassisToText(text);
+                            result = cassisToText(text)
                         } else {
                             // Text to Cassis
-                            result = textToCassis(text);
+                            result = textToCassis(text)
                         }
                     } else if (code === "Cassette") {
                         if (text.includes(" ")) {
                             // Cassette to text
-                            result = cassetteToText(text);
+                            result = cassetteToText(text)
                         } else {
                             // Text to Cassette
-                            result = textToCassette(text);
+                            result = textToCassette(text)
                         }
                     }
 
-                    output.textContent = result;
+                    output.textContent = result
                 }
-                input.addEventListener("input", translate);
-                codeSelect.addEventListener("change", translate);
+                input.addEventListener("input", translate)
+                codeSelect.addEventListener("change", translate)
                 const MORSE_CODE = {}
-                const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+                const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
                 function morseToText(morse) {
-                    return morse.split(" ").map(code => MORSE_CODE[code] || "").join("");
+                    return morse.split(" ").map(code => MORSE_CODE[code] || "").join("")
                 }
                 function textToMorse(text) {
-                    var t = text.split("");
-                    return Object.keys(MORSE_CODE).find(key => MORSE_CODE[key] === t.join("")).join(" ");
+                    var t = text.split("")
+                    return Object.keys(MORSE_CODE).find(key => MORSE_CODE[key] === t.join("")).join(" ")
                 }
                 function textToVigenere(text, key) {
-                    let result = "";
+                    let result = ""
                     for (let i = 0, j = 0; i < text.length; i++) {
-                        const c = text.charCodeAt(i);
+                        const c = text.charCodeAt(i)
                         if (c >= 65 && c <= 90) {
-                            result += String.fromCharCode((c - 65 + key.charCodeAt(j % key.length) - 65) % 26 + 65);
-                            j++;
+                            result += String.fromCharCode((c - 65 + key.charCodeAt(j % key.length) - 65) % 26 + 65)
+                            j++
                         } else if (c >= 97 && c <= 122) {
-                            result += String.fromCharCode((c - 97 + key.charCodeAt(j % key.length) - 97) % 26 + 97);
-                            j++;
+                            result += String.fromCharCode((c - 97 + key.charCodeAt(j % key.length) - 97) % 26 + 97)
+                            j++
                         } else {
-                            result += text[i];
+                            result += text[i]
                         }
                     }
-                    return result;
+                    return result
                 }
                 function vigenereToText(text, key) {
-                    let result = "";
+                    let result = ""
                     for (let i = 0, j = 0; i < text.length; i++) {
-                        const c = text.charCodeAt(i);
+                        const c = text.charCodeAt(i)
                         if (c >= 65 && c <= 90) {
-                            result += String.fromCharCode((c - 65 - (key.charCodeAt(j % key.length) - 65) + 26) % 26 + 65);
-                            j++;
+                            result += String.fromCharCode((c - 65 - (key.charCodeAt(j % key.length) - 65) + 26) % 26 + 65)
+                            j++
                         } else if (c >= 97 && c <= 122) {
-                            result += String.fromCharCode((c - 97 - (key.charCodeAt(j % key.length) - 97) + 26) % 26 + 97);
-                            j++;
+                            result += String.fromCharCode((c - 97 - (key.charCodeAt(j % key.length) - 97) + 26) % 26 + 97)
+                            j++
                         } else {
-                            result += text[i];
+                            result += text[i]
                         }
                     }
-                    return result;
+                    return result
                 }
                 function textToAvocat(text) {
-                    let result = "";
+                    let result = ""
                     for (let i = 0; i < text.length; i++) {
-                        result += ALPHABET[i + 10] || text[i];
+                        result += ALPHABET[i + 10] || text[i]
                     }
-                    return result;
+                    return result
                 }
-            
+                function avocatToText(text) {
+                    let result = ""
+                    for (let i = 0; i < text.length; i++) {
+                        result += ALPHABET[i - 10] || text[i]
+                    }
+                }
+                function textToSizaine(text) {
+                    let result = ""
+                    for (let i = 0; i < text.length; i++) {
+                        result += toString(ALPHABET.find(i)-7)
+                    }
+                }
+                function sizaineToText(text) {
+                    let result = ""
+                    for (let i = 0; i < text.length; i++) {
+                        result += ALPHABET[i+7]
+                    }
+                }
                 
             </script>
         </section>

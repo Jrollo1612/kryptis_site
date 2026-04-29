@@ -596,10 +596,10 @@ const I18N = {
 const DOWNLOAD_PATHS = {
   windows: {
     setup: "latest/win/Traducteur_Morse.msi",
-    p: "latest/win/traducteur_morse_2.exe"
+    p: "latest/win/dist/traducteur_morse_2.exe"
   },
   linux: {
-    app: "latest/lin/traducteur_morse_2"
+    app: "latest/lin/dist/traducteur_morse_2"
   },
   macos: {
     app: "latest/mac/traducteur_morse_2.zip",
@@ -706,7 +706,10 @@ function updateDownloadLink() {
   } else if (selectedOS === "linux") {
     href = DOWNLOAD_PATHS.linux.app;
     typeSelect.disabled = true;
-  } else if (selectedOS === "macos") {
+  } else if(selectedOS==="macos") {
+    typeSelect.options[0].innerText=".app file"
+    typeSelect.options[1].innerText=".dmg file"
+    console.log(typeSelect.innerText)
     href = DOWNLOAD_PATHS.macos[selectedType] || DOWNLOAD_PATHS.macos.app;
     typeSelect.disabled = false;
   }
@@ -1008,8 +1011,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("overlay").remove();
     });
 
-    document.getElementById("declineCgu").addEventListener("click", () => {
-      window.history.back();
+    document.getElementById("declineCgu").addEventListener("click",() => {
+      document.getElementById("overlay").remove();
     });
   }
 });

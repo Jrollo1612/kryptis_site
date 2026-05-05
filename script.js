@@ -990,7 +990,7 @@ document.addEventListener("contextmenu", function (e) {
 // ── Bannière CGU ──
 const CGU = "By using this website, you agree to the following terms and conditions: The Morse Translator is provided as is without any warranties. The developer is not responsible for any damage or loss of data resulting from the use of this website.";
 
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   if (!localStorage.getItem("cguAccepted")) {
     const lang = normalizeLanguage(document.documentElement.lang || "en");
     const strings = I18N[lang] || I18N.en;
@@ -1015,4 +1015,4 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("overlay").remove();
     });
   }
-});
+});*/

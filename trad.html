@@ -4,71 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="online.pageTitle">Online Kryptis - Code Translator</title>
-    <meta name="description" data-i18n="online.metaDescription" data-i18n-attr="content" content="Use the online Kryptis - Code Translator to convert Morse, vigenere and other codes instantly in your browser.">
+    <meta name="description" data-i18n="online.metaDescription" data-i18n-attr="content" content="Use the online Kryptis - Code Translator to convert Morse, Vigenère and other codes instantly in your browser.">
     <meta name="keywords" data-i18n="online.metaKeywords" data-i18n-attr="content" content="online kryptis translator, morse code, text to morse, morse to text, browser translator">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
-    <link rel="canonical" id="canonicalLink" href="/online.html">
+    <link rel="canonical" id="canonicalLink" href="/trad.html">
     <script type="application/ld+json" id="app">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Kryptis - Code Translator",
-      "headline": "Online Kryptis - Morse Translator",
-      "description": "Use the online Kryptis - Code Translator to convert Morse, vigenere and other codes instantly in your browser.",
+      "headline": "Online Kryptis - Code Translator",
+      "description": "Use the online Kryptis - Code Translator to convert Morse, Vigenère and other codes instantly in your browser.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Windows, Linux, macOS",
       "author": {
         "@type": "Person",
         "name": "Joseph Rollo"
       },
-        "description": "Online tool to translate text to Morse code and Morse code to text.",
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4",
-                "ratingCount": "1",
-                "bestRating": "4",
-                "worstRating": "4"
-        },
-        "logo": "https://morsetrad.free.nf/kryptis_logo.svg"
+      "logo": "https://kryptis.netlify.app/kryptis_logo.svg"
     }
     </script>
-    <link rel="alternate" hreflang="en" href="/online.html">
-    <link rel="alternate" hreflang="fr" href="/online.html?lang=fr">
-    <link rel="alternate" hreflang="es" href="/online.html?lang=es">
-    <link rel="alternate" hreflang="it" href="/online.html?lang=it">
-    <link rel="alternate" hreflang="de" href="/online.html?lang=de">
-    <link rel="alternate" hreflang="x-default" href="/online.html">
+    <link rel="alternate" hreflang="en" href="/trad.html">
+    <link rel="alternate" hreflang="fr" href="/trad.html?lang=fr">
+    <link rel="alternate" hreflang="es" href="/trad.html?lang=es">
+    <link rel="alternate" hreflang="it" href="/trad.html?lang=it">
+    <link rel="alternate" hreflang="de" href="/trad.html?lang=de">
+    <link rel="alternate" hreflang="x-default" href="/trad.html">
     <link rel="stylesheet" href="style.css">
-        <script>
-        fetch("reviews.json")
-        .then(res => res.json())
-        .then(reviews => {
-
-            // 1. calcul moyenne
-            const avg =
-            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-
-            // 2. récupérer JSON-LD
-            const script = document.getElementById("app");
-            const data = JSON.parse(script.textContent);
-
-            // 3. injecter aggregateRating
-            data.aggregateRating = {
-            "@type": "AggregateRating",
-            "ratingValue": avg.toFixed(1),
-            "ratingCount": reviews.length,
-            "bestRating": "5",
-            "worstRating": "1"
-            };
-
-            // 4. réécrire le JSON-LD
-            script.textContent = JSON.stringify(data, null, 2);
-
-        });
-    </script>
     <script src="script.js?version=2.0" defer></script>
     <link rel="icon" href="kryptis_logo.svg" type="image/svg+xml">
+    <style>
+        .trad-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .trad-selects {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        #vigenereKeyRow {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #vigenereKeyRow label {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #e5e7eb;
+        }
+
+        #vigenereKey {
+            background-color: #111827;
+            color: #fff;
+            border: 2px solid #0092F9;
+            padding: 8px 14px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            border-radius: 16px;
+            width: 160px;
+        }
+
+        .direction-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .direction-toggle button {
+            padding: 8px 18px;
+            border-radius: 16px;
+            border: 2px solid #0092F9;
+            background: transparent;
+            color: #e5e7eb;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .direction-toggle button.active {
+            background: #0092F9;
+            color: #fff;
+        }
+
+        .io-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .io-box {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .io-box label {
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            color: #9ca3af;
+        }
+
+        #inputText {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        #outputText {
+            margin: 0;
+            min-height: 80px;
+        }
+
+        .morse-bar {
+            margin: 0;
+        }
+
+        #errorMsg {
+            color: #f87171;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            min-height: 20px;
+        }
+
+        .cipher-info {
+            background: rgba(0, 146, 249, 0.08);
+            border: 1px solid #1e3a5f;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #9ca3af;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -86,11 +163,11 @@
             <img src="kryptis_logo.svg" alt="Kryptis Logo" id="logo">
             <p data-i18n="header.logoText" id="nom">Kryptis</p>
         </div>
-        <h1 data-i18n="header.title">Kryptis - Online Codes Translator</h1>
+        <h1 data-i18n="header.title">Kryptis - Online Translator</h1>
         <nav aria-label="Main navigation" data-i18n="mainNav.label" data-i18n-attr="aria-label">
             <ul class="main-nav">
                 <li><a href="/index.html" data-i18n="mainNav.home">Home</a></li>
-                <li><a href="/online.html" data-i18n="mainNav.online">Online Translator</a></li>
+                <li><a href="/trad.html" data-i18n="mainNav.online">Online Translator</a></li>
                 <li><a href="/download.html" data-i18n="mainNav.download">Download</a></li>
                 <li><a href="/reviews.html" data-i18n="mainNav.reviews">Reviews</a></li>
             </ul>
@@ -99,170 +176,365 @@
 
     <main class="main">
         <section>
-            <h2 data-i18n="online.title">Oneline Translator - Kryptis</h2>
-            <p data-i18n="online.description">Use our online Morse Translator to convert text to Morse code and Morse code to text directly in your browser. No installation required!</p>
-            <select id="code">
-                <option value="Morse" data-i18n="online.morseOption">Morse Code</option>
-                <option value="Vigenere" data-i18n="online.vigenereOption">Vigenère Cipher</option>
-                <option value="Avocat" data-i18n="online.avocatOption">Avocat (A=K) Cipher</option>
-                <option value="Sizaine" data-i18n="online.sizaineOption">Sizaine (6=N) Cipher</option>
-                <option value="Cassis" data-i18n="online.cassisOption">Cassis (K=6) Cipher</option>
-                <option value="Cassette" data-i18n="online.cassetteOption">Cassette (K=7) Cipher</option>
-            </select>
-            <input type="text" id="inputText" data-i18n="online.inputPlaceholder" data-i18n-attr="placeholder,aria-label" placeholder="Enter text or Morse code" aria-label="Input text or Morse code">
-            <!--<div id="morseBar" class="morse-bar">
-                <button id="dotBtn">🟣</button>
-                <button id="dashBtn">➖</button>
-                <button id="slashBtn">/</button>
-            </div>-->
-            <output id="outputText" aria-live="polite"></output>
-            <script>
-                input = document.getElementById("inputText")
-                codeSelect = document.getElementById("code")
-                output = document.getElementById("outputText")
+            <h2 data-i18n="online.title">Online Code Translator</h2>
+            <p data-i18n="online.description">Translate text using various codes and ciphers. Select a code, choose the direction, and type!</p>
 
-                function translate() {
-                    const code = codeSelect.value
-                    const text = input.value
-                    let result = ""
+            <div class="trad-container">
 
-                    if (code === "Morse") {
-                        if (text.trim().startsWith(".") || text.trim().startsWith("-")) {
-                            // Morse to text
-                            result = morseToText(text)
-                        } else {
-                            // Text to Morse
-                            result = textToMorse(text)
-                        }
-                    } else if (code === "Vigenere") {
-                        if (text.includes(" ")) {
-                            // Vigenère to text
-                            result = vigenereToText(text)
-                        } else {
-                            // Text to Vigenère
-                            result = textToVigenere(text)
-                        }
-                    } else if (code === "Avocat") {
-                        if (text.includes(" ")) {
-                            // Avocat to text
-                            result = avocatToText(text)
-                        } else {
-                            // Text to Avocat
-                            result = textToAvocat(text)
-                        }
-                    } else if (code === "Sizaine") {
-                        if (text.includes(" ")) {
-                            // Sizaine to text
-                            result = sizaineToText(text)
-                        } else {
-                            // Text to Sizaine
-                            result = textToSizaine(text)
-                        }
-                    } else if (code === "Cassis") {
-                        if (text.includes(" ")) {
-                            // Cassis to text
-                            result = cassisToText(text)
-                        } else {
-                            // Text to Cassis
-                            result = textToCassis(text)
-                        }
-                    } else if (code === "Cassette") {
-                        if (text.includes(" ")) {
-                            // Cassette to text
-                            result = cassetteToText(text)
-                        } else {
-                            // Text to Cassette
-                            result = textToCassette(text)
-                        }
-                    }
+                <!-- Sélecteur de code + direction -->
+                <div class="trad-selects">
+                    <select id="codeSelect">
+                        <option value="morse">🔴 Morse Code</option>
+                        <option value="vigenere">🔐 Vigenère Cipher</option>
+                        <option value="avocat">⚖️ Avocat (A=K)</option>
+                        <option value="sizaine">6️⃣ Sizaine (6=N)</option>
+                        <option value="cassis">🍇 Cassis (K=6)</option>
+                        <option value="cassette">📼 Cassette (K=7)</option>
+                        <option value="rot13">🔄 ROT13</option>
+                        <option value="binary">💻 Binary</option>
+                    </select>
 
-                    output.textContent = result
-                }
-                input.addEventListener("input", translate)
-                codeSelect.addEventListener("change", translate)
-                const MORSE_CODE = {}
-                const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
-                function morseToText(morse) {
-                    return morse.split(" ").map(code => MORSE_CODE[code] || "").join("")
-                }
-                function textToMorse(text) {
-                    var t = text.split("")
-                    return Object.keys(MORSE_CODE).find(key => MORSE_CODE[key] === t.join("")).join(" ")
-                }
-                function textToVigenere(text, key) {
-                    let result = ""
-                    for (let i = 0, j = 0; i < text.length; i++) {
-                        const c = text.charCodeAt(i)
-                        if (c >= 65 && c <= 90) {
-                            result += String.fromCharCode((c - 65 + key.charCodeAt(j % key.length) - 65) % 26 + 65)
-                            j++
-                        } else if (c >= 97 && c <= 122) {
-                            result += String.fromCharCode((c - 97 + key.charCodeAt(j % key.length) - 97) % 26 + 97)
-                            j++
-                        } else {
-                            result += text[i]
-                        }
-                    }
-                    return result
-                }
-                function vigenereToText(text, key) {
-                    let result = ""
-                    for (let i = 0, j = 0; i < text.length; i++) {
-                        const c = text.charCodeAt(i)
-                        if (c >= 65 && c <= 90) {
-                            result += String.fromCharCode((c - 65 - (key.charCodeAt(j % key.length) - 65) + 26) % 26 + 65)
-                            j++
-                        } else if (c >= 97 && c <= 122) {
-                            result += String.fromCharCode((c - 97 - (key.charCodeAt(j % key.length) - 97) + 26) % 26 + 97)
-                            j++
-                        } else {
-                            result += text[i]
-                        }
-                    }
-                    return result
-                }
-                function textToAvocat(text) {
-                    let result = ""
-                    for (let i = 0; i < text.length; i++) {
-                        result += ALPHABET[i + 10] || text[i]
-                    }
-                    return result
-                }
-                function avocatToText(text) {
-                    let result = ""
-                    for (let i = 0; i < text.length; i++) {
-                        result += ALPHABET[i - 10] || text[i]
-                    }
-                }
-                function textToSizaine(text) {
-                    let result = ""
-                    for (let i = 0; i < text.length; i++) {
-                        result += toString(ALPHABET.find(i)-7)
-                    }
-                }
-                function sizaineToText(text) {
-                    let result = ""
-                    for (let i = 0; i < text.length; i++) {
-                        result += ALPHABET[i+7]
-                    }
-                }
-                
-            </script>
+                    <div class="direction-toggle">
+                        <button id="btnEncode" class="active" onclick="setDirection('encode')">Encode →</button>
+                        <button id="btnDecode" onclick="setDirection('decode')">← Decode</button>
+                    </div>
+                </div>
+
+                <!-- Clé Vigenère (affichée uniquement si Vigenère sélectionné) -->
+                <div id="vigenereKeyRow">
+                    <label for="vigenereKey">Key:</label>
+                    <input type="text" id="vigenereKey" placeholder="e.g. SECRET" maxlength="30">
+                </div>
+
+                <!-- Description du chiffre -->
+                <div class="cipher-info" id="cipherInfo"></div>
+
+                <!-- Zone entrée / sortie -->
+                <div class="io-row">
+                    <div class="io-box">
+                        <label for="inputText" id="inputLabel">Input</label>
+                        <textarea id="inputText" rows="4" placeholder="Type here..."></textarea>
+                    </div>
+                    <div class="io-box">
+                        <label id="outputLabel">Output</label>
+                        <output id="outputText" aria-live="polite"></output>
+                    </div>
+                </div>
+
+                <!-- Morse bar (uniquement pour Morse en decode) -->
+                <div id="morseBar" class="morse-bar" style="display:none;">
+                    <button onclick="insertSymbol('.')">•</button>
+                    <button onclick="insertSymbol('-')">—</button>
+                    <button onclick="insertSymbol(' ')">/</button>
+                </div>
+
+                <!-- Message d'erreur -->
+                <div id="errorMsg"></div>
+
+            </div>
         </section>
     </main>
 
     <footer class="footer">
         <p data-i18n="footer.copyright">Copyright © 2026 Joseph Rollo. All rights reserved.</p>
-        <a href="https://morsetrad.free.nf">Kryptis</a> © 2026 by <a href="https://example.com">Joseph Rollo</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
         <div class="bloc">
             <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">My GitHub</a>
             <a href="/index.html" data-i18n="footer.home">Home</a>
             <a href="/thanks.html" data-i18n="footer.thanks">Thanks</a>
             <h2 data-i18n="footer.contact">Contact</h2>
             <ul>
-                <li><span data-i18n="footer.emailLabel">Email:</span> <a href="mailto:joseph.rollo2011@gmail.com">jojotheboss184@outlook.fr</a></li>
+                <li><span data-i18n="footer.emailLabel">Email:</span>
+                    <a href="mailto:jojotheboss184@outlook.fr">jojotheboss184@outlook.fr</a>
+                </li>
             </ul>
         </div>
     </footer>
+
+    <script>
+    // ════════════════════════════════════════════
+    // MORSE
+    // ════════════════════════════════════════════
+    const MORSE_MAP = {
+    'A':'🟣➖', 'B':'➖🟣🟣🟣', 'C':'➖🟣➖🟣', 'D':'➖🟣🟣', 'E':'🟣',
+    'F':'🟣🟣➖🟣', 'G':'➖➖🟣', 'H':'🟣🟣🟣🟣', 'I':'🟣🟣', 'J':'🟣➖➖➖',
+    'K':'➖🟣➖', 'L':'🟣➖🟣🟣', 'M':'➖➖', 'N':'➖🟣', 'O':'➖➖➖',
+    'P':'🟣➖➖🟣', 'Q':'➖➖🟣➖', 'R':'🟣➖🟣', 'S':'🟣🟣🟣', 'T':'➖',
+    'U':'🟣🟣➖', 'V':'🟣🟣🟣➖', 'W':'🟣➖➖', 'X':'➖🟣🟣➖', 'Y':'➖🟣➖➖',
+    'Z':'➖➖🟣🟣',
+
+    '0':'➖➖➖➖➖', '1':'🟣➖➖➖➖', '2':'🟣🟣➖➖➖', '3':'🟣🟣🟣➖➖',
+    '4':'🟣🟣🟣🟣➖', '5':'🟣🟣🟣🟣🟣', '6':'➖🟣🟣🟣🟣', '7':'➖➖🟣🟣🟣',
+    '8':'➖➖➖🟣🟣', '9':'➖➖➖➖🟣',
+
+    '.':'🟣➖🟣➖🟣➖', ',':'➖➖🟣🟣➖➖', '?':'🟣🟣➖➖🟣🟣', '\'':'🟣➖➖➖➖🟣',
+    '!':'➖🟣➖🟣➖➖', '/':'➖🟣🟣➖🟣', '(':'➖🟣➖➖🟣', ')':'➖🟣➖➖🟣➖',
+    '&':'🟣➖🟣🟣🟣', ':':'➖➖➖🟣🟣🟣', ';':'➖🟣➖🟣➖', '=':'➖🟣🟣🟣➖',
+    '+':'🟣➖🟣➖🟣', '-':'➖🟣🟣🟣🟣➖', '_':'🟣🟣➖➖🟣➖', '"':'🟣➖🟣🟣➖🟣',
+    '$':'🟣🟣🟣➖🟣🟣➖', '@':'🟣➖➖🟣➖🟣',
+
+    'Ä':'🟣➖🟣➖','ä':'🟣➖🟣➖', 'Æ':'🟣➖🟣➖','æ':'🟣➖🟣➖',
+    'À':'🟣➖➖🟣','à':'🟣➖➖🟣', 'Å':'🟣➖➖🟣','å':'🟣➖➖🟣',
+    'Ĉ':'➖🟣🟣🟣🟣','ĉ':'➖🟣🟣🟣🟣', 'Ç':'➖🟣🟣🟣🟣','ç':'➖🟣🟣🟣🟣',
+    'CH':'----', 'Ð':'🟣🟣➖➖➖','ð':'🟣🟣➖➖➖',
+    'È':'🟣➖🟣🟣➖','è':'🟣➖🟣🟣➖', 'É':'🟣🟣➖🟣🟣','é':'🟣🟣➖🟣🟣',
+    'Ĝ':'➖➖🟣➖➖','ĝ':'➖➖🟣➖➖', 'Ĥ':'➖🟣🟣➖➖','ĥ':'➖🟣🟣➖➖',
+    'Ĵ':'🟣➖➖➖➖','ĵ':'🟣➖➖➖➖', 'Ñ':'➖➖➖➖➖','ñ':'➖➖➖➖➖',
+    'Ö':'➖➖➖🟣','ö':'➖➖➖🟣', 'Ø':'➖➖➖🟣','ø':'➖➖➖🟣',
+    'Ŝ':'🟣🟣🟣🟣➖','ŝ':'🟣🟣🟣🟣➖', 'Þ':'🟣➖➖🟣','þ':'🟣➖➖🟣',
+    'Ü':'🟣🟣➖➖','ü':'🟣🟣➖➖', 'Ŭ':'🟣🟣➖➖','ŭ':'🟣🟣➖➖',
+};
+    const MORSE_REVERSE = Object.fromEntries(
+        Object.entries(MORSE_MAP).map(([k,v]) => [v, k])
+    );
+
+    function textToMorse(text) {
+        return text.toUpperCase().split('').map(c => {
+            if (c === ' ') return '/';
+            return MORSE_MAP[c] || '?';
+        }).join(' ');
+    }
+
+    function morseToText(morse) {
+        return morse.trim().split(' / ').map(word =>
+            word.split(' ').map(sym => MORSE_REVERSE[sym] || '?').join('')
+        ).join(' ');
+    }
+
+    // ════════════════════════════════════════════
+    // VIGENÈRE
+    // ════════════════════════════════════════════
+    function vigenereEncode(text, key) {
+        if (!key) return '⚠️ Please enter a key';
+        key = key.toUpperCase().replace(/[^A-Z]/g, '');
+        if (!key) return '⚠️ Key must contain letters';
+        let result = '', j = 0;
+        for (const c of text) {
+            const code = c.toUpperCase().charCodeAt(0);
+            if (code >= 65 && code <= 90) {
+                const shift = key.charCodeAt(j % key.length) - 65;
+                const enc = (code - 65 + shift) % 26 + 65;
+                result += c === c.toUpperCase()
+                    ? String.fromCharCode(enc)
+                    : String.fromCharCode(enc + 32);
+                j++;
+            } else {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    function vigenereDecode(text, key) {
+        if (!key) return '⚠️ Please enter a key';
+        key = key.toUpperCase().replace(/[^A-Z]/g, '');
+        if (!key) return '⚠️ Key must contain letters';
+        let result = '', j = 0;
+        for (const c of text) {
+            const code = c.toUpperCase().charCodeAt(0);
+            if (code >= 65 && code <= 90) {
+                const shift = key.charCodeAt(j % key.length) - 65;
+                const dec = (code - 65 - shift + 26) % 26 + 65;
+                result += c === c.toUpperCase()
+                    ? String.fromCharCode(dec)
+                    : String.fromCharCode(dec + 32);
+                j++;
+            } else {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    // ════════════════════════════════════════════
+    // AVOCAT (A=K : décalage de +10, alphabet circulaire)
+    // Encode : chaque lettre avance de 10 positions dans l'alphabet
+    // ════════════════════════════════════════════
+    function shiftLetter(c, shift) {
+        const code = c.charCodeAt(0);
+        const isUpper = code >= 65 && code <= 90;
+        const isLower = code >= 97 && code <= 122;
+        if (!isUpper && !isLower) return c;
+        const base = isUpper ? 65 : 97;
+        return String.fromCharCode((code - base + shift + 26) % 26 + base);
+    }
+
+    function avocatEncode(text) {
+        return text.split('').map(c => shiftLetter(c, 10)).join('');
+    }
+    function avocatDecode(text) {
+        return text.split('').map(c => shiftLetter(c, -10)).join('');
+    }
+
+    // ════════════════════════════════════════════
+    // SIZAINE (6=N : les chiffres 1-6 correspondent aux lettres,
+    // chaque lettre est remplacée par sa position dans la sizaine)
+    // Sizaine scout : A=1, B=2, C=3, D=4, E=5, F=6, G=1, H=2...
+    // ════════════════════════════════════════════
+    function sizaineEncode(text) {
+        return text.toUpperCase().split('').map(c => {
+            const code = c.charCodeAt(0);
+            if (code >= 65 && code <= 90) {
+                return ((code - 65) % 6 + 1).toString();
+            }
+            return c;
+        }).join('');
+    }
+
+    function sizaineDecode(text) {
+        // Sizaine est un chiffrement avec perte (plusieurs lettres → même chiffre)
+        // On indique les possibilités
+        const groups = ['ABC F', 'BGLQV', 'CHMRW', 'DINSX', 'EJOTY', 'FKPUZ'];
+        return text.split('').map(c => {
+            const n = parseInt(c);
+            if (n >= 1 && n <= 6) return `[${groups[n-1]}]`;
+            return c;
+        }).join('');
+    }
+
+    // ════════════════════════════════════════════
+    // CASSIS (K=6 : les lettres de l'alphabet remplacées par K=6,
+    // soit un décalage de -10, inverse de l'Avocat)
+    // ════════════════════════════════════════════
+    function cassisEncode(text) {
+        return text.split('').map(c => shiftLetter(c, -10)).join('');
+    }
+    function cassisDecode(text) {
+        return text.split('').map(c => shiftLetter(c, 10)).join('');
+    }
+
+    // ════════════════════════════════════════════
+    // CASSETTE (K=7 : décalage de +7)
+    // ════════════════════════════════════════════
+    function cassetteEncode(text) {
+        return text.split('').map(c => shiftLetter(c, 7)).join('');
+    }
+    function cassetteDecode(text) {
+        return text.split('').map(c => shiftLetter(c, -7)).join('');
+    }
+
+    // ════════════════════════════════════════════
+    // ROT13 (décalage de 13)
+    // ════════════════════════════════════════════
+    function rot13(text) {
+        return text.split('').map(c => shiftLetter(c, 13)).join('');
+    }
+
+    // ════════════════════════════════════════════
+    // BINAIRE
+    // ════════════════════════════════════════════
+    function textToBinary(text) {
+        return text.split('').map(c =>
+            c.charCodeAt(0).toString(2).padStart(8, '0')
+        ).join(' ');
+    }
+
+    function binaryToText(binary) {
+        return binary.trim().split(' ').map(b => {
+            if (!/^[01]+$/.test(b)) return '?';
+            return String.fromCharCode(parseInt(b, 2));
+        }).join('');
+    }
+
+    // ════════════════════════════════════════════
+    // DESCRIPTIONS
+    // ════════════════════════════════════════════
+    const CIPHER_INFO = {
+        morse:    'Morse Code: dots (.) and dashes (-) separated by spaces. Words separated by /.',
+        vigenere: 'Vigenère: polyalphabetic cipher using a keyword. Each letter is shifted by the corresponding key letter.',
+        avocat:   'Avocat (A=K): each letter is shifted +10 in the alphabet (A→K, B→L, etc.). Scout cipher.',
+        sizaine:  'Sizaine (6=N): each letter is replaced by its position in a group of 6 (A-F=1-6, G-L=1-6...). Scout cipher. Decoding shows all possibilities.',
+        cassis:   'Cassis (K=6): each letter is shifted -10 in the alphabet (K→A, L→B, etc.). Inverse of Avocat.',
+        cassette: 'Cassette (K=7): each letter is shifted +7 in the alphabet (A→H, B→I, etc.). Scout cipher.',
+        rot13:    'ROT13: each letter is shifted by 13. Encoding and decoding are identical.',
+        binary:   'Binary: each character is converted to its 8-bit binary representation.'
+    };
+
+    // ════════════════════════════════════════════
+    // ÉTAT + LOGIQUE PRINCIPALE
+    // ════════════════════════════════════════════
+    let direction = 'encode';
+
+    function setDirection(dir) {
+        direction = dir;
+        document.getElementById('btnEncode').classList.toggle('active', dir === 'encode');
+        document.getElementById('btnDecode').classList.toggle('active', dir === 'decode');
+        updateMorseBar();
+        translate();
+    }
+
+    function updateMorseBar() {
+        const code = document.getElementById('codeSelect').value;
+        const bar = document.getElementById('morseBar');
+        bar.style.display = (code === 'morse' && direction === 'encode') ? 'flex' : 'none';
+    }
+
+    function insertSymbol(s) {
+        const input = document.getElementById('inputText');
+        input.value += s;
+        translate();
+    }
+
+    function translate() {
+        const code = document.getElementById('codeSelect').value;
+        const text = document.getElementById('inputText').value;
+        const key  = document.getElementById('vigenereKey').value.trim();
+        const out  = document.getElementById('outputText');
+        const err  = document.getElementById('errorMsg');
+
+        err.textContent = '';
+
+        if (!text) { out.textContent = ''; return; }
+
+        try {
+            let result = '';
+            if (code === 'morse') {
+                result = direction === 'encode' ? textToMorse(text) : morseToText(text);
+            } else if (code === 'vigenere') {
+                result = direction === 'encode' ? vigenereEncode(text, key) : vigenereDecode(text, key);
+            } else if (code === 'avocat') {
+                result = direction === 'encode' ? avocatEncode(text) : avocatDecode(text);
+            } else if (code === 'sizaine') {
+                result = direction === 'encode' ? sizaineEncode(text) : sizaineDecode(text);
+            } else if (code === 'cassis') {
+                result = direction === 'encode' ? cassisEncode(text) : cassisDecode(text);
+            } else if (code === 'cassette') {
+                result = direction === 'encode' ? cassetteEncode(text) : cassetteDecode(text);
+            } else if (code === 'rot13') {
+                result = rot13(text); // symétrique
+            } else if (code === 'binary') {
+                result = direction === 'encode' ? textToBinary(text) : binaryToText(text);
+            }
+            out.textContent = result;
+        } catch (e) {
+            err.textContent = '⚠️ Error: ' + e.message;
+        }
+    }
+
+    // ════════════════════════════════════════════
+    // INIT
+    // ════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+        const codeSelect = document.getElementById('codeSelect');
+        const input      = document.getElementById('inputText');
+        const keyRow     = document.getElementById('vigenereKeyRow');
+        const info       = document.getElementById('cipherInfo');
+        const vigenKey   = document.getElementById('vigenereKey');
+
+        function onCodeChange() {
+            const code = codeSelect.value;
+            keyRow.style.display = code === 'vigenere' ? 'flex' : 'none';
+            info.textContent = CIPHER_INFO[code] || '';
+            updateMorseBar();
+            translate();
+        }
+
+        codeSelect.addEventListener('change', onCodeChange);
+        input.addEventListener('input', translate);
+        vigenKey.addEventListener('input', translate);
+
+        // Init
+        onCodeChange();
+    });
+    </script>
 </body>
 </html>

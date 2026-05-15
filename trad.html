@@ -290,6 +290,7 @@
     function textToMorse(text) {
         return text.toUpperCase().split('').map(c => {
             if (c === ' ') return '';
+            if (c === '\n') return '\n';
             return MORSE_MAP[c].replace(/\s/g, '') || '?';
         }).join('/');
     }

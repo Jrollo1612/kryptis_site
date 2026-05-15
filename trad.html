@@ -289,9 +289,9 @@
 
     function textToMorse(text) {
         return text.toUpperCase().split('').map(c => {
-            if (c === ' ') return '/';
-            return MORSE_MAP[c] || '?';
-        }).join(' ');
+            if (c === ' ') return '';
+            return MORSE_MAP[c].replace(/\s/g, '') || '?';
+        }).join('/');
     }
 
     function morseToText(morse) {

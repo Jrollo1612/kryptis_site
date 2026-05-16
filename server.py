@@ -1,11 +1,10 @@
 import http.server
 import socketserver
 
-PORT = 80
+PORT = 8000
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    pass
+Handler = http.server.SimpleHTTPRequestHandler
 
 with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
-    print("🚀 kryptis.rol sur port 80")
+    print("🚀 Serveur sur http://localhost:8000")
     httpd.serve_forever()

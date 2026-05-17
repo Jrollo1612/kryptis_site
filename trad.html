@@ -223,9 +223,9 @@
 
                 <!-- Morse bar (uniquement pour Morse en decode) -->
                 <div id="morseBar" class="morse-bar" style="display:none;">
-                    <button onclick="insertSymbol('.')">•</button>
-                    <button onclick="insertSymbol('-')">—</button>
-                    <button onclick="insertSymbol(' ')">/</button>
+                    <button onclick="insertSymbol('🟣')">🟣</button>
+                    <button onclick="insertSymbol('➖')">➖</button>
+                    <button onclick="insertSymbol('/')">/</button>
                 </div>
 
                 <!-- Message d'erreur -->
@@ -470,7 +470,7 @@
     function updateMorseBar() {
         const code = document.getElementById('codeSelect').value;
         const bar = document.getElementById('morseBar');
-        bar.style.display = (code === 'morse' && direction === 'encode') ? 'flex' : 'none';
+        bar.style.display = (code === 'morse' && direction === 'decode') ? 'flex' : 'none';
     }
 
     function updateSearchParams() {

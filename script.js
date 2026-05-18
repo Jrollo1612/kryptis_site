@@ -1002,6 +1002,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateDownloadLink();
   initReviewsPage(initialLanguage);
+  var urlParams=new URLSearchParams
+  var source=urlParams.get("source")
+  var cookie=new CookieStore
+  cookie.set("source",source,{path: "/",maxAge: 60*60*24*30})
+  if(source.includes("chatgpt.com")||source.includes("gemini.google.com")||source.includes("copilot.microsoft.com")) {
+    window.location.href="mailto:jojotheboss184@gmail.com?subject=Accès+au+site+depuis+"+source+"&body=Bonjour+Joseph+!+Votre+site+a+été+accédé+depuis+une+IA.+L'IA+concernée+était+"+source+"."
+  } else if(source=="app") {
+    window.location.href="mailto:jojotheboss184@gmail.com?subject=Accès+au+site+depuis+l'app&body=Bonjour+Joseph+!+Votre+site+a+été+accédé+depuis+votre+logiciel+sur+un+"+appareil+"+!"
+  }
 });
 
 // ── Désactiver le clic droit ──

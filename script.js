@@ -1002,29 +1002,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateDownloadLink();
   initReviewsPage(initialLanguage);
-  var urlParams=new URLSearchParams
+  var urlParams=new URLSearchParams(window.location.search)
   var source=urlParams.get("source")
-  var cookie=new CookieStore
-  cookie.set("source",source,{path: "/",maxAge: 60*60*24*30})
-  if(source.includes("chatgpt.com")||source.includes("gemini.google.com")||source.includes("copilot.microsoft.com")) {
-    const m=await fetch("mail.php",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({"to":"jojotheboss184@gmail.com","subject":"Accès au site depuis une IA","body":"Bonjour Joseph, un accès au site depuis une IA à été détectée le " + new Date().toISOString()})
+  var DeviceOs=urlParams.get("DeviceOs")
+  document.cookie = "source=" + source + "; path=/; max-age=" + (60*60*24*30);
+  document.cookie = "DeviceOs=" + DeviceOs + "; path=/; max-age=" + (60*60*24*30);
+  if (source && (source.includes("chatgpt.com") || source.includes("gemini.google.com") || source.includes("copilot.microsoft.com"))) {
+    fetch("/.netlify/functions/sendMail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: "jojotheboss184@outlook.fr",
+        subject: "Accès au site depuis une IA",
+        body: "Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString()
+      })
     })
-  } else if(source=="app") {
-    const m=await fetch("mail.php",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({"to":"jojotheboss184@gmail.com","subject":"Accès au site depuis le logiciel","body":"Bonjour Joseph, un accès au site depuis le logiciel à été détectée le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs})
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          console.log("Email envoyé avec succès");
+        } else {
+          console.error("Erreur lors de l'envoi de l'email");
+        }
+      });
+  } else if (source === "app") {
+    fetch("/.netlify/functions/sendMail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: "jojotheboss184@outlook.fr",
+        subject: "Accès au site depuis le logiciel",
+        body: "Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs
+      })
     })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          console.log("Email envoyé avec succès");
+        } else {
+          console.error("Erreur lors de l'envoi de l'email");
+        }
+      });
   }
-  const resp=await m.json();
-  if(resp.success) {
-    console.log("Email envoyé avec succès");
-  } else {
-    console.error("Erreur lors de l'envoi de l'email");
-  }
+
 });
 
 // ── Désactiver le clic droit ──

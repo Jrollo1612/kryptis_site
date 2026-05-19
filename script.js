@@ -1007,9 +1007,17 @@ document.addEventListener("DOMContentLoaded", () => {
   var cookie=new CookieStore
   cookie.set("source",source,{path: "/",maxAge: 60*60*24*30})
   if(source.includes("chatgpt.com")||source.includes("gemini.google.com")||source.includes("copilot.microsoft.com")) {
-    window.location.href="mailto:jojotheboss184@gmail.com?subject=Accès+au+site+depuis+"+source+"&body=Bonjour+Joseph+!+Votre+site+a+été+accédé+depuis+une+IA.+L'IA+concernée+était+"+source+"."
+    const m=await fetch("mail.php",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({"to":"jojotheboss184@gmail.com","subject":"Accès au site depuis une IA","body":"Bonjour Jospeh, un accès au site depuis une IA à été détectée le " + new Date().toISOString()})
+    })
   } else if(source=="app") {
-    window.location.href="mailto:jojotheboss184@gmail.com?subject=Accès+au+site+depuis+l'app&body=Bonjour+Joseph+!+Votre+site+a+été+accédé+depuis+votre+logiciel+sur+un+"+appareil+"+!"
+    const m=await fetch("mail.php",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({"to":"jojotheboss184@gmail.com","subject":"Accès au site depuis le logiciel","body":"Bonjour Jospeh, un accès au site depuis le logiciel à été détectée le " + new Date().toISOString() + " sur un appareil de type " + })
+    })
   }
 });
 

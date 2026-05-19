@@ -1002,6 +1002,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateDownloadLink();
   initReviewsPage(initialLanguage);
+  var urlParams=new URLSearchParams
+  var source=urlParams.get("source")
+  var cookie=new CookieStore
+  cookie.set("source",source,{path: "/",maxAge: 60*60*24*30})
+  if(source.includes("chatgpt.com")||source.includes("gemini.google.com")||source.includes("copilot.microsoft.com")) {
+    const m=await fetch("mail.php",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({"to":"jojotheboss184@gmail.com","subject":"Accès au site depuis une IA","body":"Bonjour Joseph, un accès au site depuis une IA à été détectée le " + new Date().toISOString()})
+    })
+  } else if(source=="app") {
+    const m=await fetch("mail.php",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({"to":"jojotheboss184@gmail.com","subject":"Accès au site depuis le logiciel","body":"Bonjour Joseph, un accès au site depuis le logiciel à été détectée le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs})
+    })
+  }
+  const resp=await m.json();
+  if(resp.success) {
+    console.log("Email envoyé avec succès");
+  } else {
+    console.error("Erreur lors de l'envoi de l'email");
+  }
 });
 
 // ── Désactiver le clic droit ──

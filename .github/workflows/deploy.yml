@@ -1,4 +1,4 @@
-name: API_KEYS
+name: Deploy
 
 on:
   push:
@@ -14,18 +14,16 @@ jobs:
       SUPABASE_KEY: ${{ secrets.SUPABASE_API_KEY }}
 
     steps:
-      - name: 📥 Récupération du projet
+      - name: 📥 Cloner le repo
         uses: actions/checkout@v4
 
-      - name: 🐍 Installer Python
-        uses: actions/setup-python@v5
+      - name: 🟢 Installer Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
+          node-version: 20
 
       - name: 📦 Installer les dépendances
-        run: |
-          pip install -r requirements.txt
+        run: npm install
 
-      - name: 🚀 Lancer le script
-        run: |
-          python main.py
+      - name: 🚀 Lancer le projet
+        run: node index.js

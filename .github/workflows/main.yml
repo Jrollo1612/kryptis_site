@@ -1,0 +1,31 @@
+name: API_KEYS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      RESEND_KEY: ${{ secrets.RESEND_API_KEY }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_API_KEY }}
+
+    steps:
+      - name: 📥 Récupération du projet
+        uses: actions/checkout@v4
+
+      - name: 🐍 Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 📦 Installer les dépendances
+        run: |
+          pip install -r requirements.txt
+
+      - name: 🚀 Lancer le script
+        run: |
+          python main.py

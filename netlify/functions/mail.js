@@ -1,6 +1,5 @@
-const { Resend } = require("resend");
-
-const resend = new Resend("re_WwDDT9N7_5dZCzepD622SQTLn37iBw9uw");
+const {Resend}=require("resend");
+const resend = new Resend(process.env.RESEND_KEY);
 
 exports.handler = async (event) => {
 

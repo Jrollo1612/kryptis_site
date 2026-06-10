@@ -763,9 +763,12 @@ function updateDownloadLink() {
   const selectedType = typeSelect.value;
   let href = "";
 
-  if (selectedOS === "windows") {
+  if(selectedOS==="windows") {
+    typeSelect.options[0].innerText=".msi file"
+    typeSelect.options[1].innerText=".exe file"
+    console.log(typeSelect.innerText)
     href = DOWNLOAD_PATHS.windows[selectedType] || DOWNLOAD_PATHS.windows.setup;
-    typeSelect.disabled = false;
+    typeSelect.disabled=false;
   } else if (selectedOS === "linux") {
     href = DOWNLOAD_PATHS.linux.app;
     typeSelect.disabled = true;

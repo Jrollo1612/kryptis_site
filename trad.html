@@ -252,6 +252,19 @@
     </footer>
 
     <script>
+        window.addEventListener("DOMContentLoaded", () => {
+
+    if (window.self !== window.top) {
+
+        document.querySelector("header").style.display = "none";
+        document.querySelector("footer").style.display = "none";
+
+        document.querySelector(".main").style.maxWidth = "100%";
+        document.querySelector(".main").style.margin = "0";
+        document.querySelector(".main").style.padding = "0";
+    }
+
+});
     // ════════════════════════════════════════════
     // MORSE
     // ════════════════════════════════════════════

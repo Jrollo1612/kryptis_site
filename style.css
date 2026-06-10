@@ -192,6 +192,7 @@ select {
     margin-top: 14px;
 }
 
+
 .review-form input,
 .review-form select,
 .review-form textarea {
@@ -242,6 +243,14 @@ select {
     font-size: 16px;
     color: #9ca3af;
     margin-top: 8px;
+}
+.home-iframe {
+    width: auto;
+    height: 510px;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
@@ -464,6 +473,7 @@ table {
 .content {
     flex: 1;
     width: 360px;
+    height:auto;
     display: flex;
     flex-direction: column;
     /* avoid being hidden behind fixed sidebar on wide screens */

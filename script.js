@@ -763,9 +763,12 @@ function updateDownloadLink() {
   const selectedType = typeSelect.value;
   let href = "";
 
-  if (selectedOS === "windows") {
+  if(selectedOS==="windows") {
+    typeSelect.options[0].innerText=".msi file"
+    typeSelect.options[1].innerText=".exe file"
+    console.log(typeSelect.innerText)
     href = DOWNLOAD_PATHS.windows[selectedType] || DOWNLOAD_PATHS.windows.setup;
-    typeSelect.disabled = false;
+    typeSelect.disabled=false;
   } else if (selectedOS === "linux") {
     href = DOWNLOAD_PATHS.linux.app;
     typeSelect.disabled = true;
@@ -1052,11 +1055,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+function userIsAdmin() {
+  const isAdminCookie = document.cookie.split(";").find(cookie => cookie.trim().startsWith("isAdmin="));
+  return isAdminCookie && isAdminCookie.split("=")[1] === "true";
+}
 
 // ── Désactiver le clic droit ──
-document.addEventListener("contextmenu", function (e) {
-  e.preventDefault();
-  alert(I18N[document.documentElement.lang || "en"]["all.copyError"]);
+document.addEventListener("contextmenu",function(e) {
+  if (userIsAdmin()) {
+    const isAdmin = new Cookie("isAdmin", "true", { path: "/", maxAge: 60*60*24*30 });
+  } else {
+    e.preventDefault();
+    alert(I18N[document.documentElement.lang||window.navigator.language]["all.copyError"]);
+  }
 });
 
 // ── Bannière CGU ──

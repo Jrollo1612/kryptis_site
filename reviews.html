@@ -28,7 +28,7 @@
         "@type": "Person",
         "name": "Joseph Rollo"
       },
-      "logo": "https://kryptis.netlify.app/kryptis_logo.svg"
+      "logo": "https://kryptis.netlify.app/assets/kryptis_logo.svg"
     }
     </script>
     <link rel="stylesheet" href="https://kryptis.netlify.app/style.css">
@@ -60,7 +60,7 @@
         });
     </script>
     <script src="https://kryptis.netlify.app/script.js" defer></script>
-    <link rel="icon" href="https://kryptis.netlify.app/kryptis_logo.svg" type="image/svg+xml">
+    <link rel="icon" href="https://kryptis.netlify.app/assets/kryptis_logo.svg" type="image/svg+xml">
 </head>
 <body>
     <header class="header">
@@ -75,7 +75,7 @@
             </select>
         </nav>
         <div class="logo">
-            <img src="kryptis_logo.svg" alt="Kryptis Logo" id="logo">
+            <img src="assets/kryptis_logo.s vg" alt="Kryptis Logo" id="logo">
             <p data-i18n="header.logoText" id="nom">Kryptis</p>
         </div>
         <h1 data-i18n="header.title">Kryptis - Reviews</h1>
@@ -103,7 +103,7 @@
             <script>
                 const st = document.querySelector(".stars");
 
-                fetch("reviews.json")
+                fetch("assets/reviews.json")
                 .then(res => res.json())
                 .then(reviews => {
 
@@ -156,7 +156,22 @@
 
         <p><a href="https://kryptis.netlify.app/download.html" data-i18n="reviews.back">Back to download page</a></p>
     </main>
+    <button id="contact_form" onmouseover="form.mousover()" onclick="form.click()"></button>
+    <script>
+        const Form = (id) => {
+            const id=id
+        }
+        Form.prototype.mouveover = () => {
+            document.getElementById(id).innerHTML = `
+            <p id="contact_us">Contact us</p>
+            `
+        }
+        Form.prototype.click = () => {
+            document.location.href="https://kryptis.netlify.app/contact.html"
+        }
+        
 
+    </script>
     <footer class="footer">
         <p data-i18n="footer.copyright">Copyright © 2026 Joseph Rollo. All rights reserved.</p>
         <div id="licence">

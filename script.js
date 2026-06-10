@@ -1055,11 +1055,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+function userIsAdmin() {
+  const isAdminCookie = document.cookie.split(";").find(cookie => cookie.trim().startsWith("isAdmin="));
+  return isAdminCookie && isAdminCookie.split("=")[1] === "true";
+}
 
 // ── Désactiver le clic droit ──
-document.addEventListener("contextmenu", function (e) {
-  e.preventDefault();
-  alert(I18N[document.documentElement.lang || "en"]["all.copyError"]);
+document.addEventListener("contextmenu",function(e) {
+  if (userIsAdmin()) {
+    const isAdmin = new Cookie("isAdmin", "true", { path: "/", maxAge: 60*60*24*30 });
+  } else {
+    e.preventDefault();
+    alert(I18N[document.documentElement.lang||window.navigator.language]["all.copyError"]);
+  }
 });
 
 // ── Bannière CGU ──

@@ -246,7 +246,7 @@ select {
 }
 .home-iframe {
     width: auto;
-    height:auto;
+    height: 510px;
     border: none;
     border-radius: 14px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -473,6 +473,7 @@ table {
 .content {
     flex: 1;
     width: 360px;
+    height:auto;
     display: flex;
     flex-direction: column;
     /* avoid being hidden behind fixed sidebar on wide screens */

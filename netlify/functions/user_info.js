@@ -8,7 +8,18 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+// netlify/functions/user_info.js
+if (process.env.NETLIFY !== 'true') {
+  try {
+    // dynamic require so bundler doesn't require it at build-time in the cloud
+    const dotenv = require && require('dotenv');
+    dotenv && dotenv.config();
+  } catch (e) {
+    // ignore if dotenv is not present
+  }
+}
 
+// then use process.env.SUPABASE_KEY etc.
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY

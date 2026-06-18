@@ -1016,15 +1016,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.cookie = "source=" + source + "; path=/; max-age=" + (60*60*24*30);
   document.cookie = "DeviceOs=" + DeviceOs + "; path=/; max-age=" + (60*60*24*30);
   if (source && (source.includes("chatgpt.com") || source.includes("gemini.google.com") || source.includes("copilot.microsoft.com"))) {
-    fetch("/.netlify/functions/sendMail", {
+    fetch("/.netlify/functions/mail", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        to: "jojotheboss184@outlook.fr",
+        to: "joseph.kryptis@mailo.com",
         subject: "Accès au site depuis une IA",
-        body: "Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString()
+        body: "<p>Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString() + "</p>"
       })
     })
       .then(res => res.json())
@@ -1037,15 +1037,36 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
   } else if (source === "app") {
-    fetch("/.netlify/functions/sendMail", {
+    fetch("/.netlify/functions/mail", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        to: "jojotheboss184@outlook.fr",
+        to: "joseph.kryptis@mailo.com",
         subject: "Accès au site depuis le logiciel",
-        body: "Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs
+        body: "<p>Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs + "</p>"
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          console.log("Email envoyé avec succès");
+        } else {
+          console.error("Erreur lors de l'envoi de l'email");
+        }
+      });
+  } else if(source==="teams"||source==="whatsapp") {
+    fetch("/.netlify/functions/mail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: "joseph.kryptis@mailo.com",
+        subject: "Accès au site depuis un réseau social",
+        body: "<p>Bonjour Joseph, un accès au site depuis un réseau social a été détecté le " + new Date().toISOString() + " sur le réseau " + source + "</p>"
       })
     })
       .then(res => res.json())

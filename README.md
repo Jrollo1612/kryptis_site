@@ -1,6 +1,10 @@
-# Morse Translator
+# Kryptis
 
-## [Go to my website](https://morsetrad.free.nf)
+[![Windows](https://img.shields.io/badge/Windows-Supported-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+[![macOS](https://img.shields.io/badge/macOS-Supported-000000?logo=apple&logoColor=white)](https://www.apple.com/macos)
+[![Linux](https://img.shields.io/badge/Linux-Supported-FCC624?logo=linux&logoColor=black)](https://www.kernel.org)
+
+## [Go to my website](https://kryptis.netlify.app)
 
 A Morse Translator project with:
 
@@ -20,7 +24,7 @@ This repository contains the website for the project and the downloadable versio
 
 ### Main site
 
-Visit the main published site: <https://morsetrad.free.nf>
+Visit the main published site: <https://kryptis.netlify.app>
 
 ## Versions
 

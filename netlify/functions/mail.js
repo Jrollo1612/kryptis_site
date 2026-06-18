@@ -34,7 +34,7 @@ exports.handler = async (event) => {
             from: "onboarding@resend.dev",
             to: mail.to,
             subject: mail.subject,
-            text: mail.body
+            html: mail.body
         });
 
         return {

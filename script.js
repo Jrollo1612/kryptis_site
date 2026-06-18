@@ -1022,7 +1022,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        to: "joseph.kryptis@mailo.com",
+        to: "joseph.rollo2011@gmail.com",
         subject: "Accès au site depuis une IA",
         body: "<p>Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString() + "</p>"
       })
@@ -1043,7 +1043,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        to: "joseph.kryptis@mailo.com",
+        to: "joseph.rollo2011@gmail.com",
         subject: "Accès au site depuis le logiciel",
         body: "<p>Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs + "</p>"
       })
@@ -1064,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        to: "joseph.kryptis@mailo.com",
+        to: "joseph.rollo2011@gmail.com",
         subject: "Accès au site depuis un réseau social",
         body: "<p>Bonjour Joseph, un accès au site depuis un réseau social a été détecté le " + new Date().toISOString() + " sur le réseau " + source + "</p>"
       })

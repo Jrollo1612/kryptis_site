@@ -13,7 +13,7 @@ A Codes Translator project with:
 
 ## Repo overview
 
-This repository contains the website for the project and the downloadable versions of the Morse Translator app.
+This repository contains the website for the project and the downloadable versions of the Kryptis app.
 
 ### Website pages
 

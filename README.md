@@ -6,9 +6,9 @@
 
 ## [Go to my website](https://kryptis.netlify.app)
 
-A Morse Translator project with:
+A Codes Translator project with:
 
-- a Python/Tkinter desktop application,
+- an electron&js desktop application,
 - a web interface with local pages for the translator, downloads and reviews.
 
 ## Repo overview

@@ -1012,10 +1012,22 @@ document.addEventListener("DOMContentLoaded", () => {
   initReviewsPage(initialLanguage);
   var urlParams=new URLSearchParams(window.location.search)
   var source=urlParams.get("source")
+  var utm_source=urlParams.get("utm_source")
+  var infos=urlParams.get("infos")
+  if(utm_source) {
+    source=utm_source
+  }
+  if (window.history.includes("gemini.google.com")) {
+    source="gemini.google.com"
+  } else if (window.history.includes("copilot.microsoft.com")) {
+    source="copilot.microsoft.com"
+  } else if (window.history.includes("claude.ai")) {
+    source="claude.ai"
+  }
   var DeviceOs=urlParams.get("DeviceOs")
   document.cookie = "source=" + source + "; path=/; max-age=" + (60*60*24*30);
   document.cookie = "DeviceOs=" + DeviceOs + "; path=/; max-age=" + (60*60*24*30);
-  if (source && (source.includes("chatgpt.com") || source.includes("gemini.google.com") || source.includes("copilot.microsoft.com"))) {
+  if(source&&(source.includes("chatgpt.com")||source.includes("gemini.google.com")||source.includes("copilot.microsoft.com")||source.includes("claude.ai"))){
     fetch("/.netlify/functions/mail", {
       method: "POST",
       headers: {
@@ -1024,7 +1036,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({
         to: "joseph.rollo2011@gmail.com",
         subject: "Accès au site depuis une IA",
-        body: "<p>Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString() + "</p>"
+        body: "<p>Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString() + "</p><br><p>Informations supplémentaires : " + infos + "</p>"
       })
     })
       .then(res => res.json())
@@ -1045,7 +1057,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({
         to: "joseph.rollo2011@gmail.com",
         subject: "Accès au site depuis le logiciel",
-        body: "<p>Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs + "</p>"
+        body: "<p>Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs + "</p><br><p>Informations supplémentaires : " + infos + "</p>"
       })
     })
       .then(res => res.json())
@@ -1066,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({
         to: "joseph.rollo2011@gmail.com",
         subject: "Accès au site depuis un réseau social",
-        body: "<p>Bonjour Joseph, un accès au site depuis un réseau social a été détecté le " + new Date().toISOString() + " sur le réseau " + source + "</p>"
+        body: "<p>Bonjour Joseph, un accès au site depuis un réseau social a été détecté le " + new Date().toISOString() + " sur le réseau " + source + "</p><br><p>Informations supplémentaires : " + infos + "</p>"
       })
     })
       .then(res => res.json())

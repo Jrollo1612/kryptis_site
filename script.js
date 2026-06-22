@@ -662,17 +662,9 @@ const I18N = {
 };
 
 const DOWNLOAD_PATHS = {
-  windows: {
-    setup: "latest/win/Traducteur_Morse.msi",
-    p: "latest/win/dist/traducteur_morse_2.exe"
-  },
-  linux: {
-    app: "latest/lin/dist/traducteur_morse_2"
-  },
-  macos: {
-    app: "latest/mac/traducteur_morse_2.zip",
-    dmg: "latest/mac/Traducteur_Morse.dmg"
-  }
+  windows: "latest/win/Kryptis_Setup_1.0.0.exe",
+  linux: "latest/lin/",
+  macos: "latest/mac/"
 };
 
 function normalizeLanguage(lang) {
@@ -759,30 +751,19 @@ function setLanguage(language, options = {}) {
 
 function updateDownloadLink() {
   const osSelect = document.getElementById("os");
-  const typeSelect = document.getElementById("type");
   const downloadLink = document.getElementById("downloadLink");
 
-  if (!osSelect || !typeSelect || !downloadLink) return;
+  if (!osSelect || !downloadLink) return;
 
   const selectedOS = osSelect.value;
-  const selectedType = typeSelect.value;
   let href = "";
 
   if(selectedOS==="windows") {
-    typeSelect.options[0].innerText=".msi file"
-    typeSelect.options[1].innerText=".exe file"
-    console.log(typeSelect.innerText)
-    href = DOWNLOAD_PATHS.windows[selectedType] || DOWNLOAD_PATHS.windows.setup;
-    typeSelect.disabled=false;
+    href=DOWNLOAD_PATHS.windows;
   } else if (selectedOS === "linux") {
-    href = DOWNLOAD_PATHS.linux.app;
-    typeSelect.disabled = true;
+    href = DOWNLOAD_PATHS.linux;
   } else if(selectedOS==="macos") {
-    typeSelect.options[0].innerText=".app file"
-    typeSelect.options[1].innerText=".dmg file"
-    console.log(typeSelect.innerText)
-    href = DOWNLOAD_PATHS.macos[selectedType] || DOWNLOAD_PATHS.macos.app;
-    typeSelect.disabled = false;
+    href=DOWNLOAD_PATHS.macos;
   }
 
   downloadLink.href = href;
@@ -1004,9 +985,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const osSelect = document.getElementById("os");
-  const typeSelect = document.getElementById("type");
   if (osSelect) osSelect.addEventListener("change", updateDownloadLink);
-  if (typeSelect) typeSelect.addEventListener("change", updateDownloadLink);
 
   updateDownloadLink();
   initReviewsPage(initialLanguage);

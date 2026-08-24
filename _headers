@@ -2,5 +2,5 @@
   X-Frame-Options: SAMEORIGIN
 
 /*
-  Content-Security-Policy: frame-ancestors 'self' https://kryptis.netlify.app;
+  Content-Security-Policy: frame-ancestors 'self' ;
 

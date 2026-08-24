@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 User-agent: Googlebot-mobile, bingbot-mobile
 Disallow: /
-Sitemap: https://kryptis.netlify.app/sitemap.xml
+Sitemap: /sitemap.xml

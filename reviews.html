@@ -12,9 +12,9 @@
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="reviews.pageTitle">Kryptis - Reviews</title>
-    <meta name="description" data-i18n="reviews.metaDescription" data-i18n-attr="content" content="Read and leave reviews about Kryptis - Morse Translator.">
-    <meta name="keywords" data-i18n="reviews.metaKeywords" data-i18n-attr="content" content="kryptis reviews, kryptis feedback, kryptis user experience, kryptis ratings, kryptis testimonials">
+    <title >Kryptis - Reviews</title>
+    <meta name="description"   content="Read and leave reviews about Kryptis - Morse Translator.">
+    <meta name="keywords"   content="kryptis reviews, kryptis feedback, kryptis user experience, kryptis ratings, kryptis testimonials">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
     <link rel="canonical" id="canonicalLink" href="https://kryptis.netlify.app/reviews.html">
@@ -73,8 +73,8 @@
 </head>
 <body>
     <header class="header">
-        <nav aria-label="Language selector" data-i18n="nav.label" data-i18n-attr="aria-label">
-            <label for="languageSelect" class="visually-hidden" data-i18n="nav.selectLabel">Select language</label>
+        <nav aria-label="Language selector"  >
+            <label for="languageSelect" class="visually-hidden" >Select language</label>
             <select id="languageSelect">
                 <option value="en">English</option>
                 <option value="fr">Français</option>
@@ -85,26 +85,26 @@
         </nav>
         <div class="logo">
             <img src="assets/kryptis_logo.s vg" alt="Kryptis Logo" id="logo">
-            <p data-i18n="header.logoText" id="nom">Kryptis</p>
+            <p  id="nom">Kryptis</p>
         </div>
-        <h1 data-i18n="header.title">Kryptis - Reviews</h1>
-        <nav aria-label="Main navigation" data-i18n="mainNav.label" data-i18n-attr="aria-label">
+        <h1 >Kryptis - Reviews</h1>
+        <nav aria-label="Main navigation"  >
             <ul class="main-nav">
-                <li><a href="https://kryptis.netlify.app/index.html" data-i18n="mainNav.home">Home</a></li>
-                <li><a href="https://kryptis.netlify.app/trad.html" data-i18n="mainNav.online">Online Translator</a></li>
-                <li><a href="https://kryptis.netlify.app/download.html" data-i18n="mainNav.download">Download</a></li>
-                <li><a href="https://kryptis.netlify.app/reviews.html" data-i18n="mainNav.reviews">Reviews</a></li>
+                <li><a href="https://kryptis.netlify.app/index.html" >Home</a></li>
+                <li><a href="https://kryptis.netlify.app/trad.html" >Online Translator</a></li>
+                <li><a href="https://kryptis.netlify.app/download.html" >Download</a></li>
+                <li><a href="https://kryptis.netlify.app/reviews.html" >Reviews</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="main">
         <section class="reviews-section" aria-labelledby="reviews-subtitle">
-            <h2 id="reviews-subtitle" data-i18n="reviews.subtitle">Share your experience</h2>
-            <p data-i18n="reviews.p">Help others by sharing your opinion about Morse Translator ⭐</p>
+            <h2 id="reviews-subtitle" >Share your experience</h2>
+            <p >Help others by sharing your opinion about Morse Translator ⭐</p>
         </section>
         <section class="reviews-section" aria-labelledby="reviews-rating">
-            <h2 id="reviews-rating" data-i18n="reviews.ratingTitle">Overall Rating</h2>
+            <h2 id="reviews-rating" >Overall Rating</h2>
             <div class="stars" style="--rating: 5;">
                 ★★★★★
             </div>
@@ -132,12 +132,12 @@
             </script>
         </section>
         <section class="reviews-section" aria-labelledby="reviews-form-title">
-            <h2 id="reviews-form-title" data-i18n="reviews.formTitle">Leave a review</h2>
+            <h2 id="reviews-form-title" >Leave a review</h2>
             <form id="reviewForm" class="review-form">
-                <label for="reviewName" data-i18n="reviews.nameLabel">Name</label>
+                <label for="reviewName" >Name</label>
                 <input type="text" id="reviewName" name="reviewName" maxlength="40" required>
 
-                <label for="reviewRating" data-i18n="reviews.ratingLabel">Rating</label>
+                <label for="reviewRating" >Rating</label>
                 <select id="reviewRating" name="reviewRating" required>
                     <option value="">--</option>
                     <option value="5">5 / 5</option>
@@ -147,23 +147,23 @@
                     <option value="1">1 / 5</option>
                 </select>
 
-                <label for="reviewMessage" data-i18n="reviews.messageLabel">Message</label>
+                <label for="reviewMessage" >Message</label>
                 <textarea id="reviewMessage" name="reviewMessage" rows="5" maxlength="400" required></textarea>
 
                 <div class="review-actions">
-                    <button type="submit" class="download-button" data-i18n="reviews.submit">Submit review</button>
+                    <button type="submit" class="download-button" >Submit review</button>
                 </div>
                 <p id="reviewStatus" class="notice" aria-live="polite"></p>
             </form>
         </section>
 
         <section class="reviews-section" aria-labelledby="reviews-list-title">
-            <h2 id="reviews-list-title" data-i18n="reviews.listTitle">Latest reviews</h2>
-            <p id="reviewEmpty" class="notice" data-i18n="reviews.empty">No reviews yet. Be the first to leave one.</p>
+            <h2 id="reviews-list-title" >Latest reviews</h2>
+            <p id="reviewEmpty" class="notice" >No reviews yet. Be the first to leave one.</p>
             <div id="reviewList" class="review-list"></div>
         </section>
 
-        <p><a href="https://kryptis.netlify.app/download.html" data-i18n="reviews.back">Back to download page</a></p>
+        <p><a href="https://kryptis.netlify.app/download.html" >Back to download page</a></p>
     </main>
     <button id="contact_form" onmouseover="form.mousover()" onclick="form.click()"></button>
     <script>
@@ -182,16 +182,16 @@
 
     </script>
     <footer class="footer">
-        <p data-i18n="footer.copyright">Copyright © 2026 JJTC. All rights reserved.</p>
+        <p >Copyright © 2026 JJTC. All rights reserved.</p>
         <div id="licence">
             <a href="https://kryptis.netlify.app">Kryptis</a> © 2026 by JJTC is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
         </div>
         <div class="bloc">
-            <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">My GitHub</a>
-            <a href="https://kryptis.netlify.app/index.html" data-i18n="footer.home" rel="dofollow">Home</a>
-            <h2 data-i18n="footer.contact">Contact</h2>
+            <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" >My GitHub</a>
+            <a href="https://kryptis.netlify.app/index.html"  rel="dofollow">Home</a>
+            <h2 >Contact</h2>
             <ul>
-                <li><span data-i18n="footer.emailLabel">Email:</span> <a href="mailto:joseph.kryptis@mailo.com">joseph.kryptis@mailo.com</a></li>
+                <li><span >Email:</span> <a href="mailto:joseph.kryptis@mailo.com">joseph.kryptis@mailo.com</a></li>
             </ul>
         </div>
     </footer>

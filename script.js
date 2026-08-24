@@ -1,858 +1,41 @@
-﻿// ── Chargement de l'IP via ipinfo (dynamique, sans balise HTML dans le JS) ──
-(function () {
-  const script = document.createElement("script");
-  script.src = "https://ipinfo.io/json?callback=handleIP";
-  document.head.appendChild(script);
-})();
+﻿/*
+Cette parte concernera les avis et le traitement des avis, ainsi que la gestion de la base de données Supabase pour les avis.
+*/
 
-function handleIP(data) {
-  window.UserIP = data;
-}
+const { createClient } = import('@supabase/supabase-js');
 
-const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
+const supabase = createClient('https://vilnoaavchxxilffsfrn.supabase.co', process.env.SUPABASE_KEY);
 
+// Charge les avis depuis Supabase
+async function fetchReviews() {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select("*");
 
-const REVIEW_STORAGE_KEY = "morseTranslatorReviews";
-const SENT_REVIEWS_KEY = "sentReviewsIds";
-
-
-const I18N = {
-  en: {
-    "page.title": "Kryptis Download for Windows, Linux and macOS",
-    "home.pageTitle": "Kryptis: Home",
-    "home.metaDescription": "Discover Kryptis: online and offline tools to translate text to various codes and codes to text.",
-    "home.metaKeywords": "Kryptis, codes, online translator, desktop app, download",
-    "home.ogTitle": "Kryptis",
-    "home.ogDescription": "Discover Kryptis, a free tool for translating text and various codes with online and desktop versions.",
-    "online.pageTitle": "Online Kryptis",
-    "online.metaDescription": "Use the online Kryptis to convert text and various codes instantly in your browser.",
-    "online.metaKeywords": "online Kryptis, codes, text to codes, codes to text, browser translator",
-    "online.ogTitle": "Online Kryptis",
-    "online.ogDescription": "Translate text to various codes and codes to text directly online, without installing anything.",
-    "download.pageTitle": "Download Kryptis",
-    "download.metaDescription": "Download Kryptis desktop versions for Windows, Linux, and macOS.",
-    "download.metaKeywords": "Kryptis download, code desktop app, windows linux macos",
-    "download.ogTitle": "Download Kryptis",
-    "download.ogDescription": "Get Kryptis for Windows, Linux, and macOS and translate text to various codes offline.",
-    "meta.description": "Download Kryptis for Windows, Linux and macOS. Translate text to various codes and codes to text with automatic translation support.",
-    "meta.keywords": "Kryptis, codes, text to codes, codes to text, download, code, translator",
-    "og.title": "Kryptis Download for Windows, Linux and macOS",
-    "og.description": "Translate text to various codes and codes to text. Download Kryptis versions for desktop.",
-    "og.locale": "en_US",
-    "og.siteName": "Kryptis",
-    "all.copyError": "Copying is not allowed.",
-    "twitter.title": "Kryptis Download",
-    "twitter.description": "Download Kryptis and convert text and various codes quickly.",
-    "nav.label": "Language selector",
-    "nav.selectLabel": "Select language",
-    "mainNav.label": "Main navigation",
-    "mainNav.home": "Home",
-    "mainNav.online": "Online Translator",
-    "mainNav.download": "Download",
-    "mainNav.reviews": "Rate & Reviews",
-    "header.title": "Kryptis - Home",
-    "header.logoText": "Kryptis",
-    "about.title": "About the app",
-    "about.welcome": "Welcome to Kryptis.",
-    "about.line1": "This tool translates text into various codes and codes back to text.",
-    "about.line2": "In the app, write text in the right panel and it is automatically translated. To type codes, write \"/\" to show a 4-symbol code keyboard.",
-    "about.description": "Kryptis is a simple desktop application that allows you to translate text to various codes and vice versa.",
-    "home.ctaDownload": "Go to downloads and install the offline software!",
-    "home.ctaOnline": "Use online translator directly on the website!",
-    "home.ctaReviews": "See reviews!",
-    "home.whyTitle": "Why use my Kryptis?",
-    "home.why1": "Kryptis is a free and open-source project, which means that you can use it without any cost and even contribute to its development if you want.",
-    "home.advantages": "4 Key Advantages:",
-    "home.advantage1Title": "No pubs!",
-    "home.advantage1Desc": "The Kryptis is a free project, which means you can use it without any cost.",
-    "home.advantage2Title": "Fast and accurate translation",
-    "home.advantage2Desc": "The app provides fast and accurate translations between text and various codes, ensuring that your messages are correctly encoded or decoded.",
-    "home.advantage3Title": "Punctuation compatibility",
-    "home.advantage3Desc": "Kryptis supports punctuation marks, making it more versatile for various types of messages.",
-    "home.advantage4Title": "Offline software with visual interface",
-    "home.advantage4Desc": "The app can be used offline and features a visual interface that enhances the user experience.",
-    "home.historyTitle": "A view about my history",
-    "home.morseTitle": "What is the morse code?",
-    "home.explain1": "The morse code is a method of transmitting text information as a series of tones, short and long.<br>It was invented by Samuel Morse in the 1830s.<br>The most famous message was S.O.S: <strong>.../---/...</strong>.<br>Today it is still used in <em><strong><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></strong></em>.",
-    "downloads.title": "Download Kryptis",
-    "downloads.latest": "Version 2.0 (Latest)",
-    "downloads.line1": "The latest version of Kryptis is now available for Windows, Linux, and macOS*.",
-    "downloads.heroText": "The fastest way to translate codes on desktop ⚡",
-    "downloads.comingSoon": "Coming soon!",
-    "downloads.osLabel": "Operating system",
-    "downloads.typeLabel": "Installer type",
-    "downloads.os.windows": "Windows",
-    "downloads.os.linux": "Linux",
-    "downloads.os.macos": "macOS",
-    "downloads.type.setup": "Setup",
-    "downloads.type.portable": "Portable",
-    "downloads.button": "Download",
-    "downloads.ctaButton": "Download now",
-    "downloads.note": "* The macOS version hadn't been tested, so it may not work as expected. If you encounter any issues, please let me know via email in the contact section.",
-    "reviews.link": "Read and leave a review",
-    "reviews.pageTitle": "Kryptis Reviews",
-    "reviews.metaDescription": "Read and leave reviews about Kryptis.",
-    "reviews.metaKeywords": "Kryptis reviews, Kryptis feedback, user reviews",
-    "reviews.ogTitle": "Kryptis Reviews",
-    "reviews.ogDescription": "Share your experience with Kryptis.",
-    "reviews.twitterTitle": "Kryptis Reviews",
-    "reviews.twitterDescription": "Read and leave reviews about Kryptis.",
-    "reviews.title": "Kryptis",
-    "reviews.subtitle": "Share your experience",
-    "reviews.formTitle": "Leave a review",
-    "reviews.nameLabel": "Name",
-    "reviews.ratingLabel": "Rating",
-    "reviews.messageLabel": "Message",
-    "reviews.submit": "Submit review",
-    "reviews.listTitle": "Latest reviews",
-    "reviews.empty": "No reviews yet. Be the first to leave one.",
-    "reviews.ratingTitle": "Overall Rating",
-    "reviews.p": "Help others by sharing your opinion about Kryptis ⭐",
-    "reviews.back": "Back to download page",
-    "reviews.statusSuccess": "Thank you! Your review was saved on this device.",
-    "reviews.statusError": "Please fill in all fields.",
-    "reviews.ratingText": "Rating",
-    "reviews.byline": "By",
-    "reviews.on": "on",
-    "thanks.pageTitle": "Thank You - Kryptis",
-    "thanks.metaDescription": "Thank you for your review of Kryptis!",
-    "thanks.metaKeywords": "Kryptis thank you, review confirmation, feedback",
-    "thanks.title": "Thank you to the actors who helped me to create this project!",
-    "thanks.message": "Thank mainly to the scout group where I learned about Morse code and where I began this Kryptis project.",
-    "thanks.contributors": "I also want to thank Olivier Andrieu and his book \"Réussir son référencement web\" which helped me a lot to understand SEO and to optimize my website for search engines. I want to thank my father, who gave me ideas and feedback to improve the project and the website. Finally, I want to thank all the people who helped me by giving feedback and suggestions to improve the project and the website.",
-    "whoami.pageTitle": "Who Am I - Kryptis",
-    "whoami.metaDescription": "Learn about the creator of Kryptis, Joseph Rollo, and his passion for Morse code and software development.",
-    "whoami.metaKeywords": "Joseph Rollo, Kryptis creator, software developer, Morse code enthusiast, about the author",
-    "whoami.title": "About the Author",
-    "whoami.description": "Joseph Rollo is a passionate software developer and Morse code enthusiast. With a background in computer science, he created Kryptis to share his love for Morse code and provide a useful tool for others. When he's not coding, Joseph enjoys exploring new technologies and contributing to open-source projects.",
-    "project.infoLabel": "Project information:",
-    "project.readme": "GitHub README",
-    "footer.copyright": "Copyright © 2026 Joseph Rollo. All rights reserved.",
-    "footer.github": "My GitHub",
-    "footer.reviews": "Reviews",
-    "footer.home": "Home",
-    "footer.contact": "Contact",
-    "footer.emailLabel": "Email:",
-    "footer.thanks": "Thanks",
-    "online.title": "Online Kryptis",
-    "online.description": "Enter text in the right panel to automatically translate it to Morse code. To type Morse, enter \"/\" to show a 4-symbol Morse keyboard.",
-    "online.inputLabel": "Enter text",
-    "online.inputPlaceholder": "Enter text or Morse code",
-    "online.outputLabel": "Morse Output",
-    "online.copyButton": "Copy Morse",
-    "online.copySuccess": "Morse copied to clipboard!",
-    "online.copyError": "Error copying Morse code.",
-    "cgu.description": "By using this website, you agree to the following terms and conditions: The Kryptis is provided as is without any warranties. The developer is not responsible for any damage or loss of data resulting from the use of this website. Users are responsible for ensuring that their use of the Kryptis complies with all applicable laws and regulations. By using this website, you also agree to our Privacy Policy, which explains how we collect and use your data. If you do not agree to these terms, please do not use this website. Any reproduction or redistribution of this website or its content is prohibited without prior written permission from the developer.",
-    "cgu.title": "Terms of use",
-    "cgu.accept": "Accept",
-    "cgu.decline": "Decline"
-  },
-  fr: {
-    "page.title": "Télécharger Kryptis pour Windows, Linux et macOS",
-    "home.pageTitle": "Kryptis : Accueil",
-    "home.metaDescription": "Découvrez Kryptis : outils en ligne et hors ligne pour traduire du texte en divers codes et des codes en texte.",
-    "home.metaKeywords": "traducteur codes, codes, traducteur en ligne, application bureau, téléchargement",
-    "home.ogTitle": "Kryptis",
-    "home.ogDescription": "Découvrez Kryptis, un outil gratuit pour traduire texte et divers codes avec des versions en ligne et bureau.",
-    "online.pageTitle": "Kryptis en ligne",
-    "online.metaDescription": "Utilisez le Kryptis en ligne pour convertir instantanément du texte et des codes dans votre navigateur.",
-    "online.metaKeywords": "traducteur codes en ligne, codes, texte vers codes, codes vers texte, traducteur navigateur",
-    "online.ogTitle": "Kryptis en ligne",
-    "online.ogDescription": "Traduisez du texte en divers codes et des codes en texte directement en ligne, sans installation.",
-    "download.pageTitle": "Télécharger Kryptis",
-    "download.metaDescription": "Téléchargez les versions de bureau de Kryptis pour Windows, Linux et macOS.",
-    "download.metaKeywords": "téléchargement traducteur codes, application codes bureau, windows linux macos",
-    "download.ogTitle": "Télécharger Kryptis",
-    "download.ogDescription": "Obtenez Kryptis pour Windows, Linux et macOS et traduisez du texte en codes hors ligne.",
-    "meta.description": "Téléchargez Kryptis pour Windows, Linux et macOS. Traduisez du texte en divers codes et des codes en texte automatiquement.",
-    "og.description": "Traduisez du texte en codes et des codes en texte. Téléchargez les versions desktop de Kryptis.",
-    "og.locale": "fr_FR",
-    "og.siteName": "Kryptis",
-    "all.copyError": "La copie n'est pas autorisée.",
-    "twitter.title": "Téléchargement Kryptis",
-    "twitter.description": "Téléchargez Kryptis et convertissez facilement texte et codes.",
-    "nav.label": "Sélecteur de langue",
-    "nav.selectLabel": "Choisir la langue",
-    "mainNav.label": "Navigation principale",
-    "mainNav.home": "Accueil",
-    "mainNav.online": "Traducteur en ligne",
-    "mainNav.download": "Télécharger",
-    "mainNav.reviews": "Avis",
-    "header.title": "Kryptis - Accueil",
-    "header.logoText": "Kryptis",
-    "about.title": "À propos de l'application",
-    "about.welcome": "Bienvenue sur Kryptis.",
-    "about.line1": "Cet outil traduit le texte en divers codes et les codes en texte.",
-    "about.line2": "Dans l'application, écrivez votre texte dans le panneau de droite pour une traduction automatique. Pour écrire en codes, tapez \"/\" pour afficher un clavier de codes à 4 symboles.",
-    "about.description": "Kryptis est une application de bureau simple qui permet de traduire du texte en divers codes et inversement.",
-    "home.ctaDownload": "Accéder aux téléchargements et installez le logiciel !",
-    "home.ctaOnline": "Utilisez le traducteur directement sur le site !",
-    "home.ctaReviews": "Voir les avis !",
-    "home.whyTitle": "Pourquoi utiliser mon Kryptis ?",
-    "home.why1": "Kryptis est un projet gratuit et open source, ce qui signifie que vous pouvez l'utiliser sans aucun coût et même contribuer à son développement si vous le souhaitez.",
-    "home.advantages": "4 avantages clés :",
-    "home.advantage1Title": "Pas de pubs !",
-    "home.advantage1Desc": "Le Kryptis est un projet gratuit, ce qui signifie que vous pouvez l'utiliser sans aucun coût.",
-    "home.advantage2Title": "Traduction rapide et précise",
-    "home.advantage2Desc": "L'application fournit des traductions rapides et précises entre le texte et les divers codes, garantissant que vos messages sont correctement codés ou décodés.",
-    "home.advantage3Title": "Compatibilité de ponctuation",
-    "home.advantage3Desc": "Kryptis prend en charge les signes de ponctuation, ce qui le rend plus polyvalent pour différents types de messages.",
-    "home.advantage4Title": "Logiciel hors ligne avec interface visuelle",
-    "home.advantage4Desc": "L'application peut être utilisée hors ligne et dispose d'une interface visuelle qui améliore l'expérience utilisateur.",
-    "home.historyTitle": "Un aperçu de mon histoire",
-    "home.morseTitle": "Qu'est-ce que le code Morse ?",
-    "home.explain1": "Le code Morse est un moyen de transmettre des informations textuelles sous forme de séries de sons courts et longs.<br>Il a été inventé par Samuel Morse dans les années 1830.<br>Le message le plus célèbre était le S.O.S : <strong>.../---/...</strong>.<br>Aujourd'hui il est encore utilisé dans les <em><strong><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></strong></em>.",
-    "downloads.title": "Télécharger Kryptis",
-    "downloads.latest": "Version 2.0 (Dernière)",
-    "downloads.line1": "La dernière version de Kryptis est maintenant disponible pour Windows, Linux et macOS*.",
-    "downloads.heroText": "La façon la plus rapide de traduire les codes sur desktop ⚡",
-    "downloads.comingSoon": "Bientôt disponible !",
-    "downloads.osLabel": "Système d'exploitation",
-    "downloads.typeLabel": "Type d'installation",
-    "downloads.os.windows": "Windows",
-    "downloads.os.linux": "Linux",
-    "downloads.os.macos": "macOS",
-    "downloads.type.setup": "Installation",
-    "downloads.type.portable": "Portable",
-    "downloads.button": "Télécharger",
-    "downloads.ctaButton": "Télécharger maintenant",
-    "downloads.note": "* La version macOS n'a pas été testée, elle peut donc ne pas fonctionner comme prévu. Si vous rencontrez des problèmes, merci de me contacter par e-mail dans la section contact.",
-    "reviews.link": "Lire et laisser un avis",
-    "reviews.pageTitle": "Avis sur Kryptis",
-    "reviews.metaDescription": "Lisez et laissez des avis sur Kryptis.",
-    "reviews.metaKeywords": "avis traducteur codes, retours traducteur codes, avis utilisateurs",
-    "reviews.ogTitle": "Avis sur Kryptis",
-    "reviews.ogDescription": "Partagez votre expérience avec Kryptis.",
-    "reviews.twitterTitle": "Avis sur Kryptis",
-    "reviews.twitterDescription": "Lisez et laissez des avis sur Kryptis.",
-    "reviews.title": "Kryptis",
-    "reviews.subtitle": "Partagez votre expérience",
-    "reviews.formTitle": "Laisser un avis",
-    "reviews.nameLabel": "Nom",
-    "reviews.ratingLabel": "Note",
-    "reviews.messageLabel": "Message",
-    "reviews.submit": "Envoyer l'avis",
-    "reviews.listTitle": "Derniers avis",
-    "reviews.empty": "Aucun avis pour le moment. Soyez le premier à en laisser un.",
-    "reviews.ratingTitle": "Note globale",
-    "reviews.p": "Aidez les autres en partageant votre avis sur Kryptis ⭐",
-    "reviews.back": "Retour à la page de téléchargement",
-    "reviews.statusSuccess": "Merci ! Votre avis a été enregistré sur cet appareil.",
-    "reviews.statusError": "Merci de remplir tous les champs.",
-    "reviews.ratingText": "Note",
-    "reviews.byline": "Par",
-    "reviews.on": "le",
-    "thanks.pageTitle": "Merci - Kryptis",
-    "thanks.metaDescription": "Merci pour votre avis sur Kryptis !",
-    "thanks.metaKeywords": "traducteur codes merci, confirmation avis, retour",
-    "thanks.title": "Merci aux acteurs qui m'ont aidé à créer ce projet !",
-    "thanks.message": "Merci principalement au groupe scout où j'ai appris les codes et où j'ai commencé ce projet de Kryptis.",
-    "thanks.contributors": "Je tiens également à remercier Olivier Andrieu et son livre \"Réussir son référencement web\" qui m'a beaucoup aidé à comprendre le SEO et à optimiser mon site pour les moteurs de recherche. Je remercie aussi mon père, qui m'a donné des idées et des retours pour améliorer le projet et le site. Enfin, merci à toutes les personnes qui m'ont aidé en donnant des retours et des suggestions pour améliorer le projet.",
-    "whoami.pageTitle": "Qui suis-je - Kryptis",
-    "whoami.metaDescription": "Découvrez le créateur de Kryptis, Joseph Rollo, et sa passion pour les codes et le développement logiciel.",
-    "whoami.metaKeywords": "Joseph Rollo, créateur Kryptis, développeur logiciel, passionné de codes, à propos de l'auteur",
-    "whoami.title": "À propos de l'auteur",
-    "whoami.description": "Joseph Rollo est un développeur logiciel passionné et un amateur de codes. Avec une formation en informatique, il a créé Kryptis pour partager son amour des codes et offrir un outil utile aux autres. Lorsqu'il ne code pas, Joseph aime explorer de nouvelles technologies et contribuer à l'open source.",
-    "project.infoLabel": "Informations sur le projet :",
-    "project.readme": "GitHub README",
-    "footer.copyright": "Copyright © 2026 Joseph Rollo. Tous droits réservés.",
-    "footer.github": "Mon GitHub",
-    "footer.reviews": "Avis",
-    "footer.home": "Accueil",
-    "footer.contact": "Contact",
-    "footer.emailLabel": "Email :",
-    "footer.thanks": "Remerciements",
-    "online.title": "Kryptis en ligne",
-    "online.description": "Entrez du texte dans le champ de droite pour le traduire automatiquement en codes. Pour taper en codes, écrivez \"/\" pour afficher un clavier de codes à 4 symboles.",
-    "online.inputPlaceholder": "Entrez du texte ou des codes",
-    "online.inputLabel": "Entrez du texte",
-    "online.outputLabel": "Sortie Codes",
-    "online.copyButton": "Copier les Codes",
-    "online.copySuccess": "Codes copiés dans le presse-papier !",
-    "online.copyError": "Erreur lors de la copie des codes.",
-    "cgu.description": "En utilisant ce site, vous acceptez les termes et conditions suivants : Le Kryptis est fourni tel quel sans aucune garantie. Le développeur n'est pas responsable de tout dommage ou perte de données résultant de l'utilisation de ce site. Les utilisateurs sont responsables de s'assurer que leur utilisation du Kryptis est conforme à toutes les lois et réglementations applicables. En utilisant ce site, vous acceptez également notre Politique de confidentialité, qui explique comment nous collectons et utilisons vos données. Si vous n'acceptez pas ces termes, veuillez ne pas utiliser ce site. Toute reproduction ou redistribution de ce site ou de son contenu est interdite sans l'autorisation écrite préalable du développeur.",
-    "cgu.title": "Conditions d'utilisation",
-    "cgu.accept": "Accepter",
-    "cgu.decline": "Refuser"
-  },
-  es: {
-    "page.title": "Descargar Traductor de Códigos para Windows, Linux y macOS",
-    "home.pageTitle": "Traductor de Códigos: Inicio",
-    "home.metaDescription": "Descubre Traductor de Códigos: herramientas en línea y fuera de línea para traducir texto a diversos códigos y códigos a texto.",
-    "home.metaKeywords": "traductor códigos, códigos, traductor en línea, aplicación de escritorio, descarga",
-    "home.ogTitle": "Traductor de Códigos",
-    "home.ogDescription": "Descubre Traductor de Códigos, una herramienta gratuita para traducir texto y diversos códigos con versiones en línea y de escritorio.",
-    "online.pageTitle": "Traductor de Códigos en línea",
-    "online.metaDescription": "Usa el traductor de códigos en línea para convertir texto y códigos al instante en tu navegador.",
-    "online.metaKeywords": "traductor códigos en línea, códigos, texto a códigos, códigos a texto, navegador",
-    "online.ogTitle": "Traductor de Códigos en línea",
-    "online.ogDescription": "Traduce texto a diversos códigos y códigos a texto directamente en línea, sin instalar nada.",
-    "download.pageTitle": "Descargar Traductor de Códigos",
-    "download.metaDescription": "Descarga las versiones de escritorio de Traductor de Códigos para Windows, Linux y macOS.",
-    "download.metaKeywords": "descarga traductor códigos, app códigos escritorio, windows linux macos",
-    "download.ogTitle": "Descargar Traductor de Códigos",
-    "download.ogDescription": "Obtén Traductor de Códigos para Windows, Linux y macOS y traduce texto a códigos sin conexión.",
-    "meta.description": "Descarga Traductor de Códigos para Windows, Linux y macOS. Traduce texto a diversos códigos y códigos a texto automáticamente.",
-    "og.description": "Traduce texto a códigos y códigos a texto. Descarga versiones de escritorio de Traductor de Códigos.",
-    "og.locale": "es_ES",
-    "og.siteName": "Traductor de Códigos",
-    "all.copyError": "No se permite copiar.",
-    "twitter.title": "Descarga Traductor de Códigos",
-    "twitter.description": "Descarga Traductor de Códigos y convierte texto y códigos fácilmente.",
-    "nav.label": "Selector de idioma",
-    "nav.selectLabel": "Seleccionar idioma",
-    "mainNav.label": "Navegación principal",
-    "mainNav.home": "Inicio",
-    "mainNav.online": "Traductor en línea",
-    "mainNav.download": "Descargar",
-    "mainNav.reviews": "Reseñas",
-    "header.title": "Kryptis - Inicio",
-    "header.logoText": "Kryptis",
-    "about.title": "Sobre la aplicación",
-    "about.welcome": "Bienvenido a Traductor de Códigos.",
-    "about.line1": "Esta herramienta traduce texto a diversos códigos y códigos a texto.",
-    "about.line2": "En la aplicación, escribe texto en el panel derecho y se traducirá automáticamente.",
-    "about.description": "Traductor de Códigos es una aplicación de escritorio sencilla que permite traducir texto a diversos códigos y viceversa.",
-    "home.ctaDownload": "Ir a descargas e instala el software sin conexión.",
-    "home.ctaOnline": "Usa el traductor en línea directamente en el sitio web.",
-    "home.ctaReviews": "Ver reseñas!",
-    "home.whyTitle": "¿Por qué usar mi Traductor de Códigos?",
-    "home.why1": "Traductor de Códigos es un proyecto gratuito y de código abierto, lo que significa que puedes usarlo sin ningún costo.",
-    "home.advantages": "4 ventajas clave:",
-    "home.advantage1Title": "¡Sin publicidad!",
-    "home.advantage1Desc": "El traductor de códigos es un proyecto gratuito.",
-    "home.advantage2Title": "Traducción rápida y precisa",
-    "home.advantage2Desc": "La aplicación ofrece traducciones rápidas y precisas entre texto y diversos códigos.",
-    "home.advantage3Title": "Compatibilidad con puntuación",
-    "home.advantage3Desc": "Traductor de Códigos admite signos de puntuación.",
-    "home.advantage4Title": "Software sin conexión con interfaz visual",
-    "home.advantage4Desc": "La aplicación se puede usar sin conexión y cuenta con una interfaz visual.",
-    "home.historyTitle": "Una visión de mi historia",
-    "home.morseTitle": "¿Qué es el código Morse?",
-    "home.explain1": "El código Morse es un método para transmitir información de texto como una serie de sonidos cortos y largos.<br>Fue inventado por Samuel Morse en la década de 1830.<br>El mensaje más famoso fue S.O.S: <strong>.../---/...</strong>.<br>Hoy todavía se usa en los <em><strong><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></strong></em>.",
-    "downloads.title": "Descargar Traductor de Códigos",
-    "downloads.latest": "Versión 2.0 (Última)",
-    "downloads.line1": "La última versión de Traductor de Códigos ahora está disponible para Windows, Linux y macOS*.",
-    "downloads.heroText": "La forma más rápida de traducir códigos en el escritorio ⚡",
-    "downloads.comingSoon": "¡Próximamente!",
-    "downloads.osLabel": "Sistema operativo",
-    "downloads.typeLabel": "Tipo de instalador",
-    "downloads.os.windows": "Windows",
-    "downloads.os.linux": "Linux",
-    "downloads.os.macos": "macOS",
-    "downloads.type.setup": "Instalación",
-    "downloads.type.portable": "Portátil",
-    "downloads.button": "Descargar",
-    "downloads.ctaButton": "Descargar ahora",
-    "downloads.note": "* La versión de macOS no ha sido probada.",
-    "reviews.link": "Leer y dejar una reseña",
-    "reviews.pageTitle": "Reseñas de Traductor de Códigos",
-    "reviews.metaDescription": "Lee y deja reseñas sobre Traductor de Códigos.",
-    "reviews.metaKeywords": "reseñas traductor códigos, opiniones traductor códigos, reseñas usuarios",
-    "reviews.ogTitle": "Reseñas de Traductor de Códigos",
-    "reviews.ogDescription": "Comparte tu experiencia con Traductor de Códigos.",
-    "reviews.twitterTitle": "Reseñas de Traductor de Códigos",
-    "reviews.twitterDescription": "Lee y deja reseñas sobre Traductor de Códigos.",
-    "reviews.title": "Traductor de Códigos",
-    "reviews.subtitle": "Comparte tu experiencia",
-    "reviews.formTitle": "Deja una reseña",
-    "reviews.nameLabel": "Nombre",
-    "reviews.ratingLabel": "Puntuación",
-    "reviews.messageLabel": "Mensaje",
-    "reviews.submit": "Enviar reseña",
-    "reviews.listTitle": "Reseñas recientes",
-    "reviews.empty": "Aún no hay reseñas. Sé el primero en dejar una.",
-    "reviews.ratingTitle": "Calificación general",
-    "reviews.p": "Ayuda a otros compartiendo tu opinión sobre Traductor de Códigos ⭐",
-    "reviews.back": "Volver a la página de descarga",
-    "reviews.statusSuccess": "Gracias. Tu reseña se guardó en este dispositivo.",
-    "reviews.statusError": "Por favor completa todos los campos.",
-    "reviews.ratingText": "Puntuación",
-    "reviews.byline": "Por",
-    "reviews.on": "el",
-    "thanks.pageTitle": "Gracias - Traductor de Códigos",
-    "thanks.metaDescription": "¡Gracias por tu opinión sobre Traductor de Códigos!",
-    "thanks.metaKeywords": "traductor códigos gracias, confirmación de reseña, feedback",
-    "thanks.title": "¡Gracias a los actores que me ayudaron a crear este proyecto!",
-    "thanks.message": "Gracias principalmente al grupo scout donde aprendí los códigos y donde comencé este proyecto del traductor de códigos.",
-    "thanks.contributors": "También quiero agradecer a Olivier Andrieu y su libro \"Réussir son référencement web\" que me ayudó mucho a entender el SEO y a optimizar mi sitio web para los motores de búsqueda. Quiero agradecer a mi padre, quien me dio ideas y comentarios para mejorar el proyecto y el sitio. Finalmente, gracias a todas las personas que me ayudaron dando opiniones y sugerencias para mejorar el proyecto.",
-    "whoami.pageTitle": "Quién soy - Traductor de Códigos",
-    "whoami.metaDescription": "Conoce al creador de Traductor de Códigos, Joseph Rollo, y su pasión por los códigos y el desarrollo de software.",
-    "whoami.metaKeywords": "Joseph Rollo, creador de Traductor de Códigos, desarrollador de software, entusiasta de códigos, sobre el autor",
-    "whoami.title": "Sobre el autor",
-    "whoami.description": "Joseph Rollo es un apasionado desarrollador de software y entusiasta de códigos. Con una formación en informática, creó Traductor de Códigos para compartir su amor por los códigos y ofrecer una herramienta útil a los demás. Cuando no está programando, a Joseph le gusta explorar nuevas tecnologías y contribuir a proyectos de código abierto.",
-    "project.infoLabel": "Información del proyecto:",
-    "project.readme": "GitHub README",
-    "footer.copyright": "Copyright © 2026 Joseph Rollo. Todos los derechos reservados.",
-    "footer.github": "Mi GitHub",
-    "footer.reviews": "Reseñas",
-    "footer.home": "Inicio",
-    "footer.contact": "Contacto",
-    "footer.emailLabel": "Email:",
-    "footer.thanks": "Gracias",
-    "online.title": "Traductor de Códigos en línea",
-    "online.description": "Ingrese texto para traducirlo automáticamente a códigos.",
-    "online.inputPlaceholder": "Introduce texto o códigos",
-    "online.inputLabel": "Ingrese texto",
-    "online.outputLabel": "Salida Morse",
-    "online.copyButton": "Copiar Morse",
-    "online.copySuccess": "Morse copiado al portapapeles.",
-    "online.copyError": "Error al copiar el código Morse.",
-    "cgu.description": "Al usar este sitio web, aceptas los siguientes términos y condiciones.",
-    "cgu.title": "Condiciones de uso",
-    "cgu.accept": "Aceptar",
-    "cgu.decline": "Rechazar"
-  },
-  it: {
-    "page.title": "Scarica Kryptis per Windows, Linux e macOS",
-    "home.pageTitle": "Kryptis: Home",
-    "home.metaDescription": "Scopri Kryptis: strumenti online e offline per tradurre testo in codice Morse e codice Morse in testo.",
-    "home.metaKeywords": "traduttore morse, codice morse, traduttore online, app desktop, download",
-    "home.ogTitle": "Kryptis",
-    "home.ogDescription": "Scopri Kryptis, uno strumento gratuito per tradurre testo e codice Morse.",
-    "online.pageTitle": "Traduttore Morse online",
-    "online.metaDescription": "Usa il traduttore Morse online per convertire istantaneamente testo e codice Morse nel browser.",
-    "online.metaKeywords": "traduttore morse online, codice morse, testo in morse, morse in testo, browser",
-    "online.ogTitle": "Traduttore Morse online",
-    "online.ogDescription": "Traduci testo in codice Morse e codice Morse in testo direttamente online.",
-    "download.pageTitle": "Scarica Kryptis",
-    "download.metaDescription": "Scarica le versioni desktop di Kryptis per Windows, Linux e macOS.",
-    "download.metaKeywords": "download traduttore morse, app morse desktop, windows linux macos",
-    "download.ogTitle": "Scarica Kryptis",
-    "download.ogDescription": "Scarica Kryptis per Windows, Linux e macOS.",
-    "meta.description": "Scarica Kryptis per Windows, Linux e macOS.",
-    "og.description": "Traduci testo in Morse e Morse in testo.",
-    "og.locale": "it_IT",
-    "og.siteName": "Kryptis",
-    "all.copyError": "La copia non è consentita.",
-    "twitter.title": "Download Kryptis",
-    "twitter.description": "Scarica Kryptis e converti facilmente testo e codice Morse.",
-    "nav.label": "Selettore lingua",
-    "nav.selectLabel": "Seleziona lingua",
-    "mainNav.label": "Navigazione principale",
-    "mainNav.home": "Home",
-    "mainNav.online": "Traduttore online",
-    "mainNav.download": "Scaricamento",
-    "mainNav.reviews": "Recensioni",
-    "header.title": "Kryptis - Home",
-    "header.logoText": "Kryptis",
-    "about.title": "Informazioni sull'app",
-    "about.welcome": "Benvenuto in Kryptis.",
-    "about.line1": "Questo strumento traduce testo in codice Morse e codice Morse in testo.",
-    "about.line2": "Nell'app, scrivi il testo nel pannello di destra e verrà tradotto automaticamente.",
-    "about.description": "Kryptis e' una semplice applicazione desktop.",
-    "home.ctaDownload": "Vai ai download e installa il software offline!",
-    "home.ctaOnline": "Usa il traduttore online direttamente sul sito!",
-    "home.ctaReviews": "Vedi le recensioni!",
-    "home.whyTitle": "Perché usare il mio Kryptis?",
-    "home.why1": "Kryptis è un progetto gratuito e open source.",
-    "home.advantages": "4 vantaggi principali:",
-    "home.advantage1Title": "Niente pubblicità!",
-    "home.advantage1Desc": "Il traduttore Morse è un progetto gratuito.",
-    "home.advantage2Title": "Traduzione veloce e accurata",
-    "home.advantage2Desc": "L'app fornisce traduzioni rapide e accurate tra testo e codice Morse.",
-    "home.advantage3Title": "Compatibilità con la punteggiatura",
-    "home.advantage3Desc": "Kryptis supporta i segni di punteggiatura.",
-    "home.advantage4Title": "Software offline con interfaccia visiva",
-    "home.advantage4Desc": "L'app può essere utilizzata offline.",
-    "home.historyTitle": "Una visione della mia storia",
-    "home.morseTitle": "Cos'è il codice Morse?",
-    "home.explain1": "Il codice Morse è un metodo per trasmettere informazioni testuali come una serie di suoni corti e lunghi.<br>Fu inventato da Samuel Morse negli anni 1830.<br>Il messaggio più famoso era S.O.S: <strong>.../---/...</strong>.<br>Oggi viene ancora usato negli <em><strong><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></strong></em>.",
-    "downloads.title": "Scarica Kryptis",
-    "downloads.latest": "Versione 2.0 (Ultima)",
-    "downloads.line1": "L'ultima versione di Kryptis è ora disponibile per Windows, Linux e macOS*.",
-    "downloads.heroText": "Il modo più veloce per tradurre il Morse su desktop ⚡",
-    "downloads.comingSoon": "In arrivo!",
-    "downloads.osLabel": "Sistema operativo",
-    "downloads.typeLabel": "Tipo di installazione",
-    "downloads.os.windows": "Windows",
-    "downloads.os.linux": "Linux",
-    "downloads.os.macos": "macOS",
-    "downloads.type.setup": "Installazione",
-    "downloads.type.portable": "Portatile",
-    "downloads.button": "Scarica",
-    "downloads.ctaButton": "Scarica ora",
-    "downloads.note": "* La versione macOS non è stata testata.",
-    "reviews.link": "Leggi e lascia una recensione",
-    "reviews.pageTitle": "Recensioni di Kryptis",
-    "reviews.metaDescription": "Leggi e lascia recensioni su Kryptis.",
-    "reviews.metaKeywords": "recensioni Kryptis, opinioni Kryptis, recensioni utenti",
-    "reviews.ogTitle": "Recensioni di Kryptis",
-    "reviews.ogDescription": "Condividi la tua esperienza con Kryptis.",
-    "reviews.twitterTitle": "Recensioni di Kryptis",
-    "reviews.twitterDescription": "Leggi e lascia recensioni su Kryptis.",
-    "reviews.title": "Traduttore Morse",
-    "reviews.subtitle": "Condividi la tua esperienza",
-    "reviews.formTitle": "Lascia una recensione",
-    "reviews.nameLabel": "Nome",
-    "reviews.ratingLabel": "Valutazione",
-    "reviews.messageLabel": "Messaggio",
-    "reviews.submit": "Invia recensione",
-    "reviews.listTitle": "Recensioni recenti",
-    "reviews.empty": "Nessuna recensione ancora. Sii il primo a lasciarne una.",
-    "reviews.ratingTitle": "Valutazione complessiva",
-    "reviews.p": "Aiuta gli altri condividendo la tua opinione su Kryptis ⭐",
-    "reviews.back": "Torna alla pagina di download",
-    "reviews.statusSuccess": "Grazie. La tua recensione è stata salvata su questo dispositivo.",
-    "reviews.statusError": "Per favore compila tutti i campi.",
-    "reviews.ratingText": "Valutazione",
-    "reviews.byline": "Da",
-    "reviews.on": "il",
-    "thanks.pageTitle": "Grazie - Kryptis",
-    "thanks.metaDescription": "Grazie per la tua recensione di Kryptis!",
-    "thanks.metaKeywords": "Kryptis grazie, conferma recensione, feedback",
-    "thanks.title": "Grazie agli attori che mi hanno aiutato a creare questo progetto!",
-    "thanks.message": "Grazie soprattutto al gruppo scout dove ho imparato il codice Morse e dove ho iniziato questo progetto del traduttore Morse.",
-    "thanks.contributors": "Voglio anche ringraziare Olivier Andrieu e il suo libro \"Réussir son référencement web\" che mi ha aiutato molto a capire la SEO e a ottimizzare il mio sito per i motori di ricerca. Ringrazio anche mio padre, che mi ha dato idee e feedback per migliorare il progetto e il sito. Infine, grazie a tutte le persone che mi hanno aiutato fornendo feedback e suggerimenti per migliorare il progetto.",
-    "whoami.pageTitle": "Chi sono - Kryptis",
-    "whoami.metaDescription": "Scopri il creatore di Kryptis, Joseph Rollo, e la sua passione per il codice Morse e lo sviluppo software.",
-    "whoami.metaKeywords": "Joseph Rollo, creatore di Kryptis, sviluppatore software, appassionato di codice Morse, sull'autore",
-    "whoami.title": "Informazioni sull'autore",
-    "whoami.description": "Joseph Rollo è un appassionato sviluppatore software e un entusiasta del codice Morse. Con un background in informatica, ha creato Kryptis per condividere il suo amore per il codice Morse e fornire uno strumento utile agli altri. Quando non programma, Joseph ama esplorare nuove tecnologie e contribuire a progetti open source.",
-    "project.infoLabel": "Informazioni sul progetto:",
-    "project.readme": "GitHub README",
-    "footer.copyright": "Copyright © 2026 Joseph Rollo. Tutti i diritti riservati.",
-    "footer.github": "Il mio GitHub",
-    "footer.reviews": "Recensioni",
-    "footer.home": "Home",
-    "footer.contact": "Contatto",
-    "footer.emailLabel": "Email:",
-    "footer.thanks": "Ringraziamenti",
-    "online.title": "Traduttore Morse Online",
-    "online.description": "Inserisci il testo per tradurlo automaticamente in codice Morse.",
-    "online.inputPlaceholder": "Inserisci testo o codice Morse",
-    "online.inputLabel": "Inserisci il testo",
-    "online.outputLabel": "Output Morse",
-    "online.copyButton": "Copia Morse",
-    "online.copySuccess": "Morse copiato negli appunti!",
-    "online.copyError": "Errore durante la copia del codice Morse.",
-    "cgu.description": "Utilizzando questo sito web, accetti i seguenti termini e condizioni.",
-    "cgu.title": "Condizioni d'uso",
-    "cgu.accept": "Accetto",
-    "cgu.decline": "Rifiuto"
-  },
-  de: {
-    "page.title": "Kryptis für Windows, Linux und macOS herunterladen",
-    "home.pageTitle": "Kryptis: Startseite",
-    "home.metaDescription": "Entdecke Kryptis: Online- und Offline-Tools zum Übersetzen von Text in Morsecode und Morsecode in Text.",
-    "home.metaKeywords": "Kryptis, morsecode, online übersetzer, desktop app, download",
-    "home.ogTitle": "Kryptis",
-    "home.ogDescription": "Entdecke Kryptis, ein kostenloses Tool zum Übersetzen von Text und Morsecode.",
-    "online.pageTitle": "Online Kryptis",
-    "online.metaDescription": "Verwende den Online Kryptis, um Text und Morsecode sofort in deinem Browser zu konvertieren.",
-    "online.metaKeywords": "online Kryptis, morsecode, text zu morse, morse zu text, browser übersetzer",
-    "online.ogTitle": "Online Kryptis",
-    "online.ogDescription": "Übersetze Text in Morsecode und Morsecode in Text direkt online.",
-    "download.pageTitle": "Kryptis herunterladen",
-    "download.metaDescription": "Lade die Desktop-Versionen von Kryptis für Windows, Linux und macOS herunter.",
-    "download.metaKeywords": "Kryptis herunterladen, morse desktop app, windows linux macos",
-    "download.ogTitle": "Kryptis herunterladen",
-    "download.ogDescription": "Hol dir Kryptis für Windows, Linux und macOS.",
-    "meta.description": "Lade Kryptis für Windows, Linux und macOS herunter.",
-    "og.description": "Übersetze Text in Morse und Morse in Text.",
-    "og.locale": "de_DE",
-    "og.siteName": "Kryptis",
-    "all.copyError": "Kopieren ist nicht erlaubt.",
-    "twitter.title": "Kryptis Download",
-    "twitter.description": "Lade Kryptis herunter und konvertiere Text und Morsecode einfach.",
-    "nav.label": "Sprachauswahl",
-    "nav.selectLabel": "Sprache auswählen",
-    "mainNav.label": "Hauptnavigation",
-    "mainNav.home": "Startseite",
-    "mainNav.online": "Online-Übersetzer",
-    "mainNav.download": "Herunterladen",
-    "mainNav.reviews": "Bewertungen",
-    "header.title": "Kryptis - Startseite",
-    "header.logoText": "Kryptis",
-    "about.title": "Über die App",
-    "about.welcome": "Willkommen bei Kryptis.",
-    "about.line1": "Dieses Tool übersetzt Text in Morsecode und Morsecode zurück in Text.",
-    "about.line2": "Schreibe in der App deinen Text in das rechte Feld, dann wird er automatisch übersetzt.",
-    "about.description": "Kryptis ist eine einfache Desktop-Anwendung.",
-    "home.ctaDownload": "Gehe zu Downloads und installiere die Offline-Software!",
-    "home.ctaOnline": "Verwende den Online-Übersetzer direkt auf der Website!",
-    "home.ctaReviews": "Sieh dir Bewertungen an!",
-    "home.whyTitle": "Warum meinen Kryptis verwenden?",
-    "home.why1": "Kryptis ist ein kostenloses Open-Source-Projekt.",
-    "home.advantages": "4 Hauptvorteile:",
-    "home.advantage1Title": "Keine Werbung!",
-    "home.advantage1Desc": "Der Kryptis ist ein kostenloses Projekt.",
-    "home.advantage2Title": "Schnelle und genaue Übersetzung",
-    "home.advantage2Desc": "Die App bietet schnelle und genaue Übersetzungen zwischen Text und Morsecode.",
-    "home.advantage3Title": "Kompatibilität mit Satzzeichen",
-    "home.advantage3Desc": "Kryptis unterstützt Satzzeichen.",
-    "home.advantage4Title": "Offline-Software mit visueller Oberfläche",
-    "home.advantage4Desc": "Die App kann offline verwendet werden.",
-    "home.historyTitle": "Ein Einblick in meine Geschichte",
-    "home.morseTitle": "Was ist der Morsecode?",
-    "home.explain1": "Der Morsecode ist eine Methode, Textinformationen als Serie von kurzen und langen Tönen zu übertragen.<br>Er wurde in den 1830er Jahren von Samuel Morse erfunden.<br>Die bekannteste Nachricht war S.O.S: <strong>.../---/...</strong>.<br>Heute wird er noch bei den <em><strong><a href=\"https://www.scouts-europe.org/scoutorama/l-apprentissage-du-morse/\">Scouts</a></strong></em> verwendet.",
-    "downloads.title": "Kryptis herunterladen",
-    "downloads.latest": "Version 2.0 (Neueste)",
-    "downloads.line1": "Die neueste Version von Kryptis ist jetzt für Windows, Linux und macOS* verfügbar.",
-    "downloads.heroText": "Der schnellste Weg, Morse auf dem Desktop zu übersetzen ⚡",
-    "downloads.comingSoon": "Kommt bald!",
-    "downloads.osLabel": "Betriebssystem",
-    "downloads.typeLabel": "Installationsart",
-    "downloads.os.windows": "Windows",
-    "downloads.os.linux": "Linux",
-    "downloads.os.macos": "macOS",
-    "downloads.type.setup": "Installation",
-    "downloads.type.portable": "Portabel",
-    "downloads.button": "Herunterladen",
-    "downloads.ctaButton": "Jetzt herunterladen",
-    "downloads.note": "* Die macOS-Version wurde nicht getestet.",
-    "reviews.link": "Bewertung lesen und schreiben",
-    "reviews.pageTitle": "Kryptis Bewertungen",
-    "reviews.metaDescription": "Lies und schreibe Bewertungen zu Kryptis.",
-    "reviews.metaKeywords": "bewertungen Kryptis, feedback Kryptis, nutzerbewertungen",
-    "reviews.ogTitle": "Kryptis Bewertungen",
-    "reviews.ogDescription": "Teile deine Erfahrung mit Kryptis.",
-    "reviews.twitterTitle": "Kryptis Bewertungen",
-    "reviews.twitterDescription": "Lies und schreibe Bewertungen zu Kryptis.",
-    "reviews.title": "Morse-Übersetzer",
-    "reviews.subtitle": "Teile deine Erfahrung",
-    "reviews.formTitle": "Bewertung schreiben",
-    "reviews.nameLabel": "Name",
-    "reviews.ratingLabel": "Bewertung",
-    "reviews.messageLabel": "Nachricht",
-    "reviews.submit": "Bewertung senden",
-    "reviews.listTitle": "Neueste Bewertungen",
-    "reviews.empty": "Noch keine Bewertungen. Sei der Erste.",
-    "reviews.ratingTitle": "Gesamtbewertung",
-    "reviews.p": "Hilf anderen, indem du deine Meinung über Kryptis teilst ⭐",
-    "reviews.back": "Zurueck zur Download-Seite",
-    "reviews.statusSuccess": "Danke. Deine Bewertung wurde auf diesem Geraet gespeichert.",
-    "reviews.statusError": "Bitte fuelle alle Felder aus.",
-    "reviews.ratingText": "Bewertung",
-    "reviews.byline": "Von",
-    "reviews.on": "am",
-    "thanks.pageTitle": "Danke - Kryptis",
-    "thanks.metaDescription": "Danke für deine Bewertung von Kryptis!",
-    "thanks.metaKeywords": "Kryptis danke, bewertungsbestätigung, feedback",
-    "thanks.title": "Danke an die Akteure, die mir bei der Erstellung dieses Projekts geholfen haben!",
-    "thanks.message": "Danke besonders der Pfadfindergruppe, in der ich den Morsecode gelernt habe und in der ich dieses Projekt des Morseübersetzers begonnen habe.",
-    "thanks.contributors": "Ich möchte auch Olivier Andrieu und seinem Buch \"Réussir son référencement web\" danken, das mir sehr geholfen hat, SEO zu verstehen und meine Website für Suchmaschinen zu optimieren. Ich danke auch meinem Vater, der mir Ideen und Feedback gegeben hat, um das Projekt und die Website zu verbessern. Schließlich danke ich allen, die mir durch Feedback und Vorschläge geholfen haben, das Projekt zu verbessern.",
-    "whoami.pageTitle": "Wer bin ich - Kryptis",
-    "whoami.metaDescription": "Erfahre mehr über den Ersteller von Kryptis, Joseph Rollo, und seine Leidenschaft für Morsecode und Softwareentwicklung.",
-    "whoami.metaKeywords": "Joseph Rollo, Ersteller von Kryptis, Softwareentwickler, Morsecode-Enthusiast, über den Autor",
-    "whoami.title": "Über den Autor",
-    "whoami.description": "Joseph Rollo ist ein leidenschaftlicher Softwareentwickler und Morsecode-Enthusiast. Mit einem Hintergrund in Informatik hat er Kryptis erstellt, um seine Liebe zum Morsecode zu teilen und anderen ein nützliches Werkzeug anzubieten. Wenn er nicht programmiert, erkundet Joseph gerne neue Technologien und trägt zu Open-Source-Projekten bei.",
-    "project.infoLabel": "Projektinformationen:",
-    "project.readme": "GitHub README",
-    "footer.copyright": "Copyright © 2026 Joseph Rollo. Alle Rechte vorbehalten.",
-    "footer.github": "Mein GitHub",
-    "footer.reviews": "Bewertungen",
-    "footer.home": "Startseite",
-    "footer.contact": "Kontakt",
-    "footer.emailLabel": "E-Mail:",
-    "footer.thanks": "Danksagungen",
-    "online.title": "Online Kryptis",
-    "online.description": "Geben Sie Text ein, um ihn automatisch ins Morse zu übersetzen.",
-    "online.inputPlaceholder": "Gib Text oder Morsecode ein",
-    "online.inputLabel": "Text eingeben",
-    "online.outputLabel": "Morsecode Ausgabe",
-    "online.copyButton": "Morsecode kopieren",
-    "online.copySuccess": "Morsecode in die Zwischenablage kopiert!",
-    "online.copyError": "Fehler beim Kopieren des Morse-Codes.",
-    "cgu.description": "Durch die Nutzung dieser Website akzeptieren Sie die Geschäftsbedingungen.",
-    "cgu.title": "Nutzungsbedingungen",
-    "cgu.accept": "Akzeptieren",
-    "cgu.decline": "Ablehnen"
-  }
-};
-
-const DOWNLOAD_PATHS = {
-  windows: "latest/win/Kryptis_Setup_1.0.0.exe",
-  linux: "latest/lin/",
-  macos: "latest/mac/"
-};
-
-function normalizeLanguage(lang) {
-  if (!lang) return "en";
-  const normalized = lang.toLowerCase().split("-")[0];
-  return SUPPORTED_LANGUAGES.includes(normalized) ? normalized : "en";
-}
-
-function getLanguageFromUrl() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlLang = urlParams.get("lang");
-  if (!urlLang) return null;
-  return normalizeLanguage(urlLang);
-}
-
-function getStoredLanguage() {
-  const stored = localStorage.getItem("preferredLanguage");
-  if (!stored) return null;
-  return normalizeLanguage(stored);
-}
-
-function applyTranslations(language) {
-  const strings = I18N[language] || I18N.en;
-  document.querySelectorAll("[data-i18n]").forEach((element) => {
-    const key = element.dataset.i18n;
-    const value = strings[key];
-    if (!value) return;
-
-    const attr = element.dataset.i18nAttr;
-    if (attr) {
-      attr.split(",").forEach((attrName) => {
-        const trimmed = attrName.trim();
-        if (trimmed) element.setAttribute(trimmed, value);
-      });
-      return;
-    }
-
-    element.innerHTML = value;
-  });
-}
-
-function updateSeoForLanguage(language) {
-  const robotsMeta = document.getElementById("robotsMeta");
-  const canonicalLink = document.getElementById("canonicalLink");
-
-  if (robotsMeta) {
-    robotsMeta.setAttribute(
-      "content",
-      language === "en"
-        ? "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
-        : "noindex,follow"
-    );
+  if (error) {
+    console.error("Erreur lors du chargement des avis :", error);
+    return [];
   }
 
-  if (canonicalLink) {
-    let path = window.location.pathname || "/index.html";
-    if (path === "/") path = "/index.html";
-    canonicalLink.setAttribute("href", path);
-  }
+  return data;
 }
 
-function setLanguage(language, options = {}) {
-  const normalized = normalizeLanguage(language);
-  const updateUrl = options.updateUrl !== false;
-
-  document.documentElement.lang = normalized;
-  localStorage.setItem("preferredLanguage", normalized);
-  applyTranslations(normalized);
-  updateSeoForLanguage(normalized);
-
-  const languageSelect = document.getElementById("languageSelect");
-  if (languageSelect) languageSelect.value = normalized;
-
-  if (updateUrl) {
-    const url = new URL(window.location.href);
-    if (normalized === "en") {
-      url.searchParams.delete("lang");
-    } else {
-      url.searchParams.set("lang", normalized);
-    }
-    window.history.replaceState({}, "", url.toString());
-  }
-}
-
-function updateDownloadLink() {
-  const osSelect = document.getElementById("os");
-  const downloadLink = document.getElementById("downloadLink");
-
-  if (!osSelect || !downloadLink) return;
-
-  const selectedOS = osSelect.value;
-  let href = "";
-
-  if(selectedOS==="windows") {
-    href=DOWNLOAD_PATHS.windows;
-  } else if (selectedOS === "linux") {
-    href = DOWNLOAD_PATHS.linux;
-  } else if(selectedOS==="macos") {
-    href=DOWNLOAD_PATHS.macos;
-  }
-
-  downloadLink.href = href;
-  downloadLink.setAttribute("download", "");
-}
-
-async function loadReviews() {
-  let local = [];
-  let server = [];
-
-  try {
-    const raw = localStorage.getItem(REVIEW_STORAGE_KEY);
-    local = raw ? JSON.parse(raw) : [];
-  } catch {
-    local = [];
-  }
-
-  try {
-    const res = await fetch("reviews.json?cache=" + Date.now());
-    server = await res.json();
-  } catch {
-    server = [];
-  }
-  // Fusion : on part du serveur, on ajoute les locaux non présents
-  const all = [...server];
-  local.forEach((l) => {
-    if (!all.find((s) => s.id === l.id)) {
-      all.push(l);
-    }
-  });
-
-  localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(all));
-  return all;
-}
-
+// Sauvegarde un avis sur Supabase
 async function saveReviewToServer(review) {
-  try {
-    await fetch("reviews.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(review)
-    });
-  } catch (e) {
-    console.warn("Erreur envoi serveur", e);
-  }
-}
+  const { error } = await supabase
+    .from("reviews")
+    .insert(review);
 
-async function syncLocalToServer(localReviews) {
-  let sentIds = [];
-  try {
-    sentIds = JSON.parse(localStorage.getItem(SENT_REVIEWS_KEY)) || [];
-  } catch {
-    sentIds = [];
+  if (error) {
+    console.error("Erreur lors de l'envoi de l'avis :", error);
+    return false;
   }
 
-  for (const review of localReviews) {
-    if (sentIds.includes(review.id)) continue;
-    await saveReviewToServer(review);
-    sentIds.push(review.id);
-  }
-
-  localStorage.setItem(SENT_REVIEWS_KEY, JSON.stringify(sentIds));
+  return true;
 }
 
-function saveReviewsLocal(reviews) {
-  localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(reviews));
-}
 
-async function deleteReviews(ids) {
-  try {
-    const res = await fetch("delete_review.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: "2011", ids })
-    });
-
-    const result = await res.json();
-    if (result.success) {
-      let local = JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || [];
-      local = local.filter((r) => !ids.includes(r.id));
-      localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(local));
-    } else {
-      console.error(result.error);
-    }
-  } catch (e) {
-    console.error("Erreur suppression", e);
-  }
-}
-
+// Fonction principale pour initialiser la page des avis
 async function initReviewsPage(language) {
   const form = document.getElementById("reviewForm");
   const status = document.getElementById("reviewStatus");
@@ -860,8 +43,7 @@ async function initReviewsPage(language) {
 
   if (!form || !status || !list) return;
 
-  await syncLocalToServer(JSON.parse(localStorage.getItem(REVIEW_STORAGE_KEY)) || []);
-  const reviews = await loadReviews();
+  const reviews = await fetchReviews();
   renderReviews(reviews, language);
 
   if (form.dataset.initialized === "true") return;
@@ -894,8 +76,7 @@ async function initReviewsPage(language) {
       date: new Date().toISOString()
     };
 
-    const updated = [newReview, ...(await loadReviews())].slice(0, 20);
-    saveReviewsLocal(updated);
+    const updated = [newReview, ...(await fetchReviews())].slice(0, 20);
     await saveReviewToServer(newReview);
 
     status.textContent = strings["reviews.statusSuccess"];
@@ -903,8 +84,8 @@ async function initReviewsPage(language) {
     renderReviews(updated, langNow);
   });
 }
-
-async function renderReviews(reviews, language) {
+// Préparation de la fonction pour rendre les avis sur la page
+function renderReviews(reviews, language) {
   const list = document.getElementById("reviewList");
   const empty = document.getElementById("reviewEmpty");
   if (!list || !empty) return;
@@ -924,8 +105,6 @@ async function renderReviews(reviews, language) {
     day: "numeric"
   });
 
-  // ── Vérification admin (lecture seule, bouton suppression si actif) ──
-  //const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   for (const review of reviews) {
     const card = document.createElement("article");
@@ -942,9 +121,6 @@ async function renderReviews(reviews, language) {
 
     const message = document.createElement("p");
     message.className = "review-message";
-
-    const lang = normalizeLanguage(document.documentElement.lang || "en");
-
     message.textContent = review.message;
 
     card.appendChild(meta);
@@ -952,6 +128,13 @@ async function renderReviews(reviews, language) {
     list.appendChild(card);
   }
 }
+
+
+/*
+Cette partie concerne la gestion des langues et de l'internationalisation du site, ainsi que la détection de la langue de l'utilisateur et la mise à jour de l'interface en conséquence.
+*/
+const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
+
 
 function getUserLocale() {
   const urlLang = getLanguageFromUrl();
@@ -971,6 +154,103 @@ function getUserLocale() {
   return "en";
 }
 
+/*
+Cette partie concerne la gestion des liens de téléchargement pour les différentes plateformes (Windows, Linux, macOS) et la mise à jour du lien de téléchargement en fonction de la sélection de l'utilisateur.
+*/
+const DOWNLOAD_PATHS = {
+  windows: "latest/win/Kryptis_Setup_1.0.0.exe",
+  linux: "latest/lin/",
+  macos: "latest/mac/"
+};
+
+
+function updateDownloadLink() {
+  const osSelect = document.getElementById("os");
+  const downloadLink = document.getElementById("downloadLink");
+
+  if (!osSelect || !downloadLink) return;
+
+  const selectedOS = osSelect.value;
+  let href = "";
+
+  if(selectedOS==="windows") {
+    href=DOWNLOAD_PATHS.windows;
+  } else if (selectedOS === "linux") {
+    href = DOWNLOAD_PATHS.linux;
+  } else if(selectedOS==="macos") {
+    href=DOWNLOAD_PATHS.macos;
+  }
+
+  downloadLink.href = href;
+  downloadLink.setAttribute("download", "");
+}
+
+/*
+Cette partie concerne l'envoie d'emails pour notifier l'administrateur du site lorsqu'un utilisateur accède au site depuis une IA, un logiciel ou un réseau social. Les informations supplémentaires sont également incluses dans l'email.
+*/
+
+function sendEmail(subject, body) {
+  fetch("/.netlify/functions/mail", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      to: "joseph.rollo2011@gmail.com",
+      subject: subject,
+      body: body
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      if (data.success) {
+        console.log("Email envoyé avec succès");
+      } else {
+        console.error("Erreur lors de l'envoi de l'email");
+      }
+    });
+}
+
+function prepareSource() {
+  const now = new Date().toISOString();
+  var urlParams=new URLSearchParams(window.location.search)
+  var utm_source=urlParams.get("utm_source")
+  var infos=urlParams.get("infos")
+ 
+  if (window.history.includes("gemini.google.com")) {      utm_source="gemini.google.com"
+  } else if (window.history.includes("copilot.microsoft.com")) {
+    utm_source=utm_source || "copilot.microsoft.com";
+  } else if (window.history.includes("claude.ai")) {
+    utm_source=utm_source || "claude.ai"
+  }
+  document.cookie = "source=" + utm_source + "; path=/; max-age=" + (60*60*24*30);
+  prepareEmails(utm_source, now, infos);
+}
+
+function prepareEmails(source, now, infos) {
+  if (source && (source.includes("chatgpt.com") || source.includes("gemini.google.com") || source.includes("copilot.microsoft.com") || source.includes("claude.ai"))) {
+    sendEmail(
+      "Accès au site depuis une IA",
+      `<p>Bonjour Joseph, un accès au site depuis une IA a été détecté le ${now}</p><br><p>Informations supplémentaires : ${infos}</p>`
+    );
+  } else if (source === "app") {
+    sendEmail(
+      "Accès au site depuis le logiciel",
+      `<p>Bonjour Joseph, un accès au site depuis le logiciel a été détecté le ${now}</p><br><p>Informations supplémentaires : ${infos}</p>`
+    );
+  } else if (source === "teams" || source === "whatsapp") {
+    sendEmail(
+      "Accès au site depuis un réseau social",
+      `<p>Bonjour Joseph, un accès au site depuis un réseau social a été détecté le ${now}</p><br><p>Informations supplémentaires : ${infos}</p>`
+    );
+  }
+}
+
+/*
+Fonction principale pour initialiser le site, gérer les événements et les interactions avec l'utilisateur.
+*/
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const initialLanguage = getUserLocale();
@@ -989,102 +269,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateDownloadLink();
   initReviewsPage(initialLanguage);
-  var urlParams=new URLSearchParams(window.location.search)
-  var source=urlParams.get("source")
-  var utm_source=urlParams.get("utm_source")
-  var infos=urlParams.get("infos")
-  if(utm_source) {
-    source=utm_source
-  }
-  if (window.history.includes("gemini.google.com")) {
-    source="gemini.google.com"
-  } else if (window.history.includes("copilot.microsoft.com")) {
-    source="copilot.microsoft.com"
-  } else if (window.history.includes("claude.ai")) {
-    source="claude.ai"
-  }
-  var DeviceOs=urlParams.get("DeviceOs")
-  document.cookie = "source=" + source + "; path=/; max-age=" + (60*60*24*30);
-  document.cookie = "DeviceOs=" + DeviceOs + "; path=/; max-age=" + (60*60*24*30);
-  if(source&&(source.includes("chatgpt.com")||source.includes("gemini.google.com")||source.includes("copilot.microsoft.com")||source.includes("claude.ai"))){
-    fetch("/.netlify/functions/mail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        to: "joseph.rollo2011@gmail.com",
-        subject: "Accès au site depuis une IA",
-        body: "<p>Bonjour Joseph, un accès au site depuis une IA a été détecté le " + new Date().toISOString() + "</p><br><p>Informations supplémentaires : " + infos + "</p>"
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.success) {
-          console.log("Email envoyé avec succès");
-        } else {
-          console.error("Erreur lors de l'envoi de l'email");
-        }
-      });
-  } else if (source === "app") {
-    fetch("/.netlify/functions/mail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        to: "joseph.rollo2011@gmail.com",
-        subject: "Accès au site depuis le logiciel",
-        body: "<p>Bonjour Joseph, un accès au site depuis le logiciel a été détecté le " + new Date().toISOString() + " sur un appareil de type " + DeviceOs + "</p><br><p>Informations supplémentaires : " + infos + "</p>"
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.success) {
-          console.log("Email envoyé avec succès");
-        } else {
-          console.error("Erreur lors de l'envoi de l'email");
-        }
-      });
-  } else if(source==="teams"||source==="whatsapp") {
-    fetch("/.netlify/functions/mail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        to: "joseph.rollo2011@gmail.com",
-        subject: "Accès au site depuis un réseau social",
-        body: "<p>Bonjour Joseph, un accès au site depuis un réseau social a été détecté le " + new Date().toISOString() + " sur le réseau " + source + "</p><br><p>Informations supplémentaires : " + infos + "</p>"
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.success) {
-          console.log("Email envoyé avec succès");
-        } else {
-          console.error("Erreur lors de l'envoi de l'email");
-        }
-      });
-  }
+  prepareSource();
+  
+  
 
-});
-function userIsAdmin() {
-  const isAdminCookie = document.cookie.split(";").find(cookie => cookie.trim().startsWith("isAdmin="));
-  return isAdminCookie && isAdminCookie.split("=")[1] === "true";
-}
-
-// ── Désactiver le clic droit ──
-document.addEventListener("contextmenu",function(e) {
-  if (userIsAdmin()) {
-    const isAdmin = new Cookie("isAdmin", "true", { path: "/", maxAge: 60*60*24*30 });
-  } else {
-    e.preventDefault();
-    alert(I18N[document.documentElement.lang||window.navigator.language]["all.copyError"]);
-  }
 });
 
 // ── Bannière CGU ──

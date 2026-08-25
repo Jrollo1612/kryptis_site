@@ -134,25 +134,22 @@ function renderReviews(reviews, language) {
 Cette partie concerne la gestion des langues et de l'internationalisation du site, ainsi que la détection de la langue de l'utilisateur et la mise à jour de l'interface en conséquence.
 */
 const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
+var language_select = document.getElementById("languageSelect");
 
-
-function getUserLocale() {
-  const urlLang = getLanguageFromUrl();
-  if (urlLang) return urlLang;
-
-  const storedLang = getStoredLanguage();
-  if (storedLang) return storedLang;
-
-  if (navigator.language) return normalizeLanguage(navigator.language);
-
-  const UserIP = window.UserIP || null;
-  if (UserIP && UserIP.country_code) {
-    const countryLangMap = { US: "en", GB: "en", FR: "fr", IT: "it", DE: "de" };
-    return countryLangMap[UserIP.country_code] || "en";
+function applyTranslations() {
+  if (language_select.value == "en") {
+    document.location.href = document.location.pathname.replace(/\/(fr|es|it|de)\//, "/");
+  } else if (language_select.value == "fr") {
+    document.location.href = document.location.pathname.replace(/\/(en|es|it|de)\//, "/fr/");
+  } else if (language_select.value == "es") {
+    document.location.href = document.location.pathname.replace(/\/(en|fr|it|de)\//, "/es/");
+  } else if (language_select.value == "it") {
+    document.location.href = document.location.pathname.replace(/\/(en|fr|es|de)\//, "/it/");
+  } else if (language_select.value == "de") {
+    document.location.href = document.location.pathname.replace(/\/(en|fr|es|it)\//, "/de/");
   }
-
-  return "en";
 }
+
 
 /*
 Cette partie concerne la gestion des liens de téléchargement pour les différentes plateformes (Windows, Linux, macOS) et la mise à jour du lien de téléchargement en fonction de la sélection de l'utilisateur.
@@ -253,16 +250,7 @@ Fonction principale pour initialiser le site, gérer les événements et les int
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const initialLanguage = getUserLocale();
-  setLanguage(initialLanguage, { updateUrl: true });
-
-  const languageSelect = document.getElementById("languageSelect");
-  if (languageSelect) {
-    languageSelect.addEventListener("change", (event) => {
-      setLanguage(event.target.value, { updateUrl: true });
-      initReviewsPage(event.target.value);
-    });
-  }
+  applyTranslations();
 
   const osSelect = document.getElementById("os");
   if (osSelect) osSelect.addEventListener("change", updateDownloadLink);

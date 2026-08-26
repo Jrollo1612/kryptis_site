@@ -137,17 +137,18 @@ const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
 var language_select = document.getElementById("languageSelect");
 
 function applyTranslations() {
-  if (language_select.value == "en") {
-    document.location.href = document.location.pathname.replace(/\/(fr|es|it|de)\//, "/");
-  } else if (language_select.value == "fr") {
-    document.location.href = document.location.pathname.replace(/\/(en|es|it|de)\//, "/fr/");
-  } else if (language_select.value == "es") {
-    document.location.href = document.location.pathname.replace(/\/(en|fr|it|de)\//, "/es/");
-  } else if (language_select.value == "it") {
-    document.location.href = document.location.pathname.replace(/\/(en|fr|es|de)\//, "/it/");
-  } else if (language_select.value == "de") {
-    document.location.href = document.location.pathname.replace(/\/(en|fr|es|it)\//, "/de/");
+  const language = language_select.value;
+  let path = document.location.pathname;
+
+  // Supprime le répertoire de langue actuel
+  path = path.replace(/^\/(fr|es|it|de)(\/|$)/, "/");
+
+  // Ajoute le nouveau répertoire sauf pour l'anglais
+  if (language !== "en") {
+    path = `/${language}${path}`;
   }
+
+  document.location.href = path;
 }
 
 
@@ -250,7 +251,7 @@ Fonction principale pour initialiser le site, gérer les événements et les int
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  applyTranslations();
+  language_select.addEventListener("change", applyTranslations());
 
   const osSelect = document.getElementById("os");
   if (osSelect) osSelect.addEventListener("change", updateDownloadLink);

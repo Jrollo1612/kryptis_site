@@ -1,10 +1,7 @@
 const { createClient } = require("@supabase/supabase-js");
 
 // Connexion Supabase
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
-);
+const supabase = createClient('https://vilnoaavchxxilffsfrn.supabase.co', process.env.SUPABASE_KEY);
 
 exports.handler = async (event) => {
 

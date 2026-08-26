@@ -2,36 +2,44 @@
 Cette parte concernera les avis et le traitement des avis, ainsi que la gestion de la base de données Supabase pour les avis.
 */
 
-const { createClient } = import('@supabase/supabase-js');
-
-const supabase = createClient('https://vilnoaavchxxilffsfrn.supabase.co', process.env.SUPABASE_KEY);
-
 // Charge les avis depuis Supabase
 async function fetchReviews() {
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("*");
+    try {
+        const response = await fetch("/.netlify/functions/reviews");
 
-  if (error) {
-    console.error("Erreur lors du chargement des avis :", error);
-    return [];
-  }
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-  return data;
+        return await response.json();
+
+    } catch (error) {
+        console.error("Erreur lors du chargement des avis :", error);
+        return [];
+    }
 }
 
 // Sauvegarde un avis sur Supabase
 async function saveReviewToServer(review) {
-  const { error } = await supabase
-    .from("reviews")
-    .insert(review);
+    try {
+        const response = await fetch("/.netlify/functions/reviews", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(review)
+        });
 
-  if (error) {
-    console.error("Erreur lors de l'envoi de l'avis :", error);
-    return false;
-  }
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-  return true;
+        return true;
+
+    } catch (error) {
+        console.error("Erreur lors de l'envoi de l'avis :", error);
+        return false;
+    }
 }
 
 
@@ -75,6 +83,13 @@ async function initReviewsPage(language) {
       message: messageValue,
       date: new Date().toISOString()
     };
+    const success = await saveReviewToServer(newReview);
+
+    if (!success) {
+        status.textContent = strings["reviews.statusError"];
+        return;
+    }
+
 
     const updated = [newReview, ...(await fetchReviews())].slice(0, 20);
     await saveReviewToServer(newReview);

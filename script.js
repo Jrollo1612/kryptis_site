@@ -134,7 +134,7 @@ function renderReviews(reviews, language) {
 Cette partie concerne la gestion des langues et de l'internationalisation du site, ainsi que la détection de la langue de l'utilisateur et la mise à jour de l'interface en conséquence.
 */
 const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
-var language_select = document.getElementById("languageSelect");
+const language_select = document.getElementById("languageSelect");
 
 function applyTranslations() {
   const language = language_select.value;

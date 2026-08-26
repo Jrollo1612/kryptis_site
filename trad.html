@@ -501,11 +501,9 @@
         const code = document.getElementById('codeSelect').value;
         const text = document.getElementById('inputText').value;
         const key = document.getElementById('vigenereKey').value;
-        const lang = document.getElementById('languageSelect').value;
 
         url.searchParams.set('code', code);
         url.searchParams.set('direction', direction);
-        url.searchParams.set('lang', lang);
 
         if (text) {
             url.searchParams.set('text', text);
@@ -584,13 +582,6 @@
 
         }
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('lang')) {
-            const lang = urlParams.get('lang');
-            if (lang) {
-                const languageSelect = document.getElementById('languageSelect');
-                languageSelect.value = lang;
-            }
-        }
         if (urlParams.has('code')) {
             const code = urlParams.get('code');
             if (CIPHER_INFO[code]) {

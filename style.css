@@ -114,7 +114,7 @@ button:focus-visible {
 
 .footer {
     text-align: center;
-    background-color: #020617;
+    background-color: #1f274a;
     border-top: 1px solid #0092F9;
     display: flex;
     justify-content: space-between;
@@ -398,7 +398,7 @@ td {
 /* effet hover sur ligne */
 tr:hover td,
 tr:hover th {
-    background-color: rgba(0, 146, 249, 0.08);
+    background-color: rgba(11, 117, 193, 0.356);
 }
 
 /* dernière ligne sans bordure */
@@ -662,4 +662,9 @@ section[aria-labelledby="reviews-rating"] {
 .rating-count {
     font-size: 14px;
     color: #cbd5e1;
+}
+.social-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
 }

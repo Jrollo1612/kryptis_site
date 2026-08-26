@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9W5P08BHM4"></script>
@@ -17,11 +17,11 @@
     <meta name="keywords"   content="kryptis reviews, kryptis feedback, kryptis user experience, kryptis ratings, kryptis testimonials">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
-    <link rel="canonical" id="canonicalLink" href="/reviews.html">
+    <link rel="canonical" id="canonicalLink" href="/it/reviews.html">
     <link rel="alternate" hreflang="en" href="/reviews.html">
     <link rel="alternate" hreflang="fr" href="/reviews.html">
     <link rel="alternate" hreflang="es" href="/reviews.html">
-    <link rel="alternate" hreflang="it" href="/reviews.html">
+    <link rel="alternate" hreflang="it" href="/it/reviews.html">
     <link rel="alternate" hreflang="de" href="/reviews.html">
     <link rel="alternate" hreflang="x-default" href="/reviews.html">
     <script type="application/ld+json" id="app">
@@ -42,7 +42,7 @@
     </script>
     <link rel="stylesheet" href="/style.css">
         <script>
-        fetch("reviews.json")
+        fetch("/reviews.json")
         .then(res => res.json())
         .then(reviews => {
 
@@ -84,16 +84,16 @@
             </select>
         </nav>
         <div class="logo">
-            <img src="assets/kryptis_logo.s vg" alt="Kryptis Logo" id="logo">
+            <img src="/assets/kryptis_logo.svg" alt="Kryptis Logo" id="logo">
             <p  id="nom">Kryptis</p>
         </div>
         <h1 >Kryptis - Reviews</h1>
         <nav aria-label="Main navigation"  >
             <ul class="main-nav">
-                <li><a href="/index.html" >Home</a></li>
-                <li><a href="/trad.html" >Online Translator</a></li>
-                <li><a href="/download.html" >Download</a></li>
-                <li><a href="/reviews.html" >Reviews</a></li>
+                <li><a href="/it/index.html" >Pagina Principale</a></li>
+                <li><a href="/it/trad.html" >Traduttore online</a></li>
+                <li><a href="/it/download.html" >Scaricamento</a></li>
+                <li><a href="/it/reviews.html" >Recensioni</a></li>
             </ul>
         </nav>
     </header>
@@ -112,7 +112,7 @@
             <script>
                 const st = document.querySelector(".stars");
 
-                fetch("assets/reviews.json")
+                fetch("/reviews.json")
                 .then(res => res.json())
                 .then(reviews => {
 
@@ -163,7 +163,7 @@
             <div id="reviewList" class="review-list"></div>
         </section>
 
-        <p><a href="/download.html" >Back to download page</a></p>
+        <p><a href="/it/download.html" >Torna alla pagina di download</a></p>
     </main>
     <button id="contact_form" onmouseover="form.mousover()" onclick="form.click()"></button>
     <script>
@@ -188,7 +188,7 @@
         </div>
         <div class="bloc">
             <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" >My GitHub</a>
-            <a href="/index.html"  rel="dofollow">Home</a>
+            <a href="/it/index.html"  rel="dofollow">Pagina Principale</a>
             <h2 >Contact</h2>
             <ul>
                 <li><span >Email:</span> <a href="mailto:joseph.kryptis@mailo.com">joseph.kryptis@mailo.com</a></li>

@@ -251,7 +251,7 @@ Fonction principale pour initialiser le site, gérer les événements et les int
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  language_select.addEventListener("change", applyTranslations());
+  language_select.addEventListener("change", applyTranslations);
 
   const osSelect = document.getElementById("os");
   if (osSelect) osSelect.addEventListener("change", updateDownloadLink);

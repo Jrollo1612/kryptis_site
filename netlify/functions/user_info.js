@@ -1,84 +1,66 @@
-require("dotenv").config();
-
-const express = require("express");
-const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-// netlify/functions/user_info.js
-if (process.env.NETLIFY !== 'true') {
-  try {
-    // dynamic require so bundler doesn't require it at build-time in the cloud
-    const dotenv = require && require('dotenv');
-    dotenv && dotenv.config();
-  } catch (e) {
-    // ignore if dotenv is not present
-  }
-}
-
-// then use process.env.SUPABASE_KEY etc.
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
-
-app.post("/track", async (req, res) => {
-  try {
-    const {
-      userAgent,
-      language,
-      platform,
-      screenWidth,
-      screenHeight,
-      timezone,
-      cookiesEnabled
-    } = req.body;
-
-    // IP utilisateur
-    const ip =
-      req.headers["x-forwarded-for"]?.split(",")[0] ||
-      req.socket.remoteAddress;
-
-    const { error } = await supabase
-      .from("visitor_logs")
-      .insert([
-        {
-          ip,
-          user_agent: userAgent,
-          language,
-          platform,
-          screen_width: screenWidth,
-          screen_height: screenHeight,
-          timezone,
-          cookies_enabled: cookiesEnabled
-        }
-      ]);
-
-    if (error) {
-      console.error(error);
-      return res.status(500).json({
-        success: false,
-        error: error.message
-      });
+exports.handler = async (event) => {
+    if (event.httpMethod !== "POST") {
+        return {
+            statusCode: 405,
+            body: JSON.stringify({ error: "Method not allowed" })
+        };
     }
 
-    res.json({
-      success: true
-    });
+    try {
+        const { email, password } = JSON.parse(event.body);
 
-  } catch (err) {
-    console.error(err);
+        if (!email || !password) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    error: "Email et mot de passe requis"
+                })
+            };
+        }
 
-    res.status(500).json({
-      success: false,
-      error: err.message
-    });
-  }
-});
+        const supabase = createClient(
+            "https://vilnoaavchxxilffsfrn.supabase.co",
+            process.env.SUPABASE_KEY
+        );
 
-app.listen(3000, () => {
-  console.log("Serveur lancé sur http://localhost:3000");
-});
+        const { data, error } =
+            await supabase.auth.signInWithPassword({
+                username,
+                password
+            });
+
+        if (error) {
+            return {
+                statusCode: 401,
+                body: JSON.stringify({
+                    error: "Email ou mot de passe incorrect"
+                })
+            };
+        }
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                success: true,
+                access_token: data.session.access_token,
+                refresh_token: data.session.refresh_token,
+                user: {
+                    id: data.user.id,
+                    email: data.user.email
+                }
+            })
+        };
+
+    } catch (error) {
+        console.error(error);
+
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                error: "Erreur serveur"
+            })
+        };
+    }
+};

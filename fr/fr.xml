@@ -1,0 +1,27 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://kryptis.netlify.app/fr/</loc>
+        <lastmod>2026-08-26</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://kryptis.netlify.app/fr/index.html</loc>
+        <lastmod>2026-08-26</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://kryptis.netlify.app/fr/download.html</loc>
+        <lastmod>2026-08-26</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://kryptis.netlify.app/fr/reviews.html</loc>
+        <lastmod>2026-08-26</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://kryptis.netlify.app/fr/trad.html</loc>
+        <lastmod>2026-08-26</lastmod>
+        <priority>0.7</priority>
+    </url>
+</urlset>

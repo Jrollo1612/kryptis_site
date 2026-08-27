@@ -13,56 +13,10 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kryptis.netlify.app/fr/index.html</loc>
-    <lastmod>2026-08-26</lastmod>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/es/index.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/it/index.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/de/index.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://kryptis.netlify.app/download.html</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/fr/download.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/es/download.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/it/download.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/de/download.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kryptis.netlify.app/reviews.html</loc>
@@ -71,87 +25,9 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kryptis.netlify.app/fr/reviews.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/es/reviews.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/it/reviews.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/de/reviews.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://kryptis.netlify.app/trad.html</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/fr/trad.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/es/trad.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/it/trad.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/de/trad.html</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/home.svg</loc>
-    <lastmod>2026-08-26</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/assets/kryptis_logo.svg</loc>
-    <lastmod>2026-04-09</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/assets/youtube.svg</loc>
-    <lastmod>2026-08-26</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/assets/github.svg</loc>
-    <lastmod>2026-08-26</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/assets/instagram.svg</loc>
-    <lastmod>2026-08-26</lastmod>
-    <priority>0.2</priority>
-  </url>
-  <url>
-    <loc>https://kryptis.netlify.app/assets/whatsapp.svg</loc>
-    <lastmod>2026-08-26</lastmod>
-    <priority>0.2</priority>
   </url>
 </urlset>

@@ -150,8 +150,16 @@ Cette partie concerne la gestion des langues et de l'internationalisation du sit
 */
 const SUPPORTED_LANGUAGES = ["en", "fr", "es", "it", "de"];
 const language_select = document.getElementById("languageSelect");
+const initialLanguage = normalizeLanguage(document.documentElement.lang || "en");
+
+function normalizeLanguage(language) {
+  const normalized = String(language || "en").slice(0, 2).toLowerCase();
+  return SUPPORTED_LANGUAGES.includes(normalized) ? normalized : "en";
+}
 
 function applyTranslations() {
+  if (!language_select) return;
+
   const language = language_select.value;
   let path = document.location.pathname;
 
@@ -327,7 +335,7 @@ async function saveHistory(
                 credentials: "include",
                 body: JSON.stringify({
                     action,
-                    code,
+                    cipher,
                     input,
                     output
                 })
@@ -392,10 +400,13 @@ function prepareSource() {
   var utm_source=urlParams.get("utm_source")
   var infos=urlParams.get("infos")
  
-  if (window.history.includes("gemini.google.com")) {      utm_source="gemini.google.com"
-  } else if (window.history.includes("copilot.microsoft.com")) {
+  const referrer = document.referrer || "";
+
+  if (referrer.includes("gemini.google.com")) {
+    utm_source="gemini.google.com"
+  } else if (referrer.includes("copilot.microsoft.com")) {
     utm_source=utm_source || "copilot.microsoft.com";
-  } else if (window.history.includes("claude.ai")) {
+  } else if (referrer.includes("claude.ai")) {
     utm_source=utm_source || "claude.ai"
   }
   document.cookie = "source=" + utm_source + "; path=/; max-age=" + (60*60*24*30);
@@ -427,7 +438,9 @@ Fonction principale pour initialiser le site, gérer les événements et les int
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  language_select.addEventListener("change", applyTranslations);
+  if (language_select) {
+    language_select.addEventListener("change", applyTranslations);
+  }
 
   const osSelect = document.getElementById("os");
   if (osSelect) osSelect.addEventListener("change", updateDownloadLink);

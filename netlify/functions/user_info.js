@@ -2,11 +2,40 @@ const { createClient } = require("@supabase/supabase-js");
 
 const SUPABASE_URL = "https://vilnoaavchxxilffsfrn.supabase.co";
 
-function getSupabase() {
+function getSupabase(accessToken) {
     return createClient(
         SUPABASE_URL,
-        process.env.SUPABASE_KEY
+        process.env.SUPABASE_KEY,
+        {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+                detectSessionInUrl: false
+            },
+            global: accessToken
+                ? {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+                : undefined
+        }
     );
+}
+
+function jsonResponse(statusCode, body, extra = {}) {
+    return {
+        statusCode,
+        ...extra,
+        body: JSON.stringify(body)
+    };
+}
+
+function getCookieSecurity(event) {
+    const host = event.headers.host || "";
+    return host.startsWith("localhost") || host.startsWith("127.0.0.1")
+        ? ""
+        : "; Secure";
 }
 
 function getCookies(event) {
@@ -24,49 +53,107 @@ function getCookies(event) {
     return cookies;
 }
 
-function createAuthCookies(accessToken, refreshToken) {
+function createAuthCookies(event, accessToken, refreshToken) {
+    const secure = getCookieSecurity(event);
+
     return [
-        `access_token=${encodeURIComponent(accessToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600`,
-        `refresh_token=${encodeURIComponent(refreshToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=2592000`
+        `access_token=${encodeURIComponent(accessToken)}; HttpOnly${secure}; SameSite=Lax; Path=/; Max-Age=3600`,
+        `refresh_token=${encodeURIComponent(refreshToken)}; HttpOnly${secure}; SameSite=Lax; Path=/; Max-Age=2592000`
     ];
 }
 
-function clearAuthCookies() {
+function clearAuthCookies(event) {
+    const secure = getCookieSecurity(event);
+
     return [
-        "access_token=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0",
-        "refresh_token=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0"
+        `access_token=; HttpOnly${secure}; SameSite=Lax; Path=/; Max-Age=0`,
+        `refresh_token=; HttpOnly${secure}; SameSite=Lax; Path=/; Max-Age=0`
     ];
 }
 
 exports.handler = async (event) => {
     if (event.httpMethod !== "POST") {
-        return {
-            statusCode: 405,
-            body: JSON.stringify({
-                error: "Method not allowed"
-            })
-        };
+        return jsonResponse(405, {
+            error: "Method not allowed",
+            message: "Method not allowed"
+        });
     }
 
     try {
         const body = JSON.parse(event.body || "{}");
         const action = body.action;
-
         const supabase = getSupabase();
 
-        // ─────────────────────────────
-        // CONNEXION
-        // ─────────────────────────────
+        if (action === "signup") {
+            const { email, password, name } = body;
+
+            if (!email || !password) {
+                return jsonResponse(400, {
+                    error: "Email et mot de passe requis",
+                    message: "Email et mot de passe requis"
+                });
+            }
+
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        name: name || ""
+                    }
+                }
+            });
+
+            if (error) {
+                return jsonResponse(400, {
+                    error: error.message,
+                    message: error.message
+                });
+            }
+
+            const user = data.user
+                ? {
+                    id: data.user.id,
+                    email: data.user.email,
+                    name: data.user.user_metadata?.name || ""
+                }
+                : null;
+
+            if (!data.session) {
+                return jsonResponse(200, {
+                    success: true,
+                    requiresEmailConfirmation: true,
+                    user
+                });
+            }
+
+            return jsonResponse(
+                200,
+                {
+                    success: true,
+                    requiresEmailConfirmation: false,
+                    user
+                },
+                {
+                    multiValueHeaders: {
+                        "Set-Cookie": createAuthCookies(
+                            event,
+                            data.session.access_token,
+                            data.session.refresh_token
+                        )
+                    }
+                }
+            );
+        }
+
         if (action === "login") {
             const { email, password } = body;
 
             if (!email || !password) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({
-                        error: "Email et mot de passe requis"
-                    })
-                };
+                return jsonResponse(400, {
+                    error: "Email et mot de passe requis",
+                    message: "Email et mot de passe requis"
+                });
             }
 
             const { data, error } =
@@ -76,47 +163,42 @@ exports.handler = async (event) => {
                 });
 
             if (error || !data.session) {
-                return {
-                    statusCode: 401,
-                    body: JSON.stringify({
-                        error: "Email ou mot de passe incorrect"
-                    })
-                };
+                return jsonResponse(401, {
+                    error: "Email ou mot de passe incorrect",
+                    message: "Email ou mot de passe incorrect"
+                });
             }
 
-            return {
-                statusCode: 200,
-
-                multiValueHeaders: {
-                    "Set-Cookie": createAuthCookies(
-                        data.session.access_token,
-                        data.session.refresh_token
-                    )
-                },
-
-                body: JSON.stringify({
+            return jsonResponse(
+                200,
+                {
                     success: true,
                     user: {
                         id: data.user.id,
-                        email: data.user.email
+                        email: data.user.email,
+                        name: data.user.user_metadata?.name || ""
                     }
-                })
-            };
+                },
+                {
+                    multiValueHeaders: {
+                        "Set-Cookie": createAuthCookies(
+                            event,
+                            data.session.access_token,
+                            data.session.refresh_token
+                        )
+                    }
+                }
+            );
         }
 
-        // ─────────────────────────────
-        // RÉCUPÉRER L'UTILISATEUR
-        // ─────────────────────────────
         if (action === "get_user") {
             const cookies = getCookies(event);
 
             if (!cookies.access_token) {
-                return {
-                    statusCode: 401,
-                    body: JSON.stringify({
-                        error: "Utilisateur non connecté"
-                    })
-                };
+                return jsonResponse(401, {
+                    error: "Utilisateur non connecte",
+                    message: "Utilisateur non connecte"
+                });
             }
 
             const {
@@ -125,39 +207,30 @@ exports.handler = async (event) => {
             } = await supabase.auth.getUser(cookies.access_token);
 
             if (error || !user) {
-                return {
-                    statusCode: 401,
-                    body: JSON.stringify({
-                        error: "Session invalide"
-                    })
-                };
+                return jsonResponse(401, {
+                    error: "Session invalide",
+                    message: "Session invalide"
+                });
             }
 
-            return {
-                statusCode: 200,
-                body: JSON.stringify({
-                    success: true,
-                    user: {
-                        id: user.id,
-                        email: user.email
-                    }
-                })
-            };
+            return jsonResponse(200, {
+                success: true,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    name: user.user_metadata?.name || ""
+                }
+            });
         }
 
-        // ─────────────────────────────
-        // RAFRAÎCHIR LA SESSION
-        // ─────────────────────────────
         if (action === "refresh") {
             const cookies = getCookies(event);
 
             if (!cookies.refresh_token) {
-                return {
-                    statusCode: 401,
-                    body: JSON.stringify({
-                        error: "Aucune session à rafraîchir"
-                    })
-                };
+                return jsonResponse(401, {
+                    error: "Aucune session a rafraichir",
+                    message: "Aucune session a rafraichir"
+                });
             }
 
             const { data, error } =
@@ -166,73 +239,78 @@ exports.handler = async (event) => {
                 });
 
             if (error || !data.session) {
-                return {
-                    statusCode: 401,
-                    multiValueHeaders: {
-                        "Set-Cookie": clearAuthCookies()
+                return jsonResponse(
+                    401,
+                    {
+                        error: "Session expiree",
+                        message: "Session expiree"
                     },
-                    body: JSON.stringify({
-                        error: "Session expirée"
-                    })
-                };
+                    {
+                        multiValueHeaders: {
+                            "Set-Cookie": clearAuthCookies(event)
+                        }
+                    }
+                );
             }
 
-            return {
-                statusCode: 200,
-
-                multiValueHeaders: {
-                    "Set-Cookie": createAuthCookies(
-                        data.session.access_token,
-                        data.session.refresh_token
-                    )
+            return jsonResponse(
+                200,
+                {
+                    success: true,
+                    user: data.user
+                        ? {
+                            id: data.user.id,
+                            email: data.user.email,
+                            name: data.user.user_metadata?.name || ""
+                        }
+                        : null
                 },
-
-                body: JSON.stringify({
-                    success: true
-                })
-            };
+                {
+                    multiValueHeaders: {
+                        "Set-Cookie": createAuthCookies(
+                            event,
+                            data.session.access_token,
+                            data.session.refresh_token
+                        )
+                    }
+                }
+            );
         }
 
-        // ─────────────────────────────
-        // DÉCONNEXION
-        // ─────────────────────────────
         if (action === "logout") {
             const cookies = getCookies(event);
 
             if (cookies.access_token) {
-                await supabase.auth.signOut({
+                const authenticatedSupabase = getSupabase(cookies.access_token);
+                await authenticatedSupabase.auth.signOut({
                     scope: "local"
                 });
             }
 
-            return {
-                statusCode: 200,
-
-                multiValueHeaders: {
-                    "Set-Cookie": clearAuthCookies()
-                },
-
-                body: JSON.stringify({
+            return jsonResponse(
+                200,
+                {
                     success: true
-                })
-            };
+                },
+                {
+                    multiValueHeaders: {
+                        "Set-Cookie": clearAuthCookies(event)
+                    }
+                }
+            );
         }
 
-        return {
-            statusCode: 400,
-            body: JSON.stringify({
-                error: "Action inconnue"
-            })
-        };
+        return jsonResponse(400, {
+            error: "Action inconnue",
+            message: "Action inconnue"
+        });
 
     } catch (error) {
         console.error(error);
 
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                error: "Erreur serveur"
-            })
-        };
+        return jsonResponse(500, {
+            error: "Erreur serveur",
+            message: "Erreur serveur"
+        });
     }
 };

@@ -1,11 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <script src="/script.js"></script>
+<head>
+        <script src="/script.js" defer></script>
         <link rel="stylesheet" href="/style.css">
-        
-    </head>
-    <body>
+        <title>Authentication</title>
+</head>
+<body>
+<header class="header">
+    <nav aria-label="Language selector"  >
+        <label for="languageSelect" class="visually-hidden" >Select language</label>
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="de">Deutsch</option>
+        </select>
+    </nav>
+    <div class="logo">
+        <img src="assets/kryptis_logo.svg" alt="Kryptis Logo" id="logo">
+        <p  id="nom">Kryptis</p>
+    </div>
+    <h1 >Log In or Sign Up</h1>
+</header>
+<main class="main">
+    <div class="layout">
+        <div class="content">
+            <section class="auth-section">
+                <h2>Log In</h2>
+                <form id="loginForm">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" name="email" autocomplete="email" required>
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" autocomplete="current-password" required>
+                    <button type="submit">Log In</button>
+                </form>
+                <button id="showSignup">Don't have an account? Sign Up</button>
+            </section>
+            <section class="signup-section" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signupForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="signupEmail">Email:</label>
+                    <input type="email" id="signupEmail" name="email" autocomplete="email" required>
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" id="signupPassword" name="password" autocomplete="new-password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+            </section>
+            <script>
+                document.getElementById('showSignup').addEventListener('click', function() {
+                    document.querySelector('.auth-section').style.display = 'none';
+                    document.querySelector('.signup-section').style.display = 'block';
+                });
+                const authEndpoint = '/.netlify/functions/user_info';
 
-    </body>
+                document.getElementById('loginForm').addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    const email = document.getElementById('loginEmail').value.trim();
+                    const password = document.getElementById('loginPassword').value;
+
+                    try {
+                        const response = await fetch(authEndpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                action: 'login',
+                                email,
+                                password
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            alert('Login successful!');
+                            window.location.href = window.location.origin;
+                        } else {
+                            alert('Login failed: ' + (data.message || data.error || 'Unknown error'));
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during login.');
+                    }
+                });
+
+                document.getElementById('signupForm').addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('signupEmail').value.trim();
+                    const password = document.getElementById('signupPassword').value;
+
+                    try {
+                        const response = await fetch(authEndpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                action: 'signup',
+                                name,
+                                email,
+                                password
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            alert('Sign up failed: ' + (data.message || data.error || 'Unknown error'));
+                            return;
+                        }
+
+                        if (data.requiresEmailConfirmation) {
+                            alert('Account created. Please confirm your email before logging in.');
+                            document.querySelector('.signup-section').style.display = 'none';
+                            document.querySelector('.auth-section').style.display = 'block';
+                            return;
+                        }
+
+                        alert('Account created!');
+                        window.location.href = window.location.origin;
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred during sign up.');
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</main>
+<footer class="footer">
+    <p >Copyright © 2026 JJTC. All rights reserved.</p>
+    <a href="">Kryptis</a> © 2026 by JJTC is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+
+    <div class="bloc">
+        <a href="https://tinyurl.com/Kryptis" rel="dofollow"><img class="social-icon" src="assets/whatsapp.svg"></a><a href="https://youtube.com/Jojothebigboss"><img class="social-icon" src="assets/youtube.svg"></a><a href="https://instagram.com/@jsrl_prso15"><img class="social-icon" src="assets/instagram.svg"></a>
+
+        <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" ><img class="social-icon" src="assets/logo-github.svg"></a>
+        <a href="/index.html" ><img class="social-icon" src="assets/home.svg"></a>
+
+        <h2 >Contact</h2>
+        <ul>
+            <li>
+                <span >Email:</span>
+                <a href="mailto:joseph.kryptis@mailo.com">joseph.kryptis@mailo.com</a>
+            </li>
+        </ul>
+    </div>
+</footer>
+</body>
 </html>

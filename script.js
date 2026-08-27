@@ -198,6 +198,167 @@ function updateDownloadLink() {
   downloadLink.setAttribute("download", "");
 }
 
+/* ─────────────────────────────
+   AUTHENTIFICATION
+───────────────────────────── */
+
+async function login(email, password) {
+    try {
+        const response = await fetch(
+            "/.netlify/functions/user_info",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    action: "login",
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data.error);
+            return false;
+        }
+
+        console.log("Connexion réussie :", data.user);
+
+        return true;
+
+    } catch (error) {
+        console.error(
+            "Erreur lors de la connexion :",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+async function getCurrentUser() {
+    try {
+        const response = await fetch(
+            "/.netlify/functions/user_info",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    action: "get_user"
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            return null;
+        }
+
+        return data.user;
+
+    } catch (error) {
+        console.error(
+            "Erreur récupération utilisateur :",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+async function logout() {
+    try {
+        const response = await fetch(
+            "/.netlify/functions/user_info",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    action: "logout"
+                })
+            }
+        );
+
+        return response.ok;
+
+    } catch (error) {
+        console.error(
+            "Erreur lors de la déconnexion :",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/* ─────────────────────────────
+   HISTORIQUE
+───────────────────────────── */
+
+async function saveHistory(
+    action,
+    cipher,
+    input,
+    output
+) {
+    try {
+        const response = await fetch(
+            "/.netlify/functions/save_history",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    action,
+                    code,
+                    input,
+                    output
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(
+                "Erreur historique :",
+                data.error
+            );
+
+            return false;
+        }
+
+        return true;
+
+    } catch (error) {
+        console.error(
+            "Erreur sauvegarde historique :",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+
 /*
 Cette partie concerne l'envoie d'emails pour notifier l'administrateur du site lorsqu'un utilisateur accède au site depuis une IA, un logiciel ou un réseau social. Les informations supplémentaires sont également incluses dans l'email.
 */

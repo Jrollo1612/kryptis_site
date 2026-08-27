@@ -1,7 +1,23 @@
 const { createClient } = require("@supabase/supabase-js");
 
+const SUPABASE_URL = "https://vilnoaavchxxilffsfrn.supabase.co";
+
+function getCookies(event) {
+    const cookies = {};
+    const cookieHeader = event.headers.cookie || "";
+
+    for (const cookie of cookieHeader.split(";")) {
+        const [name, ...value] = cookie.trim().split("=");
+
+        if (name) {
+            cookies[name] = decodeURIComponent(value.join("="));
+        }
+    }
+
+    return cookies;
+}
+
 exports.handler = async (event) => {
-    // Autoriser uniquement POST
     if (event.httpMethod !== "POST") {
         return {
             statusCode: 405,
@@ -12,86 +28,74 @@ exports.handler = async (event) => {
     }
 
     try {
-        // Récupérer le token Supabase
-        const authHeader = event.headers.authorization;
+        const cookies = getCookies(event);
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (!cookies.access_token) {
             return {
                 statusCode: 401,
                 body: JSON.stringify({
-                    error: "Unauthorized"
+                    error: "Utilisateur non connecté"
                 })
             };
         }
 
-        const token = authHeader.replace("Bearer ", "");
-
-        // Client Supabase
         const supabase = createClient(
-            "https://vilnoaavchxxilffsfrn.supabase.co",
-            process.env.SUPABASE_KEY,
-            {
-                global: {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            }
+            SUPABASE_URL,
+            process.env.SUPABASE_KEY
         );
 
-        // Vérifier l'utilisateur
+        // Vérifier la session
         const {
             data: { user },
             error: userError
-        } = await supabase.auth.getUser();
+        } = await supabase.auth.getUser(
+            cookies.access_token
+        );
 
         if (userError || !user) {
             return {
                 statusCode: 401,
                 body: JSON.stringify({
-                    error: "Invalid session"
+                    error: "Session invalide"
                 })
             };
         }
 
-        // Récupérer les données envoyées
         const {
             action,
             cipher,
             input,
             output
-        } = JSON.parse(event.body);
+        } = JSON.parse(event.body || "{}");
 
-        // Vérifications basiques
         if (!action || !cipher || input === undefined) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
-                    error: "Missing required fields"
+                    error: "Données manquantes"
                 })
             };
         }
 
-        // Enregistrer dans l'historique
         const { data, error } = await supabase
             .from("history")
             .insert({
                 user_id: user.id,
-                action: action,
-                cipher: cipher,
-                input: input,
+                action,
+                cipher,
+                input,
                 output: output ?? null
             })
             .select()
             .single();
 
         if (error) {
-            console.error(error);
+            console.error("Supabase:", error);
 
             return {
                 statusCode: 500,
                 body: JSON.stringify({
-                    error: "Failed to save history"
+                    error: "Impossible de sauvegarder l'historique"
                 })
             };
         }
@@ -110,7 +114,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 500,
             body: JSON.stringify({
-                error: "Internal server error"
+                error: "Erreur serveur"
             })
         };
     }

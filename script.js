@@ -5,7 +5,7 @@ Cette parte concernera les avis et le traitement des avis, ainsi que la gestion 
 // Charge les avis depuis Supabase
 async function fetchReviews() {
     try {
-        const response = await fetch("/.netlify/functions/reviews");
+        const response = await fetch("/netlify/functions/load_reviews");
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -22,7 +22,7 @@ async function fetchReviews() {
 // Sauvegarde un avis sur Supabase
 async function saveReviewToServer(review) {
     try {
-        const response = await fetch("/.netlify/functions/reviews", {
+        const response = await fetch("/netlify/functions/save_reviews", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -67,9 +67,11 @@ async function initReviewsPage(language) {
     const nameValue = name?.value.trim();
     const ratingValue = rating?.value;
     const messageValue = message?.value.trim();
-
-    const langNow = normalizeLanguage(document.documentElement.lang);
-    const strings = I18N[langNow] || I18N.en;
+;
+    const strings = {
+      "reviews.statusError": "Failed to submit your review. Please try again later.",
+      "reviews.statusSuccess": "Your review has been submitted successfully!"
+    };
 
     if (!nameValue || !ratingValue || !messageValue) {
       status.textContent = strings["reviews.statusError"];
@@ -83,16 +85,14 @@ async function initReviewsPage(language) {
       message: messageValue,
       date: new Date().toISOString()
     };
+
+    const updated = [newReview, ...(await fetchReviews())].slice(0, 20);
     const success = await saveReviewToServer(newReview);
 
     if (!success) {
         status.textContent = strings["reviews.statusError"];
         return;
     }
-
-
-    const updated = [newReview, ...(await fetchReviews())].slice(0, 20);
-    await saveReviewToServer(newReview);
 
     status.textContent = strings["reviews.statusSuccess"];
     form.reset();

@@ -12,9 +12,9 @@
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >Kodex - Download for Windows, Linux and macOS</title>
-    <meta name="description"  data-i18n-attr="content" content="Download Kodex - Morse Translator desktop versions for Windows, Linux, and macOS.">
-    <meta name="keywords"  data-i18n-attr="content" content="kodex download, morse desktop app, windows linux macos">
+    <title >Kryptis - Download for Windows, Linux and macOS</title>
+    <meta name="description" content="Download Kryptis's offline software. Available for Windows, Linux and macOS.">
+    <meta name="keywords" content="translator, code, codes, Morse, Vigenère, key, cipher, Kryptis, encryption, decryption, encrypt, decrypt, encode, decode, cryptography, software, offline, online, download, binary, ROT13, Caesar, application, punctuation, free, fast, no ads">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
     <link rel="canonical" id="canonicalLink" href="/download.html">
@@ -22,9 +22,9 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "Kodex - Morse Translator",
-      "headline": "Download Kodex - Morse Translator",
-      "description": "Download Kodex - Morse Translator desktop versions for Windows, Linux, and macOS.",
+      "name": "Kryptis desktop application",
+      "headline": "Download Kryptis desktop application.",
+      "description": "Download the Kryptis desktop application to encrypt and decrypt messages offline. Available for Windows, Linux and macOS.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Windows, Linux, macOS",
       "author": {
@@ -33,10 +33,10 @@
       },
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "4",
-        "ratingCount": "1",
-        "bestRating": "4",
-        "worstRating": "4"
+        "ratingValue": "none",
+        "ratingCount": "none",
+        "bestRating": "none",
+        "worstRating": "none"
       },
         "logo": "/assets/kryptis_logo.svg"
     }
@@ -54,20 +54,21 @@
         .then(reviews => {
 
             // 1. calcul moyenne
-            const avg =
-            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+            const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
             // 2. récupérer JSON-LD
             const script = document.getElementById("app");
             const data = JSON.parse(script.textContent);
+            const high = Math.max(...reviews.map(r => r.rating));
+            const low = Math.min(...reviews.map(r => r.rating));
 
             // 3. injecter aggregateRating
             data.aggregateRating = {
             "@type": "AggregateRating",
             "ratingValue": avg.toFixed(1),
             "ratingCount": reviews.length,
-            "bestRating": "5",
-            "worstRating": "1"
+            "bestRating": high,
+            "worstRating": low
             };
 
             // 4. réécrire le JSON-LD
@@ -75,7 +76,7 @@
 
         });
     </script>
-    <script src="script.js?version=2.0" defer></script>
+    <script src="script.js" defer></script>
     <link rel="icon" href="assets/kryptis_logo.svg" type="image/svg+xml">
 </head>
 

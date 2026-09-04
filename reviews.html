@@ -13,8 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title >Kryptis - Reviews</title>
-    <meta name="description"   content="Read and leave reviews about Kryptis - Morse Translator.">
-    <meta name="keywords"   content="kryptis reviews, kryptis feedback, kryptis user experience, kryptis ratings, kryptis testimonials">
+    <meta name="description" content="See what users think about Kryptis and leave your review to help improve the app!">
+    <meta name="keywords" content="translator, code, codes, Morse, Vigenère, key, cipher, Kryptis, encryption, decryption, encrypt, decrypt, encode, decode, cryptography, software, offline, online, download, binary, ROT13, Caesar, application, punctuation, free, fast, no ads">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
     <meta name="author" content="Joseph Rollo">
     <link rel="canonical" id="canonicalLink" href="/reviews.html">
@@ -24,50 +24,7 @@
     <link rel="alternate" hreflang="it" href="/it/reviews.html">
     <link rel="alternate" hreflang="de" href="/de/reviews.html">
     <link rel="alternate" hreflang="x-default" href="/reviews.html">
-    <script type="application/ld+json" id="app">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Kryptis - Morse Translator",
-      "headline": "Kryptis - Morse Translator Reviews",
-      "description": "Read and leave reviews about Kryptis - Morse Translator.",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Windows, Linux, macOS",
-      "author": {
-        "@type": "Person",
-        "name": "Joseph Rollo"
-      },
-      "logo": "/assets/kryptis_logo.svg"
-    }
-    </script>
     <link rel="stylesheet" href="/style.css">
-        <script>
-        fetch("reviews.json")
-        .then(res => res.json())
-        .then(reviews => {
-
-            // 1. calcul moyenne
-            const avg =
-            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-
-            // 2. récupérer JSON-LD
-            const script = document.getElementById("app");
-            const data = JSON.parse(script.textContent);
-
-            // 3. injecter aggregateRating
-            data.aggregateRating = {
-            "@type": "AggregateRating",
-            "ratingValue": avg.toFixed(1),
-            "ratingCount": reviews.length,
-            "bestRating": "5",
-            "worstRating": "1"
-            };
-
-            // 4. réécrire le JSON-LD
-            script.textContent = JSON.stringify(data, null, 2);
-
-        });
-    </script>
     <script src="/script.js" defer></script>
     <link rel="icon" href="/assets/kryptis_logo.svg" type="image/svg+xml">
 </head>
@@ -145,6 +102,7 @@
                     <option value="3">3 / 5</option>
                     <option value="2">2 / 5</option>
                     <option value="1">1 / 5</option>
+                    <option value="null">Not rated</option>
                 </select>
 
                 <label for="reviewMessage" >Message</label>

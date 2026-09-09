@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -16,8 +16,66 @@
     <meta name="description"  data-i18n-attr="content" content="Download Kodex - Morse Translator desktop versions for Windows, Linux, and macOS.">
     <meta name="keywords"  data-i18n-attr="content" content="kodex download, morse desktop app, windows linux macos">
     <meta name="robots" id="robotsMeta" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
-    <meta name="author" content="JJTC">
+    <meta name="author" content="Joseph Rollo">
+    <link rel="canonical" id="canonicalLink" href="/download.html">
+    <script type="application/ld+json" id="app">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Kodex - Morse Translator",
+      "headline": "Download Kodex - Morse Translator",
+      "description": "Download Kodex - Morse Translator desktop versions for Windows, Linux, and macOS.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, Linux, macOS",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph Rollo"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4",
+        "ratingCount": "1",
+        "bestRating": "4",
+        "worstRating": "4"
+      },
+        "logo": "/assets/kryptis_logo.svg"
+    }
+    </script>
+    <link rel="alternate" hreflang="en" href="/download.html">
+    <link rel="alternate" hreflang="fr" href="/fr/download.html">
+    <link rel="alternate" hreflang="es" href="/es/download.html">
+    <link rel="alternate" hreflang="it" href="/it/download.html">
+    <link rel="alternate" hreflang="de" href="/de/download.html">
+    <link rel="alternate" hreflang="x-default" href="/download.html">
     <link rel="stylesheet" href="/style.css">
+        <script>
+        fetch("reviews.json")
+        .then(res => res.json())
+        .then(reviews => {
+
+            // 1. calcul moyenne
+            const avg =
+            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+            // 2. récupérer JSON-LD
+            const script = document.getElementById("app");
+            const data = JSON.parse(script.textContent);
+
+            // 3. injecter aggregateRating
+            data.aggregateRating = {
+            "@type": "AggregateRating",
+            "ratingValue": avg.toFixed(1),
+            "ratingCount": reviews.length,
+            "bestRating": "5",
+            "worstRating": "1"
+            };
+
+            // 4. réécrire le JSON-LD
+            script.textContent = JSON.stringify(data, null, 2);
+
+        });
+    </script>
+    <script src="script.js?version=2.0" defer></script>
     <link rel="icon" href="assets/kryptis_logo.svg" type="image/svg+xml">
 </head>
 
@@ -49,9 +107,6 @@
     </header>
 
     <main class="main">
-        <div class="pub">
-            <a href="https://www.buymeacoffee.com/JJTC" target="_blank" rel="noopener noreferrer">Soutenez Kryptis !</a>
-        </div>
         <section id="description" aria-labelledby="about-title">
             <h2 id="about-title" >About the app</h2>
             <p >Welcome to Kryptis</p>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9W5P08BHM4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9W5P08BHM4');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >Kryptis - Contact</title>
+    <meta name="author" content="Joseph Rollo">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" defer></script>
+    <link rel="icon" href="/assets/kryptis_logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header class="header">
+        <nav aria-label="Language selector"  >
+            <label for="languageSelect" class="visually-hidden" >Select language</label>
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="it">Italiano</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </nav>
+        <div class="logo">
+            <img src="assets/kryptis_logo.s vg" alt="Kryptis Logo" id="logo">
+            <p  id="nom">Kryptis</p>
+        </div>
+        <h1 >Kryptis - Contact us</h1>
+        <nav aria-label="Main navigation"  >
+            <ul class="main-nav">
+                <li><a href="/index.html" >Home</a></li>
+                <li><a href="/trad.html" >Online Translator</a></li>
+                <li><a href="/download.html" >Download</a></li>
+                <li><a href="/reviews.html" >Reviews</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="reviews-section" aria-labelledby="contact-form-title">
+            <h2 id="contact-form-title" >Contact us</h2>
+            <form id="contactForm" class="review-form" netlify>
+                <label for="name" >Name</label>
+                <input type="text" id="name" name="name" maxlength="40" required>
+
+                <label for="email" >Email</label>
+                <input type="email" id="email" name="email" maxlength="100" required>
+
+                <label for="message" >Message</label>
+                <textarea id="message" name="reviewMessage" rows="5" maxlength="400" required></textarea>
+
+                <div class="review-actions">
+                    <button type="submit" class="download-button" >Submit review</button>
+                </div>
+                <p id="reviewStatus" class="notice" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <p><a href="/download.html" >Back to download page</a></p>
+    </main>
+    <button id="contact_form" onmouseover="form.mousover()" onclick="form.click()"></button>
+    <footer class="footer">
+        <p >Copyright © 2026 JJTC. All rights reserved.</p>
+        <div id="licence">
+            <a href="">Kryptis</a> © 2026 by JJTC is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+        </div>
+        <div class="bloc">
+            <a href="https://tinyurl.com/Kryptis" rel="dofollow"><img class="social-icon" src="assets/whatsapp.svg"></a><a href="https://youtube.com/Jojothebigboss"><img class="social-icon" src="assets/youtube.svg"></a><a href="https://instagram.com/@jsrl_prso15"><img class="social-icon" src="assets/instagram.svg"></a>
+            <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" ><img class="social-icon" src="assets/logo-github.svg"></a>
+            <a href="/index.html"  rel="dofollow"><img class="social-icon" src="assets/home.svg"></a>
+            <h2 >Contact</h2>
+            <ul>
+                <li><span >Email:</span> <a href="mailto:joseph.kryptis@mailo.com">joseph.kryptis@mailo.com</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

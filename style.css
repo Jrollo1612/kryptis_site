@@ -102,6 +102,7 @@ ul {
     box-shadow: 0 6px 14px rgba(0,0,0,0.3);
 }
 
+
 .download-button:focus-visible,
 select:focus-visible,
 a:focus-visible,
@@ -667,4 +668,27 @@ section[aria-labelledby="reviews-rating"] {
     width: 24px;
     height: 24px;
     margin-right: 8px;
+}
+#button-game  {
+    display:block;
+    align-items: center;
+    background-color: #0092F9;
+    color: #fff;
+    width: 200px;
+    text-decoration: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: auto;
+    position: relative;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+#button-game img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
 }

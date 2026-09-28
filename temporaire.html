@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9W5P08BHM4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9W5P08BHM4');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >Site updating... The page you requested is being updated.</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" defer></script>
+    <link rel="icon" href="/assets/kryptis_logo.svg" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.12.4/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.12.4/brython_stdlib.js"></script>
+</head>
+<body onload="brython()">
+
+<header class="header">
+    <nav aria-label="Language selector"  >
+        <label for="languageSelect" class="visually-hidden" >Select language</label>
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="de">Deutsch</option>
+        </select>
+    </nav>
+    <div class="logo">
+        <img src="assets/kryptis_logo.svg" alt="Kryptis Logo" id="logo">
+        <p  id="nom">Kryptis</p>
+    </div>
+    <h1 >Kryptis - Home</h1>
+
+    <nav aria-label="Main navigation"  >
+        <ul class="main-nav">
+            <li><a href="/index.html" >Home</a></li>
+            <li><a href="/trad.html" >Online Translator</a></li>
+            <li><a href="/download.html" >Download</a></li>
+            <li><a href="/reviews.html" >Rate & Reviews</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main">
+
+    <div class="layout">
+
+        <!-- 📌 COLONNE PRINCIPALE -->
+        <div class="content">
+            <div id="pong-container">
+                <!-- Élément utilisé par Brython pour insérer le jeu -->
+                <div id="brython-game"></div>
+            </div>
+            <script
+                src="assets/jeu-de-pong.py"
+                type="text/python">
+            </script>
+            <h1 >Site updating...</h1>
+            <p >The page you requested is being updated. Please check back later.</p>
+            <button class="link-button" onclick="window.location.href='/index.html'" id="button-game"><img src="assets/home.svg" alt="Home" class="button-icon"><br><p>Return to Home</p></button>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+<footer class="footer">
+    <p >Copyright © 2026 JJTC. All rights reserved.</p>
+    <a href="">Kryptis</a> © 2026 by JJTC is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+
+    <div class="bloc">
+        <a href="https://tinyurl.com/Kryptis" rel="dofollow"><img class="social-icon" src="assets/whatsapp.svg"></a><a href="https://youtube.com/Jojothebigboss"><img class="social-icon" src="assets/youtube.svg"></a><a href="https://instagram.com/@jsrl_prso15"><img class="social-icon" src="assets/instagram.svg"></a>
+
+        <a href="https://github.com/jrollo1612" target="_blank" rel="noopener noreferrer" ><img class="social-icon" src="assets/logo-github.svg"></a>
+        <a href="/index.html" ><img class="social-icon" src="assets/home.svg"></a>
+
+        <h2 >Contact</h2>
+        <ul>
+            <li>
+                <span >Email:</span>
+                <a href="mailto:joseph.kryptis@mailo.com">joseph.kryptis@mailo.com</a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>

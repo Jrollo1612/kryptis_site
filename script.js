@@ -164,13 +164,18 @@ function applyTranslations() {
   let path = document.location.pathname;
 
   // Supprime le répertoire de langue actuel
-  path = path.replace(/^\/(fr|es|it|de)(\/|$)/, "/");
+  path =  path.includes("fr"||"it"||"es"||"de") ? path.slice(2) : path;
+  
 
   // Ajoute le nouveau répertoire sauf pour l'anglais
   if (language !== "en") {
-    path = `/${language}${path}`;
+    //path = ;
+    path = "/temporaire.html";
   }
-
+  // Temporary redirect to the maintenance page for all languages
+  if (/^\/(fr|es|it|de)(\/|$)/.test(document.location.pathname)) {
+    path = "/temporaire.html";
+  }
   document.location.href = path;
 }
 
@@ -481,4 +486,5 @@ const CGU = "By using this website, you agree to the following terms and conditi
       document.getElementById("overlay").remove();
     });
   }
-});*/
+});
+*/

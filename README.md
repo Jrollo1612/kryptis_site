@@ -1,5 +1,6 @@
 # Kryptis
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5884eed4-46b0-4e14-83dd-7815260423ce/deploy-status)](https://app.netlify.com/projects/kryptis/deploys)
 [![Windows](https://img.shields.io/badge/Windows-Supported-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 [![macOS](https://img.shields.io/badge/macOS-Supported-000000?logo=apple&logoColor=white)](https://www.apple.com/macos)
 [![Linux](https://img.shields.io/badge/Linux-Supported-FCC624?logo=linux&logoColor=black)](https://www.kernel.org)
